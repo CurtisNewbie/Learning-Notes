@@ -1,0 +1,72 @@
+[[[Foundamental Concepts]]]
+
+Computer: (Hardward | Software)
+    1. Central Processing Unit (CPU)
+    2. Memory (Main Memory)
+    3. Storage devices
+    4. Input devices (e.g., mouse and keyboard etc)
+    5. Output devices (monitors etc)
+    6. Commmunication devices (moderns and network interface cards)
+
+Bus:
+    Computers components are interconnected by the 'bus'. The bus is a sort of subsystem or system of roads that are reposible for the communication between this components, transferring data and power. 
+
+CPU:
+    It retrieves and executes the instructions from the memory. The CPU has two components: a control unit and an arithmetic/logic unit. 
+
+    Control Unit: 
+        Controls and coordinate the actions of the other components in order to achieve the actions.
+    
+    Arithmetic/ Logic unit:
+        Performs numeric operations (add/ sub/ multi/ divi) and logical operations.
+    
+Clock Speed:
+    Hertz (Hz), Megahertz(MHz), Gigahertz(GHz)
+
+Bits and Bytes:
+    Bit/ Binary digits: 1 and 0; Electric Switch: On and off.
+    Byte (Minimum Storage Unit): A byte consists of 8 bits/binary digits.
+
+Encoding Schema: 
+    a set of rules that govern how a computer interpret and translate the data into the form that the computer can actually work with (such as a ASCII, UTF-8).
+
+Storage Capacity:
+    1 KB = 1,000 bytes, 1MB = 1 million bytes, 1GB = 1 billion bytes, 1 TB = 1 trillion bytes.
+
+Volatile Memory (Random-Access Memory RAM):
+    RAM consists of an ordered sequence of bytes. Every byte in the memory has a unique address.
+
+Communication Devices:
+    Dial-up Modem (DM):
+        Using a phone line (56,000 bits/per sec)
+    
+    Digital Subscriber Line (SDL):
+        Using a standard phone line (20x faster than DM)
+    
+    Cable Modem:
+        Using cablt TV line, faster than SDL.
+
+    Network Interface Card (NIC):
+        A device that connects the computer to a Local Area Network (LAN), usually 1,000 million bits/sec (mpbs)
+
+Source Code/ Source Programme:
+    A file or a program that is written using the high-level language. The program must be translated into machine code for execution.
+
+Interpreter:
+    Translates one statement from the source code into machine code or virtual machine code and executes the statement right away. (JIT concept in java)
+
+Compiler:
+    Translates the entire source code, and then executes the file. It's different from the interpreter.
+
+Operating Systems:
+    OS manages, controls annd schedules application program and activities on a computer.
+
+OS Scheduling Operations:
+    Multiprogramming:
+        Multiple programs to run in parallel using the same CPU.
+    
+    Multithreading:
+        A single program to execute multiple tasks in parallel.
+    
+    Multiprocessing:
+        Using two or more processors together to perform subtasks concurrently and then combine the solutions of the subtasks into one single outputs.
