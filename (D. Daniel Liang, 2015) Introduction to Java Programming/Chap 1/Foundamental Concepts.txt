@@ -58,6 +58,9 @@ Interpreter:
 Compiler:
     Translates the entire source code, and then executes the file. It's different from the interpreter.
 
+Java Compiling and Interpreting:
+    .java file is first compiled by Java Compiler -> .class files and then eexecuted by the JVM using the interpreter in order to achieve JIT execution.
+
 Operating Systems:
     OS manages, controls annd schedules application program and activities on a computer.
 
@@ -70,3 +73,4 @@ OS Scheduling Operations:
     
     Multiprocessing:
         Using two or more processors together to perform subtasks concurrently and then combine the solutions of the subtasks into one single outputs.
+
