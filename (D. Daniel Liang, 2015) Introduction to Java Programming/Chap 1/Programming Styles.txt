@@ -1,0 +1,16 @@
+
+Proper Indnetation and Spacing:
+    System.out.println(3 + 4 * 4); Good style
+
+Next-line style or End-of-line style (both acceptable):
+    Next-line style:
+        main()
+        {
+            // do something
+        }
+
+    End-of-line style:
+        main(){
+            // do something
+        }
+
