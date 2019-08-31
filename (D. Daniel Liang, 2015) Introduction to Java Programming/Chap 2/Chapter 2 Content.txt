@@ -1,0 +1,15 @@
+
+Content taught in this Chapter:
+    1. Scanner (ComputeArea.java) 
+    2. identifier of a variable/ class/ methods etc. 
+    3. Variables
+    4. Assignment Statement and Expressions  
+    5. Constants Naming Convention  
+    6. Variable Naming Convention  
+    7. Numeric Data Types and Operations  
+    8. Math.pow( , ) method. (ComputePow.java)  
+    9. Integer Literals (IntegerLiteral.java)  
+    10. Display Current time (DisplayTime.java)  
+    11. Augmented Assignment Operators  
+    12. Nummeric Type Conversions  
+    13. Integer Overflow
