@@ -1,0 +1,14 @@
+Chapter 3:
+
+Content taught in this Chapter:
+    1. if, if-else, nested if
+    2. Math.random()
+    3. Logical Operators
+    4. Combined Conditions
+    5. Switch
+    6. Conditional Expression
+    7. Rules of governing operator precedence and associativity
+    8. Common techniques to debug errors
+    9. Math.abs()
+
+    
