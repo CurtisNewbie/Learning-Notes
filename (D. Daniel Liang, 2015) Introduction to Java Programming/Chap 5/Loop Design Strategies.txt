@@ -1,0 +1,12 @@
+Loop Design Strategies:
+
+1. Identify the statements that need to be repeated.
+
+2. Wrap these statement in a loop like this:
+
+    while(true){
+        statements;
+    }
+
+3. Code the condition for controlling the loop.
+

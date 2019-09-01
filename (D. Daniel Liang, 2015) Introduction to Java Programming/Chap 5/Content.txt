@@ -1,0 +1,11 @@
+Chapter 5 Loop:
+    1. while Loop
+    2. loop deisgn strategy
+    3. control a loop using sentinel value
+    4. Input redirection and output redirection **
+    5. obtain large input from a file
+    6. do-while 
+    7. for
+    8. nested loops
+    9. minimising numerical errors
+    10. break and continue

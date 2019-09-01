@@ -1,0 +1,16 @@
+Input Redirections and Output Redirections
+
+Usually:
+    the parameters of a program is entered in console, such as "Java program [curtis] [age] [name]"
+
+Input Redirection:
+    It can also be using a txt file to provide parameters, such as "Java program < [param.txt]", where the param.txt will provide the parameters using a dimiliter of space.
+
+Output Redirection:
+    Output redirection is slightly different in that it redirects the output to a file rather than showing them in the console, such as "Java program > [output.txt]".
+
+Using both:
+    "Java program < [param.txt] > [output.txt]"
+
+Note: 
+    In order to use input redirection, the System.in should be used, i.e., using Scanner.
