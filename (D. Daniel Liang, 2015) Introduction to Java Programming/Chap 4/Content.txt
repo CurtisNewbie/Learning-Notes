@@ -1,0 +1,21 @@
+Content of Chapter 4 includes:
+    1. Math class
+    2. char type
+    3. ASCII and Unicode encoding
+    4. Escape sequences
+    5. Casting a numeric value to char and vice versa
+    6. Character class
+    7. object and instance methoeds
+    8. String object
+    9. length()
+    10. charAt()
+    11. Concatination
+    12. String uppercase, lowercase, trim
+    13. read strings from console
+    14. read char from console
+    15. compare strings
+    16. obtain substrings
+    17. find char in string
+    18. substring
+    19. Convert hexadecimal character to a decimal value
+    20. printf method
