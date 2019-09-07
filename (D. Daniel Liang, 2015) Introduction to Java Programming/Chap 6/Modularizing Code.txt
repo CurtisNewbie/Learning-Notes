@@ -1,0 +1,5 @@
+Modularizing Code:
+
+1. Encapsulate the code into methods and clarify the logic of the program.
+2. Narrow the scope of debugging.
+3. Reusable code.

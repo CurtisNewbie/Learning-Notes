@@ -1,0 +1,14 @@
+Content: - Methods
+    1.Define methods
+    2.Invoke methods
+    3.Methods with return values
+    4.Methods without return values
+    5.Pass parameters
+    6.Reusable code **
+    7.Covernt hexadecimals to decimals **
+    8.Overloading and ambiguous Overloading **
+    9.Scope of var
+    10.Method abstraction **
+    11.Stepwise refinement **
+
+    

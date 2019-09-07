@@ -1,0 +1,6 @@
+Method Abstraction:
+
+Method abstraction is achieved through seperating the method invocation from the actual implementaiton. Such abstraction reduces the complexity and hides or encapsulates the details of the implmentation. This is sometimes referred to as information hidding ro encapsulation. 
+
+Further, changing the implementation (but maintaining its input and output) does not affect the other part of the program, as the other class or objects that use this method does not need to know the implementation. 
+

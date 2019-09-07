@@ -1,0 +1,5 @@
+Stepwise Refinement or Divide-And-Conquer Strategy
+
+This concept is similar to the algorithms such as quick sort and merge sort. This concept is be used to better achieve method abstraction, where the method is decomposed further into smaller methods and more manageable solutions.
+
+One way to implment this concept is to draw a top-down diagram (design), where the design of the program starts from the goal, and further divided into smaller methods that serve the method on its upper level. In other words, it is similar to the object decomposition (method decomposition).
