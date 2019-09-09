@@ -7,6 +7,11 @@ public class GenerateRandomChar {
 
     public static void main(String[] args) {
 
+        /**
+         * Set the console to uft-8
+         */
+        PrintStream out = new PrintStream(System.out, true, "UTF-8");
+
         char c = generateRandomChar();
         System.out.println("Random char geneated: '" + c + "'");
 
