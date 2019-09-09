@@ -1,0 +1,13 @@
+Chapter 7 Content: Single-Dimensional Arrays:
+    1. Array basics
+    2. Find maximum value in the array.
+    3. Randomly shuffle the array. **
+    4. Shifting elements.
+    5. Simlyfying certain tasks using arrays.
+    6. For each loop
+    7. Copy arrays (Using java.lang.System.arraycopy(...) method)
+    8. Generate char[] with random chars in it. **
+    8. Variable-Length Argument Lists **
+        [In the method declaration, you specify the type followed by an ellipsis (...). Only one variable-length parameter may be specified in a method, and this parameter must be the last parameter. Any regular parameters must precede it.]
+    9. Searching arrays (linear & binary) **
+    10. Sorting arrays (Selection Sort, Quick Sort/Parallel sort, )
