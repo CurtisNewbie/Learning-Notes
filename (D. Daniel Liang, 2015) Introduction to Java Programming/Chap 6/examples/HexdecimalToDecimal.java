@@ -55,4 +55,26 @@ public class HexdecimalToDecimal {
         }
     }
 
+    /**
+     * decimal to hexadecimal
+     * 
+     * @param n decimal value
+     * @return hexadeciaml as a string
+     */
+    public static String convertToHexadecimal(int n) {
+        if (n <= 9) {
+            return "" + n;
+        } else {
+            int power = n / 16;
+            int remaining = n % 16;
+            if (remaining > 9) {
+                char[] hexChar = { 'A', 'B', 'C', 'D', 'E' };
+                int gap = 16 - remaining;
+                return power + "" + hexChar[gap];
+            } else {
+                return power + "" + remaining;
+            }
+        }
+    }
+
 }
