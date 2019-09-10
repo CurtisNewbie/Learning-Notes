@@ -1,9 +1,14 @@
 import java.util.*;
 
+import javax.swing.text.DefaultStyledDocument.ElementSpec;
+
 public class SortingArray {
     public static void main(String[] args) {
         int[] arr = { 3, 1, 3, 2, 5, 4, 7, 1, 2, 4, 9 };
+        // int[] arr = { 3, 1, 3, 2, 5, 9 };
+
         // selectionSort(arr);
+        System.out.println(Arrays.toString(arr));
         quickSort(arr, 0, arr.length - 1);
         System.out.println(Arrays.toString(arr));
     }
@@ -39,37 +44,40 @@ public class SortingArray {
 
         if (left < right) {
             // partially sorted
-            int partition = partition(arr, left, right);
-            quickSort(arr, partition + 1, right);
-            quickSort(arr, left, partition - 1);
+            int part = partition(arr, left, right);
+            // System.out.println(Arrays.toString(arr) + " part:" + part + "From" + left + "
+            // to " + right);
+            quickSort(arr, part + 1, right);
+            quickSort(arr, left, part - 1);
         }
     }
 
+    /**
+     * Parititioning means the values on the left are less than the pivot and the
+     * values on the right are greater than the pivot so that the array is partially
+     * sorted.
+     */
     public static int partition(int[] arr, int low, int high) {
-        int pivot = arr[low];
-        int left = low;
-        int right = high;
+        // this is better to choose the high as the pivot, as the arr may be sorted.
+        int pivot = arr[high];
 
-        // move the values that are less than pivot to the left, and the values that are
-        // greateer than pivot to the right
-        while (left < right) {
+        // ignores the pivot at first, and then swaps it with the ending pointer
+        // (returned value)
+        int pivotIndex = high;
 
-            // left in the right position that it is less than pivot
-            while (arr[left] < pivot && left < right) {
-                left++;
+        // the partition index (where the elements are seperated based on the value of
+        // pivot)
+        int partitionIndex = low;
+
+        for (int x = low; x < pivotIndex; x++) {
+            if (arr[x] <= pivot) {
+                // push the element to the left
+                swap(arr, x, partitionIndex);
+                partitionIndex++;
             }
-
-            // the current left is greater than pivot, tries to find right
-            while (arr[right] > pivot && left < right) {
-                right--;
-            }
-
-            if (left < right) {
-                swap(arr, left, right);
-            }
-
         }
-        return left;
+        swap(arr, partitionIndex, pivotIndex);
+        return partitionIndex;
     }
 
     /**
