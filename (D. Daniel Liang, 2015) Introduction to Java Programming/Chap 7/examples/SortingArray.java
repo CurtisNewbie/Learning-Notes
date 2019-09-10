@@ -71,7 +71,7 @@ public class SortingArray {
 
         for (int x = low; x < pivotIndex; x++) {
             if (arr[x] <= pivot) {
-                // push the element to the left
+                // push the element to the left, and move forward the partition index
                 swap(arr, x, partitionIndex);
                 partitionIndex++;
             }
