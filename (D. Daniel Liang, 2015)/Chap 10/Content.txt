@@ -1,0 +1,36 @@
+Chapter 10 Object-Oriented Thinking Content:
+    1. Class Abstraction and Encapsulation:
+        Class Abstraction or Class Encapsulation - is the separation of class implementation of the use of the class (i.e., calling the methods to do something, creating the objects etc.) Using the class does not need to understand the details of implementation. The details of implementation is encapsulated (hidden).
+    2. Abstract Data Type:
+        ADT is a data type where its implementation of the behaviour is hidden. Thus it is called abstract; it provides the implementation-independent view through providing the public methods.
+    3. Using and implementing the class are two different things:
+        It is perfectly fine to seperate the tasks of the design   and implementation (e.g., using interfaces).
+    4.  Class Relationships:
+            Association - "a binary relationship or activity between two classes":
+                "Student [takes] Course", Student and Course are objects, and "takes" is an activity or an association between the object. It is just like the ER diagram in relational db design.
+
+                Association may define "Multiplicity", which the type of association, e.g., one to many, many to many, one to one in relational db design.
+
+            Aggregation and Composition - "a special type of association between two objects that involves defining the ownership between objects:
+                "[Computer] consists of [Hardware Components]", Computer is an object, and it owns the objects of Hardware Components.
+
+                The difference between aggregation and composition is whether the aggregated object is exclusively owned by the aggregating object. The unique and exclusive one is the composition. 
+                
+                For example, "Student has a name" is a composition relationship, because in most cases, name shouldn't shared by multiple students (it happens through). The name should be exclusively owned by the student object,
+                so this is a composition association. 
+                
+                Whereas, "Student has an address" is an aggregation assocation, because the address can be shared among students, students may be living in the same accommodation. Thus it's not exclusively owned.
+
+            There may be a Unary Aggregation relationship among the objects:
+                A student may be a supervisor of another student. In such case, the student object may contains another object named "supervisor", which is the supervisor of this student.
+    5. Stack
+    6. Primitive type as object (e.g., Integer and so on)
+    7. Autoboxing and Autounboxing
+        A primitive type can be automatically converted to an object using a wrapper class, and vice versa, depending on the context. (Note: Integer for normal int, BigInteger for bigger int, same in BigDecimal)
+    8. String
+    9. StringBuffer (Synchronised) and StringBuilder (not Synchronised) 
+    
+            
+            
+        
+
