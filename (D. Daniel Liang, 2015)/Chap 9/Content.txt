@@ -1,0 +1,15 @@
+Chapter 9 Content - Objects and Classes:
+    1. Classes and Objects
+    2. Primitive types
+    3. Date class
+    4. Random class
+    5. Point2D class
+    6. Static and instance variables
+    7. Static and instance methods
+    8. Visibility Modifiers
+    9. Data Field Encapsulation (private variables and public getter and setter)
+    10. Passing objects through methods
+    11. Arrays of objects
+    12. Immutable objects and classes (String) (i.e., without a method to update or change its private varibales)
+    13. Scope of variables
+    14. this ref
