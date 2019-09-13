@@ -1,0 +1,36 @@
+Chapter 13 Abstract Classes and Interfaces:
+    1. Abstract classes - common abstract behaviours and fields.
+        Abstract constructor cannot be instantiated, but it can be defined and invoked implicitly in constructors of subclasses. A subclass can be abtract even tho its superclass is concrete.
+
+        Abstract class can be considered as a datatype: e.g., 
+        "AbstractClass[] classes = new AbstractClass[n];" is still correct, however, the implementation (concrete subclasses) should be provided in order to actually puts objects in it.
+
+    2. Calendar, GregorianCalendar, Date
+    3. Interfaces - define common behaviours, to some extent, similar to abstract classes.
+    4. Comparable<E> interface, defines compareTo() methods which the subclasses must implement.
+        The compareTo() should be consistent with equals() method, that only when "o1.equals(o2)" should it be like "o1.compareTo(o2) == 0".
+
+    5. Cloneable interface
+        It is empty, just like a marker interface. It indicates that the object can use the clone() method defines in Object class. While implementing the Cloneable interface, the subclasses of Object must provide implementation (override) of clone() method.
+    
+    6. Class Design Guidelines:
+        6.1 Cohesion:
+            A class should solely describe a single entity, and all the methods should logically fit together to support a coherent purpose and are reasonable for this class.
+
+            A single entity which has many different responsibilities can be broken into a number of subclasses to separate these different responsibilities or purposes.
+
+        6.2 Consistency:
+            Consistent style in terms of the naming, positions of methods, fields and so on. Always provide default no-arg constructor. To prevent users creating an object from a class, just declare private constructor of the class, e.g., Math class while its static methods can be used. 
+        
+        6.3 Encapsulation:
+            Private data fields, getter and setter. 
+        
+        6.4 Clarity:
+            The design should have clear contract (of methods) where it is easy for user to use and understand. It will be great if the user can use the methods in different order and combinations without worrying about limitation. This reduces confusion as well.
+
+        6.5 Completeness:
+            A class should provide a variety of ways for customisation through methods and properties. Just make it as comprehensive and flexible as possible.
+    
+    7. Instance vs static.
+        Use static when the variables and methods are shared among objects and not tied to specific objects. Always call the static methods with its class name to improve readability. Never initialise static data fields via constructor. 
+        
