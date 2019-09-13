@@ -1,0 +1,24 @@
+Chapter 12 Exception Handling and Text I/O:
+    1. Runtime errors as the exceptions
+    2. try {} catch( ) {}
+    3. throw new Exception() 
+    4. throws Exception ....
+    5. The called methods may not handle the exceptions. 
+        It has no idea what to do to handle the input. It should throw the exceptions, and the caller should handle the exceptions. Some simple errors may be handled e.g., simple input validation without needing to throw exceptions. Simple exceptions should not be handled by try-catch.
+    6. Exception types:
+        The root class is the "java.lang.Throwable", which is an Object (extends Object). Throwable has two subclasses, the Exception and Error. Error represents the system errors and there is little to do to solve the internal system errors. 
+    7. printStackTrace() - not a good practice (As per StackOverflow)
+    8. To do : Should find a logging framework (As per Stackoverflow)
+    9. try catch finally
+    10. Rethrow exceptions
+    11. Custom Exception subclasses
+    12. File class
+    13. Absolute file name (full name/ path). 
+        Absolute file name should not be used, as the program will become system dependent.
+    14. Relative file name (assciated with the current working dir)
+    15. PrintWriter and FileWriter
+        PrintWriter provides more constructors and methods that improves flexibility and functilities. To writer I/O to a file, a FileWriter must be used, but it can be kinda hidden by wrapping it with PrintWriter.
+    16. try-with
+    17. Scanner
+    18. URL
+    
