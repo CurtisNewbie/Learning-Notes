@@ -1,0 +1,19 @@
+Chapter 11 Inheritance and Polymorphism:
+    1. Inheritance
+    2. super keyword and "Constructor Chaining"
+        "When constructing an object of a subclass, the subclass constructor first invokes its superclass constructor before performing its own tasks." (p.417) This process repeats until the last constructor is called. 
+
+        Because of this feature, a default constructor without any arg should be declear as a good practice, where the subclasses extend the constructor and avoid errors. 
+    3. Overriding methods
+    4. Overloading methods
+    5. Polymorphism:
+        "...a variable of a supertype can refer to a subtype object." (p.423) A thing can be considered as of different types or shapes depending on the context. 
+    6. Dynamic Binding:
+        This is the method invokation in the context of polymorphism and inheritance. The right method is called depending on which type the object is considered to be.
+    7. Object casting and "instanceof"
+    8. Objects "equals" method:
+        Which is actually objectOne == objectTwo by default that compares ref. This is overriden in classes such as String, Date and etc.
+    9. ArrayList
+    10. Collections
+    11. protected modifier
+    12. final methods and classes prevent extending and overriding
