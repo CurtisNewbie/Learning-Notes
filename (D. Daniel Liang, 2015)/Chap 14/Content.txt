@@ -1,0 +1,190 @@
+Chapter 14 JavaFX Basics:
+    1. AWT <- repalced by Swing <- replaced by JavaFX
+    2. JavaFx:
+        2.1 Every JavaFx program is defined in a class that javafx.application.application.
+
+        2.2 No need for main() method, instead, the start method of the Application that is overriden will be called.
+
+        2.3 A Stage object is a window, and the primaryStage is the primary window that is automatically created by the JVM. There can be more than one stages.
+
+        2.4 Panes, UI Controls and Shapes:
+            2.4.1 Panes, UI Controls and Shapes are subtypes of Nodes. They are all some kinds of Nodes.
+
+            2.4.2 The container classes (panes) are used for automatic layout of the nodes, it is similar to panels and layouts in Swing. Nodes (e.g., buttons) are placed inside the pane, and the pane is placed into a scene. 
+
+            2.4.3 A Node is a visual component such as a shape, image view, a pane or a control such as button. 
+
+            2.4.4 A shape includes to a text, line, circle, ellipse, rectangle, polygon, polyline, etc. 
+
+            2.4.5 UI control refers to the label, button, check box, radio button, text field, text area, etc. 
+
+            2.4.6 Generally, the relationship between these components as follows:
+
+                                  |--> Control
+                Stage --> Scene --|
+                                  |--> Pane --> Any Types of Nodes |
+                                                                   |--> Shape
+                                                                   |
+                                                                   |--> ImageView
+                                                                   |
+                                                                   |--> Scene
+                                                                   |
+                                                                   |
+                                                                   |--> Control
+                                                                   |
+                                                                   |--> etc.
+
+        2.5 All nodes can have children. Parent is an abstract class extends Node class, which represents the nodes that have children node. 
+
+        2.6. The measurement unit in JavaFx is pixel. 
+
+        2.7 The java coordinate system starts from (0,0) on the top left cornor:
+
+            ----------------------------------> X
+            | (0,0)
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+              Y
+
+        2.8 Property Binding (Dynamic):
+            A object ('s coordinates or position) can be binded to a source object, where the change (of size and positions) can automatically reflect on the target object. Target object is called "Binding Object/Property", and the source object is called "Bindable/Observable Object".
+
+            The bind() method works like this: 
+                "[target].bind([source]);"  
+            In terms of classes and objects:
+                "[Property object].bind([ObservableValue object])"
+                
+            
+            "javafx.beans.property.Property"
+            "javafx.beans.value.ObservableValue"
+            
+            2.8.1 Property and ObservableValue:
+                Property is an Interface, it mimics the primitive datatypes that are treated as properties:
+                    - DoubleProperty
+                    - FloatProperty
+                    - LongProperty
+                    - IntegerProperty
+                    - BooleanProperty
+                    - StringPropertys
+                
+                The subtypes of Property above, are also the subtypes of ObservableValue (interface), so they can be treated as both the Property and the ObservableValue. I.e., it follows this concept: A value as a property, a property is a value. 
+                
+                By convention, for each Property object (e.g., the DoubleProperty objects: centerX and centerY), the getter() and setter() methods are provided. There are two types of getter and setter, one (property getter or setter methods) is for the Property objects, e.g., in Circle, centerXProperty() and centerYProperty() return DoubleProperty objects. Another (value getter or setter methods) is for primitive values, e.g., in Circle, getCenterX() and getCenterY() return double value.
+
+                    "public class SomeClassName {
+                        private PropertyType x;
+
+                        /** Value getter method */
+                        public propertyValueType getX() { ... }
+
+                        /** Value setter method */
+                        public void setX(propertyValueType value) { ... }
+
+                        /** Property getter method */
+                        public PropertyType xProperty() { ... }
+                    }"
+
+                    "public class Circle {
+                        private DoubleProperty centerX;
+
+                        /** Value getter method */
+                        public double getCenterX() { ... }
+
+                        /** Value setter method */
+                        public void setCenterX(double value) { ... }
+
+                        /** Property getter method */
+                        public DoubleProperty centerXProperty() { ... }
+                    }"
+                
+                For the Property and ObservableValue objects, special methods are used for numerical calculation. E.g., divide().
+                        
+                        "DoubleProperty calculateProperty = anotherProperty.divide(2);"
+                
+                Unidirectional Binding and Bidirectional Binding
+                    Property Binding can be unidirectional, that a's properties are bound to b's properties. Property Binding can also be bidrectional, where a's properties and b's properties are "synchronised" using bindBidirectional() mehtod.
+
+        2.9 Common Properties and Methods for Nodes:
+            style and rotate are two common properties (not Property objects) shared among Node objects. The style properties are similar to CSS, so the style properties are called JavaFX CSS in JavaFX, which is defined with a prefix -fx-.
+
+                "styleName: value"
+                
+                using ';' to seperate multiple styles
+            
+            e.g., "circle.setStyle("-fx-stroke: black; -fx-fill: red;");"
+
+            For the rotate property, set method is used:
+                
+                "button.sestRotate(80);"
+
+            If the JavaFX CSS is incorrect, the program will still compile and run, tho the style is ignored. More methods such as contains(double x, double y) can be used to detect whether a point in within a node.
+
+        2.10 The Color class
+
+            "javafx.scene.paint.Paint"
+            "javafx.scene.paint.Color"
+
+            Paint class is an abstract class for painting a node, Color is a subclass of Paint that is used to encapsulate colors, through providing a number of properties and final static values (as param for methods).
+
+            e.g., the following properties in Color class:
+                -red: double
+                -green: double
+                -blue: double
+                -opacity: double
+
+            and methods:   
+                +rgb(r: double, g: double, b: double): Color
+                ...
+                ...
+
+            Opacity refers to the transparancy of the color, it is also named alpha value in RGBA model. Further, Color class is immutable.
+        
+        2.11 The Font class
+
+            "javafx.scene.text.Font"
+
+            Font class is used for setting the fonts of the text. It provides static method such as getFamilies() to get a list of available font names. Same as Color, Font is immutable.
+
+            e.g., font() is a static method used to instantiate objects
+
+            "Font font1 = new Font("SansSerif", 16);"
+            "Font font2 = Font.font("Times New Roman", FontWeight.BOLD,
+                FontPosture.ITALIC, 12);"
+            
+            
+
+            
+
+
+
+
+
+
+
+
+
+
+                
+                
+
+
+                
+
+
+
+
+                
+
+                    
+
+
+            
+
+
+
+    
