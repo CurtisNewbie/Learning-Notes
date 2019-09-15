@@ -7,7 +7,7 @@ import javafx.scene.shape.*;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.Pane;
 
-public class ShowCircle extends Application {
+public class CircleDemo extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {

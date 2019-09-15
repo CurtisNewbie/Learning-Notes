@@ -10,13 +10,13 @@ Chapter 14 JavaFX Basics:
         2.4 Panes, UI Controls and Shapes:
             2.4.1 Panes, UI Controls and Shapes are subtypes of Nodes. They are all some kinds of Nodes.
 
-            2.4.2 The container classes (panes) are used for automatic layout of the nodes, it is similar to panels and layouts in Swing. Nodes (e.g., buttons) are placed inside the pane, and the pane is placed into a scene. 
+            2.4.2 The container classes (panes) are used for automatic layout of the nodes, it is similar to panels and layouts in Swing. Nodes (e.g., buttons) are placed inside the pane, and the pane is placed into a scene.
 
-            2.4.3 A Node is a visual component such as a shape, image view, a pane or a control such as button. 
+            2.4.3 A Node is a visual component such as a shape, image view, a pane or a control such as button.
 
-            2.4.4 A shape includes to a text, line, circle, ellipse, rectangle, polygon, polyline, etc. 
+            2.4.4 A shape includes to a text, line, circle, ellipse, rectangle, polygon, polyline, etc.
 
-            2.4.5 UI control refers to the label, button, check box, radio button, text field, text area, etc. 
+            2.4.5 UI control refers to the label, button, check box, radio button, text field, text area, etc.
 
             2.4.6 Generally, the relationship between these components as follows:
 
@@ -34,9 +34,9 @@ Chapter 14 JavaFX Basics:
                                                                    |
                                                                    |--> etc.
 
-        2.5 All nodes can have children. Parent is an abstract class extends Node class, which represents the nodes that have children node. 
+        2.5 All nodes can have children. Parent is an abstract class extends Node class, which represents the nodes that have children node.
 
-        2.6. The measurement unit in JavaFx is pixel. 
+        2.6. The measurement unit in JavaFx is pixel.
 
         2.7 The java coordinate system starts from (0,0) on the top left cornor:
 
@@ -54,15 +54,15 @@ Chapter 14 JavaFX Basics:
         2.8 Property Binding (Dynamic):
             A object ('s coordinates or position) can be binded to a source object, where the change (of size and positions) can automatically reflect on the target object. Target object is called "Binding Object/Property", and the source object is called "Bindable/Observable Object".
 
-            The bind() method works like this: 
-                "[target].bind([source]);"  
+            The bind() method works like this:
+                "[target].bind([source]);"
             In terms of classes and objects:
                 "[Property object].bind([ObservableValue object])"
-                
-            
+
+
             "javafx.beans.property.Property"
             "javafx.beans.value.ObservableValue"
-            
+
             2.8.1 Property and ObservableValue:
                 Property is an Interface, it mimics the primitive datatypes that are treated as properties:
                     - DoubleProperty
@@ -71,9 +71,9 @@ Chapter 14 JavaFX Basics:
                     - IntegerProperty
                     - BooleanProperty
                     - StringPropertys
-                
-                The subtypes of Property above, are also the subtypes of ObservableValue (interface), so they can be treated as both the Property and the ObservableValue. I.e., it follows this concept: A value as a property, a property is a value. 
-                
+
+                The subtypes of Property above, are also the subtypes of ObservableValue (interface), so they can be treated as both the Property and the ObservableValue. I.e., it follows this concept: A value as a property, a property is a value.
+
                 By convention, for each Property object (e.g., the DoubleProperty objects: centerX and centerY), the getter() and setter() methods are provided. There are two types of getter and setter, one (property getter or setter methods) is for the Property objects, e.g., in Circle, centerXProperty() and centerYProperty() return DoubleProperty objects. Another (value getter or setter methods) is for primitive values, e.g., in Circle, getCenterX() and getCenterY() return double value.
 
                     "public class SomeClassName {
@@ -101,11 +101,11 @@ Chapter 14 JavaFX Basics:
                         /** Property getter method */
                         public DoubleProperty centerXProperty() { ... }
                     }"
-                
+
                 For the Property and ObservableValue objects, special methods are used for numerical calculation. E.g., divide().
-                        
+
                         "DoubleProperty calculateProperty = anotherProperty.divide(2);"
-                
+
                 Unidirectional Binding and Bidirectional Binding
                     Property Binding can be unidirectional, that a's properties are bound to b's properties. Property Binding can also be bidrectional, where a's properties and b's properties are "synchronised" using bindBidirectional() mehtod.
 
@@ -113,13 +113,13 @@ Chapter 14 JavaFX Basics:
             style and rotate are two common properties (not Property objects) shared among Node objects. The style properties are similar to CSS, so the style properties are called JavaFX CSS in JavaFX, which is defined with a prefix -fx-.
 
                 "styleName: value"
-                
+
                 using ';' to seperate multiple styles
-            
+
             e.g., "circle.setStyle("-fx-stroke: black; -fx-fill: red;");"
 
             For the rotate property, set method is used:
-                
+
                 "button.sestRotate(80);"
 
             If the JavaFX CSS is incorrect, the program will still compile and run, tho the style is ignored. More methods such as contains(double x, double y) can be used to detect whether a point in within a node.
@@ -137,13 +137,13 @@ Chapter 14 JavaFX Basics:
                 -blue: double
                 -opacity: double
 
-            and methods:   
+            and methods:
                 +rgb(r: double, g: double, b: double): Color
                 ...
                 ...
 
             Opacity refers to the transparancy of the color, it is also named alpha value in RGBA model. Further, Color class is immutable.
-        
+
         2.11 The Font class
 
             "javafx.scene.text.Font"
@@ -155,36 +155,59 @@ Chapter 14 JavaFX Basics:
             "Font font1 = new Font("SansSerif", 16);"
             "Font font2 = Font.font("Times New Roman", FontWeight.BOLD,
                 FontPosture.ITALIC, 12);"
+
+        2.12 The Image and ImageView Classes
+
+            "javafx.scene.image.Image"
+            "javafx.scene.image.ImageView"
+
+            Image class represents a graphical image. ImageView class is used to display an image. The ImageView class is like a container class of the Image, so the syntax will be like:
+
+                "new ImageView(new Image(...));"
             
-            
+            ImageView has a number of methods to set its properties:
 
-            
+                "ImageView view = new ImageView(image);"
+                "view.setFitHeight(100);"
+                "view.setFitHeight(100);"
 
+            An ImageView cannot be placed into a pane or scene multiple times. I.e., a node such as ImageView and TextField cannot be shared.
 
+        2.13 Layout Panes
+            Layout panes are used to automatically layout the nodes in the panes:
+                Pane - normal pane
+                StackPane - stack the nodes, place the nodes on top of each other in the center of the pane
+                FlowPane - place the nodes row by row horizontally or column by column vertically, like a FlowPane
+                GridPane - place nodes in the cells in a Grid
+                BorderPane - place the nodes in top, right, bottom, left, centre regions
+                HBox - place nodes in single row
+                VBox - place nodes in single column
 
+        2.14 Shapes
+            Shape is the abstract class for defining the common properties of shapes. A number of classes are provided for drawing texts, lines, circles, rectangles, ellipses, arcs, polygons and polylines. In the Shape class, common propertyies include:
+                - fill
+                - stroke
+                - strokeWidth
 
-
-
-
-
+            Node <-- Shape <-- Text
+                         |
+                         | <-- Line 
+                         |
+                         | <-- Rectangle
+                         |
+                         | <-- Circle
+                         |
+                         | <-- Ellipse
+                         |
+                         | <-- Arc
+                         |
+                         | <-- Polygon
+                         |
+                         | <-- Polyline
 
 
                 
-                
-
-
-                
-
-
-
-
-                
-
-                    
 
 
             
-
-
-
-    
+        
