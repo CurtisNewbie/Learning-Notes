@@ -1,0 +1,83 @@
+Chapter 15 Event-Driven Programming And Animations:
+    1. Event-Driven Programming
+        Event - a object that represents the event.
+        Event Source Object - where actions originates, e.g., buttons.
+        Event Handler Object - the object that handles the event (object) from the source.
+
+            Event Source Object -> Event Object -> Event Handler Object
+
+        To become a handler of an Event, it should satisfy two requirements:
+
+            1. It implements the relevant ..Event<T extends Event> interface
+            2. It is registered with the Event Source Object e.g., "source.setOnAction(handler);"
+
+            "javafx.event.*;"
+
+
+        Root object of Java Event is EventObject from "java.util.EventObject;"
+        Root object of JavaFX is Event from "javafx.event.Event;"
+
+
+                                      | <- ActionEvent
+                                      |
+                 "javafx.event.*;"    |                          | <- MouseEvent (mouse pressed, released, clicked, moved or dragged) 
+                                      |  "javafx.scene.input.*;" |
+              EventObject <- Event <- | <- InputEvent <--------- |
+                                      |                          |
+                                      |                          | <- KeyEvent
+                                      |
+                                      | <- WindowEvent
+
+
+        1.1 ActionEvent
+        1.2 MouseEvent 
+            Four constants—PRIMARY, SECONDARY, MIDDLE, and NONE—are defined in MouseButton to indicate the left, right, middle, and none mouse buttons. (E.g., ".getButton() == MouseButton.SECONDARY")
+        1.3 KeyEvent
+
+    2. Animation
+        "javafx.animation.Animation;"
+
+        Animation: play() -> playFromStart() / stop()
+            specified by :
+                - rate
+                - cycleCount
+                - autoReverse
+
+        Properties:
+            autoReverse - a Boolean property that indicates whether an animation will reverse its direction on the next cycle.
+            
+            cycleCount - an IntegerProperty indicates the number of the cycles for the animation. 
+                (Constants e.g., Timeline.INDEFINTE  may be used to indicate an indefinite repetition.)
+
+            rate - defines the speed of the animation. 
+                (It can be negative to indicate the oppsite direction, i.e., replay).
+            
+            status - a read-only property that indicates the status of the animation 
+                (Animation.Status. Animation.Status.RUNNING, and Animation.Status.STO)
+        
+        2.1 PathTransition
+            Animating the moves of a node along the defined path within a specified period of time.
+                - path / shape
+        2.2 FadeTransition
+            The FadeTransition class animates the change of the opacity in a node over a given time.
+                - start opacity, end opacity, changing value of opacity, duration of animation, and the target node.
+        2.3 Timeline
+            The Timeline class can be used to program any animation using one or more KeyFrames. Each KeyFrame is executed sequentially at a specified time interval.
+
+            It mimics how the movies work, like there can be specific frames (keyFrame) which has animation throughout the timeline. I.e., a timeline can be consisted of keyFrames. 
+
+                "new Timeline(KeyFrame... keyframes);"
+                "new KeyFrame(Duration duration, EventHandler<ActionEvent> onFinished);" 
+
+            OnFinished handler is called when the duration of the keyframe is elapsed, e.g., if KeyFrame is defined to be of Duration.millis(500), the onFinished EventHandler is called every 500 millisecs.
+
+
+
+
+    3. Inner class in EDP
+    4. Anonymous class in EDP
+    5. Lambda Expression in EDP - Lambda Expression is like an anonymous class with a consice syntax.
+
+
+
+
