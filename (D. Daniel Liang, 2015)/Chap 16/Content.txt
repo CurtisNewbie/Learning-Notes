@@ -1,0 +1,79 @@
+Chapter 16 - JavaFX UI Controls and Multimedia
+    1. UI Controls
+                                             | -- Button
+        Control -- Labeled -- ButtonBase --  |
+                    |                        | -- CheckBox
+                    | -- ScrollBar                        | 
+                    |                        | -- ToggleButton -- RadioButton
+                    | -- Slider
+                    |                
+                    |                        | -- TextArea
+                    | -- TextInputControl -- |               
+                    |                        | -- TextField -- PasswordField
+                    |                
+                    | -- ListView                
+                    |                
+                    | -- ComboBoxBase -- ComboBox    
+
+
+        1.1 Labeled and Label
+            Label is a small area for displaying text or images. Labels and Buttons share some common properties, which are included in class Labeled.
+                - Label, A node
+                - Labeled, a class that contains the common properties
+
+        1.2 Button 
+            A Button is a control that triggers the ActionEvent. Button includes: pure Button, ToggleButton, CheckBox buttons and RadioButton. The common features of these buttons are defined in classes Labeled and ButtonBase.
+
+            Diff between Button and Label:
+                A Button can be considered as a Label except that it has a onAction property that defines EventHandler.
+
+        1.3 CheckBox
+            It is similar to the Button, except that it contains a selection property to indicate whether it's checked.
+        
+        1.4 RadioButton
+            RadioButton or aka option buttons, allows users to select one or more items from a group of choices. RadioButton is a subtype of ToggleButton.
+
+                ToggleButton <-- RadioButton
+
+            The major difference between the ToggleButton and the RadioButton is that RadioButton is rendered as a circle, while ToggleButton is rendered as a button.
+
+            To group the RadioButton, a ToggleGroup is created, and the RadioButton will need to .setToggleGroup(ToggleGroup tg).
+                
+                /*
+                    ToggleGroup group = new ToggleGroup();
+                    rdOne.setToggleGroup(group); 
+                    rdTwo.setToggleGroup(group);
+                    rdThree.setToggleGroup(group);
+                    rdFour.setToggleGroup(group);
+                
+                */
+        1.5 TextField
+            TextField is used either to display or enter a string. TextField is a subtype of TextInputControl
+
+                TextInputControl <-- TextField
+
+        1.6 TextArea
+            TextArea is used for displaying multiple lines of text. TextArea is a subtype of TextInputControl
+
+                TextInputControl <-- TextArea
+        
+        1.7 ComboBox
+            ComboBox is also called as the choice list or dropdown list. ComboBox inherits from ComboBoxBase
+
+                ComboBoxBase <-- ComboBox
+
+        1.8 ListView
+            A ListView is generally the same as the ComboBox, but it allows selecting multiple values.
+
+                                                         >>> SINGLE
+                - SelectionModel >>> SelectionMode >>> | 
+                                                         >>> MULTIPLE
+
+            The selectedItemProperty is a Observable object, which can be registed with a Listener to handling the change of the property. This property can be got from the SelectionModel
+
+                - SelectionModel >>> selectedItemProperty() >>> .addListener(InvalidationListener il) 
+
+
+
+            
+            
