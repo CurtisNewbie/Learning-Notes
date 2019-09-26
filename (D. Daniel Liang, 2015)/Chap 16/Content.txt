@@ -60,7 +60,7 @@ Chapter 16 - JavaFX UI Controls and Multimedia
         1.7 ComboBox
             ComboBox is also called as the choice list or dropdown list. ComboBox inherits from ComboBoxBase
 
-                ComboBoxBase <-- ComboBox
+                -  ComboBoxBase <-- ComboBox
 
         1.8 ListView
             A ListView is generally the same as the ComboBox, but it allows selecting multiple values.
@@ -72,6 +72,38 @@ Chapter 16 - JavaFX UI Controls and Multimedia
             The selectedItemProperty is a Observable object, which can be registed with a Listener to handling the change of the property. This property can be got from the SelectionModel
 
                 - SelectionModel >>> selectedItemProperty() >>> .addListener(InvalidationListener il) 
+
+            InvalidationListener (functional interface) takes care of the change of the Observable, and in this case, the select
+            
+        1.9 ScrollBar
+            Scrollbar is used to select from a range of values. Similar to ListView, its valueProperty is an Observable (more specifically, a DoubleProperty), which can be handled by the InvalidationListener.
+
+                - .valueProperty() >>> .addListener(InvalidationListener il)
+
+            By default, the ScrollBar's value changes from 0.0 to 100.0, which can be used as a percentage number.
+
+                .getValue() / .getMax()
+
+            PropertyBinding can also be used for this type of situation.
+
+                " 
+                    text.xProperty().bind(hbar.valueProperty()).divide(2);
+                    text.yProperty().bind(vbar.valueProperty()).divide(2);
+                "
+
+        1.10 Slider
+            Slider is similar to the ScrollBar, but it has more properties and can be in different graphical forms.
+
+        1.11 Video and Audio
+            Use the Media class to obtain the source of the media, use the MediaPlayer class to play and control the media, and use the MediaView class to display the media.
+
+                Media - source of media
+                    MediaPlayer - play and control the media (contains a Media object)
+                        MediaView - display video (contains a MediaPlayer object)
+
+            
+            
+
 
 
 
