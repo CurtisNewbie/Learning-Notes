@@ -43,6 +43,12 @@
       <version>14-ea+1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-media</artifactId>
+      <version>14-ea+1</version>
+    </dependency>
 
   </dependencies>
 
@@ -97,7 +103,7 @@
           <artifactId>javafx-maven-plugin</artifactId>
           <version>0.0.3</version>
           <configuration>
-            <mainClass>com.curtisnewbie.controlsandmultimedia.ListViewDemo</mainClass>
+            <mainClass>com.curtisnewbie.controlsandmultimedia.MediaDemo</mainClass>
           </configuration>
         </plugin>
 
