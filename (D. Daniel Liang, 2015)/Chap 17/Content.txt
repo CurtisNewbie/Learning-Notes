@@ -1,0 +1,144 @@
+Chapter 17 Binary I/O:
+    1. Text Files and Binary Files
+        File can be classfied as either text or binary. Text File can be edited using text editor while all the other files are called binary files. Binary Files are designed to be read by programs.
+
+                             | -- classes for handling text
+                             |                            
+            Java I/O classes | 
+                             |                            
+                             | -- classes for handling binary
+
+        Even though in the above discussion, the text files are differentiated from the binary files, all files are stored in binary formats. So esentially, all files are binary files, despite that the text files require character encoding.
+
+        1.1. Encoding and Decoding:
+
+            While the string is writen into the text file, each character is converted to a code depending on the encoding scheme. A    prefix of "0x" denotes a hex number. 
+
+                e.g.
+
+                    String "199" -> decoding to Unicode depending on the encoding scheme -> 0x0031 0x0039 0x0039
+
+                    0x0031 0x0039 0x0039 -> 0011001 0011001 0011101
+
+        1.2 Binary I/O
+
+            Binary I/O does not require conversion (encoding & decoding), thus it is more efficient.
+
+    2. Binary I/O classes
+
+        
+                                    |<- FileInputStream      |<- DataInputStream
+                |<- InputStream  <- |<- FilterInputStream <- |
+                |                   |<- ObjectInputStream    |<- BufferedInputStream
+        Object  |
+                |                   |<- FileOutputStream      |<- DataOutputStream
+                |<- OutputStream <- |<- FilterOutputStream <- |
+                                    |<- ObjectOutputStream    |<- BufferedOutputStream
+
+
+        2.1 FileInputStream/FileOutputStream
+
+            Reading/writing binary data from/to files. 
+
+        2.2 FilterInputStream/FilterOutputStream
+        
+            Filter streams are streams that filter bytes for some purposes. E.g., for recoginising specific data types that are in forms of bytes. The general method to read/write known data types from/to bytes is to wrap the byte IO streams with a filter. 
+
+                "FilterOutputStream filterOut = new FilterOutputStream(new FileOutputStream("examplesDemoFiles/filterTemp.dat")"
+
+            However, the FilterInputStream/ FilterOutputStream doesn't extend much from the InputStream/OutputStream. In comparison to them, the DataInputStream/DataOutputStream have much more practical meaning to use.
+        
+        2.3 DataInputStream/DataOutputStream
+
+            As mentioned in 2.2, DataInputStream/ DataOutputStream are the extension of Filter IOStreams, that allows reading/writing the known data types from/to bytes.
+
+                "
+                    +readBoolean(): boolean
+                    +readByte(): byte
+                    +readChar(): char
+                    +readFloat(): float
+                    +readDouble(): double
+                    +readInt(): int
+                    +readLong(): long
+                    +readShort(): short
+                    +readLine(): String
+                    +readUTF(): String
+                "
+            
+            N.B: writeChar() can be editor recgonised as normal char, as it is encoded using UTF.
+
+            2.3.1 writeChar() and writeChars()
+                Each Unicode character consists of two bytes, so the writeChar() method writes a 2-bytes unicode to the output. The writeChar() uses Unicode value. Similarly, the writeChars() method repetitively writes each char of the String as a 2-bytes unicode to the output. So, to read the string, how many chars are written should be known.
+
+            2.3.2 ASCII and UTF
+                For the ASCII scheme, the code is stored only in the lower byte of a unicode (which takes 8 bits/ 1 bytes). Lower byte means the foremost/right most 8 bit (digits). As one byte takes 8 bits, the ASCII scheme requires 8bits/1 byte to store the code. The writeBytes() method writes the lower byte of the character, which is perfect for the ASCII scheme.
+
+                However, for the character that takes more than 1 byte (e.g., UTF scheme), the writeChar() method or writeUTF() method are neeeded. UTF scheme ranges from 1 byte to 4 bytes, the UTF-8 requires a minimum of 8 bits/ 1 bytes to represent a char, while the UTF-16 requires a minimum of 16 bits/ 2 bytes to represent a char.
+
+            2.3.3 writeUTF()
+                The writeUTF() methods first writes the extra two bytes of length information to the output that tells the number of charactesr in the string, which are then followed by the char in UTF-8 standard. 
+
+                If there are 6 characters, e.g., "abcde", the output will have 7 bytes, where the first two bytes indicate that there are five characters in this string.
+
+            2.3.4 The general logic of wrapping is:
+
+                ... <- DataInputStream <- FileInputStream <- File 
+                
+                ... -> DataOutputStream -> FileOutputStream -> File
+            
+                However, it doesn't need to be File, it can be InputStream/OutputStream like a pipe.
+
+        2.4 BufferedInputStream/BufferedOutputStream
+
+            The BufferedInputStream/BufferedOutputStream are used to speed up the IO through reducing the number of disk reads and writes. Buffer is a block of data temporarily stored in the memory. However, if the data can be read in one go (by specifying the size of the byte[], it is essentially the same).
+
+            To improve the IO performance, wrap InputStream/OutputStream (including their subtypes) with BufferedInputStream/BufferedOutputStream:
+
+                new BufferedInputStream(new FileInputStream);
+                new BufferedInputSteam(new DataInputStream);
+
+        2.5 ObjectInputSteam/ObjectOutputStream
+
+            ObjectInputSteam/ObjectOutputStream are used to read/write serialzable objects.
+
+        2.6 RandomAccessFile
+
+            Previous classes are sequential streams that either read from or write to the output. Java provides the RandomAccessFile class to allow data to be read from and written to at any locations in the file.
+
+            The RandomAccessFile class implements the DataInput interface (for reading primitive-type values and strings e.g., readInt, readDouble, readChar, readBoolean, readUTF) and the DataOutput interface (for writing primitive-type values and strings e.g., writeInt, writeDouble, writeChar, writeBoolean, writeUTF).
+
+                The modes can be specified, e.g., r (read-only), rw (read and write)
+
+                    "
+                        RandomAccessFile raf = new RandomAccessFile("test.dat", "rw");
+                    "
+
+                As the mode is "rw", if the file "test.dat" doesn't exist, this file is created.
+
+                Method - .length() can be used to checks the number of bytes in this file, while the file is updated, the length() is updated. 
+
+            2.6.1 File Pointer
+
+                As this file is accessed using RamdonAccessFile, this type of files should be accessed ramdonly. File pointer is a special marker, that is placed at a specific byte. When the file is opened, the file pointer set at the beginning of the file. 
+
+                When using the methods of RamdomAccessFile to read e.g., 4 bytes from the file, the file pointer moves forward 4 bytes. It is like remembering speicify position. Using .seek(int pos) can move the pointer to a specific position, e.g., .seek(0) to the beginning and .seek(file.length()) to the end of the file.
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
