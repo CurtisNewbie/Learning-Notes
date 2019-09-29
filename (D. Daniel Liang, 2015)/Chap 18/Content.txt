@@ -1,0 +1,27 @@
+Chapter 18 Recursion:
+
+    1. Recursion
+
+        A number of examples
+
+    2. Recursion and Iteration
+
+        "Recursion bears substantial overhead. Each time the program calls a method, the system must allocate memory for all of the method’s local variables and parameters. This can consume considerable memory and requires extra time to manage the memory." (p.726)
+
+        "Any problem that can be solved recursively can be solved nonrecursively with iterations." (p.726)
+
+        Eventhough recursion takes more time and mamery (e.g., StackOverflowError ), it specifies a clear and simple solution.
+
+    3. Tail Recursion
+
+        Tail Recursion is efficient for reducing the stack size. "A recursive method is said to be tail recursive if there are no pending operations to be performed on return from a recursive call," (p.727) I.e., the recursive method is the last operation in the method.
+
+        Tail Recursion is desirable. Compiler can optimize tail recursion as when method ends when the last recursive call ends, there is no need to store the operations in the stack. 
+
+
+
+
+
+
+
+    
