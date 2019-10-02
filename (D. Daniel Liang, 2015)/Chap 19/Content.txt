@@ -1,0 +1,57 @@
+Chapter 19 Generics:
+    1. <T>
+        T represents a formal generic type. It will be replaced with an actual concrete ype when specified. Such replacement is called a generic instantiation. By convention, the capital letter such as 'E' or 'T' is used.
+
+            e.g.,
+                public interface Comparable <T> {
+                    public int compareTo(T o);
+                }
+
+    2. Generic Class
+    3. Generic Methods
+        A generic method can be speicified like this:
+
+            e.g.,
+                public static <E> void show(E[] list){
+                    ...
+                }
+
+
+            To use this method: 
+
+                ClassName.<Integer>show(intList);
+                ClassName.<String>show(strList);
+        
+            or (let the compiler to figure out the actual type)
+
+                ClassName.show(intList);
+                ClassName.show(strList);
+
+    4. Bounded Type
+        "A generic type can be specified as a subtype of another type. Such a generic type is called bounded." (p.743)
+
+        For example, without specifying the bounded type, the generic type can be considered as follows:
+
+            "<T>" is the same as "<T extends Object>"
+
+        This means that this generic type must be a "kind of" of Object.
+
+    5. Raw Type
+        When a generic class or interface is used without specifying the generic type, it is called the raw type. This allows backward compactibility, but this is not safe or cannot be checked by compiler.
+
+    7. Unbounded wildcards, bounded wildcards or lower-bound wildcards
+        
+        - unbounded wildcards: "?"  (? type, this is same as "? extends Object")
+        - bounded wildcards: "? extends T"  (T type or the subtypes of T)
+        - lower-bound wildcards: "? super T"  (T type or supertypes of T)
+
+    8. Erasure and Restrictions on Generics
+        Generics are used during compile time, while it is not available at runtime as it is erased. This is called "Type Erasure". Once the compiler confirm that the code is type safe, it converts the generic type to the raw type to enable backward compactibility.
+
+        Due to the Type Erasure, there are a few restrictions of generic use as follows:
+           
+            1. Cannot use " new E() "
+            2. Cannot use " new E[] " (may circumvent this restriction by casting the Object[]) 
+                e.g., (ArrayList<String>[]) new ArrayList[10]; 
+            3. Cannot use Generic Type in static context
+            4. Cannot use Generic type in Exception classes 
