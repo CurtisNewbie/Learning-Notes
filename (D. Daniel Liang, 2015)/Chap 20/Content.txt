@@ -1,0 +1,139 @@
+Chapter 20 Lists, Stacks, Queues, And Priority Queues
+
+    1. Data Structure/ Container
+        "A data structure is a collection of data organized in some fashion. The structure not only stores data but also supports operations for accessing and manipulating the data." (p.762) This is also known as a container.
+
+    2. Java Collections Framework
+        
+        2.1 JCF consists of two types of containers:
+                1. Simple collection
+                2. key/value pairs (map)
+
+        2.2 Collections (not map)
+
+            Set - nonduplicate elements
+            List - ordered collection of elements
+            Stack - processed based on the rule of last-in, first-out
+            Queue - processed based on the rule of first-in, first-out
+            PriorityQueue - processed based on thir priorities
+
+        2.3 Interfaces in JCF
+
+                                  
+                         | -- Set -- SortedSet -- NavigableSet
+                         |
+           Collection -- |
+                         |
+                         | -- List
+                         |
+                         |
+                         |            | -- Deque 
+                         |            | 
+                         | -- Queue -- 
+
+        2.4 Abstract Classes in JCF
+
+            AbstractCollection implments part of the Collection interface, it implements all the methods in Collection except the add, size, and iterator methods. These method are implemented in other concrete subclasses. 
+
+                Collection --- implemented by --- AbstractCollection
+
+            N.B., Array is not subtype of Collection
+
+        2.5. Iterator
+            Collection interface extends the Iterable interface, allowing elements to be walked thorugh without knowing how the data is stored in the data structure. 
+
+        2.6 List
+            List stores a collection of elements in a sequential order. List allows traversing the elements bidirectionally, it uses the ListIterator interface which is a subtype of Iterator interface.
+
+                                      | <-- ArrayList                                    
+                List - implemented by |
+                                      | <-- LinkedList
+
+            AbstractList provides partial implementation of the List interface, which is also a subtype of AbstractCollection. AbstractSequantialList inherits from abstractList, which provides the implmentation of the LinkedList.
+
+
+                                     | <-- AbstractSet ...
+                                     |
+                AbstractCollection - |
+                                     |
+                                     |                    | <-- Vector <-- Stack
+                List < - - - -       | <-- AbstractList - |
+                                                |         | <-- ArrayList
+                                                |
+                                                | <-- AbstractSequantialList <-- LinkedList
+
+            "ArrayList is efficient for retrieving elements and LinkedList is efficient for inserting and removing elements at the beginning of the list. Both have the same performance for inserting and removing elements in the middle or at the end of the list." (p.771)
+
+            Time Complexity (https://dzone.com/articles/arraylist-vs-linkedlist-vs)
+                            ArrayList       LinkedList
+                get()       O(1)            O(n)
+                add()       O(1)            O(1)
+                remove()    O(n)            O(n)
+
+        2.7 Comparator Interface
+            Several classes implements Comparable interface (using its compareTo method) to compare two elements of the same class.  For the class that does not implements Comparable interface, the Comparator interface can be used. 
+
+                java.util.Comparator<T>
+
+                public class customComparator extends Comparator<T>{
+
+                    @Override
+                    public int compare(T ele1, T ele2){
+                        ...
+                    }
+                }
+
+                Comparator c = ...
+                int result = c.compare(obj1, obj2);
+            
+            2.7.1 Comparator to implementing Serializable interface
+                "It is generally a good idea for comparators to implement Serializable, as they may be used as ordering methods in serializable data structures." (p.772)
+
+        2.8 Static Methods for Lists and Collections
+            Collections class proivdes a number of methods for List objects
+                - sort
+                - binarySearch
+                - reverse
+                - shuffle
+                - copy (shallow copy, and requires at least same amount of elements not just capacity)
+                - nCopies (create immutable list, shallow copy)
+                - fill method
+            
+            It also provides following methods for Collection objects
+                - max
+                - min
+                - disjoint (check whether two Collection has no elements in common)
+                - frequency
+        
+        2.9 Vector and Stack 
+            Vector is almost the same as the ArrayList, except that it is synchronised. Stack is a subclass of Vector.
+
+        2.10 Queues and Priority Queues
+            Queue is first-in, first-out data structure. In priority queue, the element with highest priority is removed first.
+
+            Collection <interaface> <-- Queue <interface>
+
+        2.11 Deque and LinkedList
+            LinkedList implements Deque interface. The Deque interface is a subtype of the Queue interface. Deque stands for "double-ended queue" which supports element insertion and removal at both ends. Due to the structure of LinkedList, LinkedList is ideal for queue and deque.
+
+            Queue <interface> <-- Deque <interface>
+
+        2.12 PriorityQueue, Comparable and Comparator
+            PriorityQueue order elements based on prioritisation. By default, the prioritisation is based on the use of Comparable. A Comparator can be specified to manage the priority.
+                
+        
+
+                         
+
+        
+
+
+
+
+
+
+                              
+
+    
+
+        
