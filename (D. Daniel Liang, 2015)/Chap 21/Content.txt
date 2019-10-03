@@ -1,0 +1,56 @@
+Chapter 21 Sets and Maps:
+    1. Sets and Maps
+        are for storing and processing Non-duplicate elements.
+    
+    2. Sets
+        Set is an interface, three concrete classes implements this interface, including: HashSet, LinkedHashSet and TreeSet. Set extends Collection interface, and the AbstractSet extends the AbstractCollection class and partially implemnets Set interface.
+        
+                                                                                           | <-- HashSet <-- LinkedHashSet
+            Collection<interface>  <-- AbstractCollection<interface> <--  AbstractSet  <-- |
+                |                                         |                                | <-- TreeSet
+                | <-- Set<interface> -  -  -  -  -  -  -  |                                |
+                       |                                                                   |
+                       |                                                                   |
+                       | <-- SortedSet<interface> <-- NavigableSet<interface> -  -  -  -   | 
+
+        2.1 HashSet (Fast)
+            HashSet has a initial capacity of 16 and a load foactor of 0.75. The load factor measures how full the set is allowed to be before expanding its capacity. For example when the size reaches capacity*load factor, it doubles its capacity.
+
+            Objects in a HashSet must implement the hashCode method which define whether two objects are the duplicates. 
+            
+            A HashMap is used internally, where the object stored in the HashSet is the key. Based on this characteristic, HashSet is usually used to see whether one object is stored in the data strucutre, rather than to extract an object from the structure. As the key is the object stored aleady, to do this a map should be used.
+
+        2.2. LinkedHashSet (Insertion Order) 
+            It just like the HashSet except that it maintains the insertion order. 
+
+        2.3. TreeSet (Sorted)
+            Similar to HashSet and LinkedHashSet, but it is sorted. A Comparator can be specified for the TreeSet.
+
+    3. Performance of Set and List
+        "Sets are more efficient than lists for storing nonduplicate elements. Lists are useful for accessing elements through the index." (p.807)
+
+    4. Maps
+        Maps are good for storing a collection of key/value pairs. Map interface has three concrete classes: HashMap, LinkedHashMap and TreeMap.
+        
+        Maps allows fast retrieval, deletion and updating of the stored value through the keys. The keys must be unique, however, the values can be duplicates.
+
+                                | <-- SortedMap<interface> <-- NavigableMap<interface> <-- TreeMap
+                                |                                                              |
+            Map<interface> <--  | <  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - AbstractMap <-- HashMap <-- LinkedHashMap
+                                |
+
+        4.1 HashMap
+            HashMap is good at finding entries, inserting entires and deleting entries. Similar to the HashSet, the HashMap has a capacity and loadFactor.
+
+        4.2 LinkedHashMap
+            LinkedHashMap provides a linked-list implementation that supports the order of entires, just like that in LinkedHashSet. It can maintain two types of order, insertion order or access ordeer (least recently accessed first).
+        
+        4.3 TreeMap
+            TreeMap is similar to the TreeSet that the keys are sorted using the default Comparable interface or defined Comparator interface.
+
+
+        
+
+    
+
+    
