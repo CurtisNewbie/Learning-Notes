@@ -1,0 +1,286 @@
+Chapter 22 Developing Efficient Algorithms:
+
+    1. Algorithm Design and Algorithm Analysis
+        
+        -> Algorithm Design - is to develop a mathematical process for solving a problem.
+        
+        -> Algorithm Analysis - is to predict the performance of an algorithm        
+
+    2. Big O Notation
+
+        "The Big O notation obtains a function for measuring algorithm time complexity based on the input size. You can ignore multiplicative constants and nondominating terms in the function." (p.822)
+
+        "This approach approximates the effect of a change on the size of the input. In this way, you can see how fast an algorithm’s execution time increases as the input size increases, so you can compare two algorithms by examining their growth rates." (p.822)
+
+        O(n) - linear algorithm that exhibits a linear growth rate.
+
+        To calculate the Big O Notation:
+            - ignore multiplicative constants e.g., n/2 nad 100n is same as O(n) 
+            - focuse more on the significant part
+            - estimates the execution time in relation to the input size, if the time is not related to the input size, the algorithm is considered to take constant time, i.e., O(1) 
+
+        Useful Summations:
+            The following mathematical summations are often useful in algorithm analysis: 
+                -> 1 + 2 + 3 + ... + (n - 2) + (n - 1) = n(n - 1)/2 = O(n2)
+                -> 1 + 2 + 3 + ... + (n - 1) + n = n(n + 1)/2 = O(n2) 
+                -> a^0 + a^1 + a^2 + a^3 + ... + a^(n - 1) + a^n = [a^(n + 1) - 1]/(a - 1) = O(a^n)
+                -> 2^0 + 2^1 + 2^2 + 2^3 + ... + 2^(n - 1) + 2^n =  [2^(n + 1) - 1]/(2 - 1) = 2^(n + 1) - 1 = O(2^n)
+
+        E.g.,
+            1. 
+                for (int i = 0; i < n; i++) {
+                    System.out.println("One Operation");
+                }
+
+                [Time complexity for the operation is O(n), as it executes n times.]
+
+            2. 
+                for (int i = 0; i < n ; i++){
+                    for(int j = 0; j < n; j++){
+                        System.out.println("One Operation");
+                    }
+                }
+
+                [Time complexity for the operation is O(n^2), as it executes n * n times.]
+
+            3.
+                for (int i = 0; i < n ; i++){
+                    for(int j = 0; j < i; j++){
+                        System.out.println("One Operation");
+                    }
+                }
+
+                [Time Complexity for the operation is O(n^2). Time Complexity = 1 + 2 + 3 + ... n(n+1)/2 = O(n^2)]
+
+            4. 
+                for (int i = 0; i < n ; i++){
+                    for(int j = 0; j < 20; j++){
+                        System.out.println("One Operation");
+                    }
+                }
+
+                [Time Complexity for the operation is O(n). Time Complexity = n * 20 = O(n)]
+
+            5. 
+                for (int i = 0; i < 30 ; i++){
+                    System.out.println("One Operation");
+                }
+
+                for (int i = 0; i < 20 ; i++){
+                    System.out.println("One Operation");
+                }
+
+                for (int i = 0; i < n ; i++){
+                    System.out.println("One Operation");
+                }
+
+                [Time Complexity for the operation is O(n). Time Complexity = 30 + 20 + n = O(n)]
+
+            6. 
+                result = 1; 
+                for (int i = 1; i <= n; i++)
+                    result *= a;
+
+                [Time Complexity for the operation is O(n). However, it can be improved as follows if n = 2^k]
+
+                result = 1;
+                for(int i = 1; i <= k; i++)
+                    result = result * result;
+
+                [Time Complexity for the operation is O(logn). Time Complexity = log2(n), because 2^T = n, log2(n) = T, and the result is squared.]
+
+    3. Analysing Algorithm Time Complexity
+
+        3.1 Binary Search
+
+            The time complexity of Binary Search is O(logn).
+
+                Assumes that it takes k iterations to find the result. Every time he operation takes place the length of the array that is being searched is divided by 2, in the worst case, the result is found when the length of the array becomes 1. So the calculation becomes as follows:
+
+                    when k = 1, length = n/2
+                    when k = 2, length = (n/2) /2 = n/2^2
+                    when k = k, length = n/2^k = 1
+
+                    so, n / 2^k = 1
+                        n = 1 * 2^k
+                        n = 2^k
+                        k = log2(n)
+
+                    Assumes that the operation for each iteration takes constant time c, the theoretical time Binary Search takes will be:
+                        T = k * c = log2(n) * c.
+
+                    As the constant is dropped in Big O notation, the time complexity becomes:
+                        O(log2n)
+        
+        3.2 Selection Sort
+
+            The time complexity of Selection Sort is O(n^2).
+
+                Assumes that it takes k iterations to sort the whole array. After each iteration, the length to be searched through is (len - 1). In the worst case, the whole array is sorted when the length becomes 1. The calculation as follows:
+
+                    when k = 1, length = n - 1
+                    when k = 2, length = (n - 1) - 1 = n - 2
+                    when k = 3, length = ((n - 1) - 1) -1 = n - 3
+                    ...
+                    k = k, length = 1
+
+                    As each time it searches through length, the time of operation for each iteration becomes the length, this summation becomes: 
+
+                        T = n - 1 + n - 2 + ... + 1 = n(n + 1) / 2 = n^2/2 + n/2
+
+                    After dropping the relatively insignificant variables, the time complexity becomes:
+                        O(n^2)
+        
+        3.3 Recurrence Relations:   
+            Recurrence relations can be useful tool for analysing algorithm complexity.
+
+            For example: 
+
+                Fibonacci's Recurrence Relation is:
+
+                    f(n) = f(n-1) + f(n-2) + O(1)
+
+                    As it is a recursive operation, more specifically, it is as follows: 
+                
+                        F(n-1) = F(n-2) + F(n-3)
+                        F(n-2) = f(n-3) + F(n-4)
+                        
+                        ... until ...
+                        F(0) = 0
+                        F(1) = 1
+
+                A more detailed explaination is as follows:
+
+                    if(n == 1)
+                        return 0;
+                    if(n == 2)
+                        return 1;
+                    if(n > 2)
+                        return f(n-1) + f(n-2);
+                    
+                Assumes that f(1) takes k1 time, f(2) takes k2 time and f(n) where n > 2, takes f(n-1) time + f(n-2) time; the equation will be:
+                
+                    f(n) = f(k1) + f(k2) + f(n-1) + f(n-2) 
+
+                In Time Complexity Analysis, the constant time is dropped, so how long k1 and k2 take do not matter. The Recurrence Relation becomes:
+
+                    f(n) = f(n-1) + f(n-2)
+
+                Once the Recurrence Relation is figured out, the time complexity can be found by solving the equation. To solve the Recurrence Relation, the relation can be considered as a tree, where each node takes c time.
+
+                    h = 1                f(n)
+
+                    h = 2            f(n-1)  f(n-2)
+
+                    h = 3    f(n-2)  f(n-3)  f(n-3)  f(n-4)
+
+                            .....
+
+                    h = ...           f(1) or f(2)
+
+                when height = 1, there is only 1 node
+                when height = 2, there are 2 nodes
+                when height = 3, there are 4 nodes
+                when height = n, there are roughly 2^n nodes.
+
+                The nodes may end before height = n, e.g., h = n-1 or n-2. When calculating the Big O Notation, the insignificant part doesn't matter.
+
+                    if h = n, T = O(2^n)
+                    if h = n-1, T = O(2^(n-1)) = O(2^n * 2^-1) = O(2^n)
+
+                So, the time complexity of recurssive fibonacci is O(2^n).
+
+            
+            Some of The Common Recurrence Functions (p.829)
+
+                Recurrence Relation                     Result                    Example
+                ______________________________________________________________________________________________
+
+                T(n) = T(n/2) + O(1)                    T(n) = O(logn)            Binary search, Euclid’s GCD
+                T(n) = T(n - 1) + O(1)                  T(n) = O(n)               Linear search
+                T(n) = 2T(n/2) + O(n)                   T(n) = O(n logn)          Merge sort
+                T(n) = T(n - 1) + O(n)                  T(n) = O(n^2)             Selection sort
+                T(n) = T(n - 1) + T(n - 2) + O(1)       T(n) = O(2^n)             Recursive Fibonacci algorithm
+
+        3.4 Comparing Common Growth Functions
+
+            The Big O Notation aims to reflect the relation between the input size and the growth rate of time, some of the common growth functions are shown below:
+
+                Function        Name
+                ______________________________________________________________________________________________
+
+                O(1)            Constant time               (best)
+                O(logn)         Logrithmic time
+                O(n)            Linear time
+                O(n logn)       Log-linear time
+                O(n^2)          Quadratic time
+                O(n^3)          Cubic time
+                O(2^n)          Exponential time            (worst)
+
+        3.5 Dynamic Programming
+
+            "The key idea behind dynamic programming is to solve each subproblem only once and store the results for subproblems for later use to avoid redundant computing of the subproblems." (p.832)
+
+            The recursive fibonacci calculation requires a time complexity of O(2^n), this can be improved by using dynamic programming:
+
+                public static long fib(long n) {
+                    long f0 = 0; // For fib(0)
+                    long f1 = 1; // For fib(1)
+                    long f2 = 1; // For fib(2)
+
+                    if (n == 0)
+                        return f0;
+                    else if (n == 1)
+                        return f1;
+                    else if (n == 2)
+                        return f2;                  
+                    for (int i = 3; i <= n; i++) {
+                        f0 = f1; // reuse fib(1)
+                        f1 = f2; // reuse fib(2)
+                        f2 = f0 + f1; // calculate fib(i) using previously stored fib numbers
+                    }
+                                       
+                    return f2;
+                }
+
+            
+            Which now only takes a time complexity of O(n).
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+
+                
+
+
+                    
+ 
+
+
+
+                
+                
+
+
+                
+
+                
+
+
+
+
+            
+
+
+
+
