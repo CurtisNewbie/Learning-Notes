@@ -56,13 +56,13 @@ Chapter 23 Sorting
 
                 when h = 2, mergeTime = (n)/4 + (n)/4 + (n)/4 + (n)/4 = n
                 when h = log2(n) + 1, (where there is only one element), mergeTime = n/n * n = n.
-                So, the merge time in total will be n * how many levels, so the mergeTime in total is n * log2(n).
+                So, the merge time in total will be n at each level regardless of which levle the recursion is at, so the mergeTime in total is n * (log2(n) + 1). 
 
                 As the division takes O(1) time, say, the division happens k time (more specifically 2^log2(n) times), the time for division will be T(k), which is rather insignificant. Taking into account the merge time, the time complexity for merge sort will be:
 
                     T(n) = T(1) * 2^log2(n) + n * log2(n), therefore, O(n logn).
-            
-             
+
+
 
                
 
