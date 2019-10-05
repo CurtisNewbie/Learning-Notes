@@ -1,0 +1,72 @@
+Chapter 23 Sorting
+
+    The Sorting Algorithms introduced in this chapter include:  
+        Insertion Sort
+        Bubble Sort
+        Merge Sort
+        Quick Sort
+        Bucket Sort
+        Radix Sort
+        External Sort
+
+    1. Insertion Sort
+        "The insertion-sort algorithm sorts a list of values by repeatedly inserting a new element into a sorted sublist until the whole list is sorted." (p.862)
+
+        The Time Complexity of Insertion Sort is: O(n^2), in the best scenorio, it's O(n).
+
+        In the worst case scenorio, the structure is in reverse order, which means that when there are n elements, for element at n-1, it requires n-1 swaps to be at the right position. So, 
+
+            n -> 1
+
+        (n-1) + (n-2) + (n-3) + ... (1) = n(n-1)/2, which means that the time complexity is O(n^2)
+
+    2. Bubble Sort
+        "A bubble sort sorts the array in multiple phases. Each pass successively swaps the neighboring elements if the elements are not in order." (p.865)
+
+        The Time Complexity of Bubble Sort is: O(n^n), in the best scenorio, it's O(n). 
+
+        In the worst scenorio, the entire structure is in reverse order, each element requires n-1 swaps to be at the right position. So, 
+
+            n -> 1
+
+        (n-1) + (n-2) + (n-3) + ... (1) = n(n-1)/2, which means that the time complexity is O(n^2)
+
+    3. Merge Sort
+        "The algorithm divides the array into two halves and applies a merge sort on each half recursively. After the two halves are sorted, merge them." (p.867)
+
+        The Time Complexity of Merge Sort is O(n logn).
+
+        Explaination:
+            The Merge Sort algortihm is a divide-and-conquer algorithm, the divide and conquer operation are essentially copying the two subarrays to the temp arrays, and recursively sorting two subarrays. The merge time for two subarrays takes at least n time to move them to the correct position, so the merge time will be T(n).
+            
+            N elements are divided by two recursively until there is only 1 element, so it is like a tree with a tree height of log2(n) + 1. As the problem is divided into two part recursively, the recurrence relation is as follows:
+
+                T(n) = T(n/2) + T(n/2) + T(merge)
+
+            The divide operation takes O(1) time regardless of the size of the array, as it is simply identifying the mid point, here c1 is used to denote its constant time for division. The Conquer part recursively sort the two subarrays of n/2 elements each, and the merge time for n elements will be n. 
+            
+            Eventhough the array (of n elmeents) is divided into subarrays, the total number of elements at each level of recursion is still n in total, so the total merge time for each level of recursion will still be n. So the recurrence relation can be solved by looking at as a tree.
+
+                [h: the height of the tree, n: number of elements to be sorted]
+
+                when h = 1,
+                            n           mergeTime = n
+                        /       \
+                    n/2           n/2   mergeTime = (n)/2 + (n)/2 = n
+
+                when h = 2, mergeTime = (n)/4 + (n)/4 + (n)/4 + (n)/4 = n
+                when h = log2(n) + 1, (where there is only one element), mergeTime = n/n * n = n.
+                So, the merge time in total will be n * how many levels, so the mergeTime in total is n * log2(n).
+
+                As the division takes O(1) time, say, the division happens k time (more specifically 2^log2(n) times), the time for division will be T(k), which is rather insignificant. Taking into account the merge time, the time complexity for merge sort will be:
+
+                    T(n) = T(1) * 2^log2(n) + n * log2(n), therefore, O(n logn).
+            
+             
+
+               
+
+
+
+
+    
