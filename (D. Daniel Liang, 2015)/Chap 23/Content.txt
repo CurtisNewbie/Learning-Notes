@@ -62,9 +62,104 @@ Chapter 23 Sorting
 
                     T(n) = T(1) * 2^log2(n) + n * log2(n), therefore, O(n logn).
 
+    4. Quick Sort   
 
+        "The algorithm selects an element, called the pivot, in the array. It divides the array into two parts, so that all the elements in the first part are less than or equal to the pivot and all the elements in the second part are greater than the pivot. The quick sort algorithm is then recursively applied to the first part and then the second part." (p.870)
 
-               
+        Partitioning is the process of selecting the pivot and moving the pivot to the right position where all the elements on the left are less than (or equal to) the pivot and all the elements on the right are greater than (or equal to, depending on the implementation) the pivot.
+
+    5. Heap Sort (In-Place Algorithm)
+
+        "A heap sort uses a binary heap. It first adds all the elements to a heap and then removes the largest elements successively to obtain a sorted list." (p.874) Binary Heap is a "Complete" binary tree with the heap property. Considering the characteristics of a heap, a heap sort is simply constructing a heap and continually removing the root of the heap.
+        
+            [Root] : It has a root and the left-subtree and right-subtree.
+            [Length of A Path] : The length of a path is the number of edges (that connect two elements) in the path. 
+            [Depth of A Node] : The depth of a node is the length of the path from the root to the node.
+        
+        5.1 A binary Heap is a binary tree with theses properties:
+            1. [Shape property] : a complete binary tree.
+            2. [Heap property] : Each node is greater than or equal to any of its children.
+
+            [Complete Binary Tree] : "A binary tree is complete if each of its levels is full, except that the last level may not be full and all the leaves on the last level are placed leftmost." (p.874)
+
+                e.g., this is not a complete tree, because the not all the leaves are placed leftmost on the last level. This is also not a heap, because 39 is less than 42 which violates the heap property.
+
+                            39
+                          /   \
+                        32      42
+                      /        /   \
+                    22       14     33
+
+                e.g., this is a complete tree and a binary heap
+
+                            50
+                          /   \
+                        32     42
+                      /   \    /   
+                    22    29  14    
+
+            A heap can be implemented using ArrayList or Array.
+
+            The root is at index:0
+                It's children nodes are at index:1 (left) and index:2 (left), which can be interpreted as 2 * 0 + 1 = 1 and 2 * 0 + 2 = 2.
+
+            For the node at index:i
+                It's children nodes are at index:2i+1 and index: 2i+2
+
+            e.g., [50, 32, 42, 22, 29, 14]
+
+            root: 50
+            1 : 32, 2 : 42
+            2*1+1 : 22, 2*1+2 : 29, 2*2+1 : 14 
+
+        5.2 Adding A New Node
+
+            The algorithm is as follows: (p.876)
+                
+            1      Let the last node be the current node; 
+            2   
+            3      while (the current node is greater than its parent) {
+            4      
+            5          Swap the current node with its parent;
+            6   
+            7          Now the current node is one level up;
+            8       }
+
+        5.3 Removing The Root
+        
+            The algorithm for rebuilding the heap is as follows: (p.876)
+            
+            1      
+            2      Move the last node to replace the root;
+            3      
+            4      Let the root be the current node;
+            5      
+            6      while (the current node has children and the current node is
+            7      
+            8          smaller than one of its children) {
+            9          
+            10         Swap the current node with the larger of its children;
+            11     
+            12         Now the current node is one level down;
+            13     }
+
+        5.4 Algorithm Analysis
+
+            Since a heap is a binary tree, its characteristics can be calculated as follows:
+
+            If there are n nodes in the Heap,
+            h (height) = log2(n),
+
+            5.4.1 Adding All Nodes
+                
+                To add a new node to the heap, it at most traverses the heap h levels (i.e., it takes h steps) to add the new element to the heap, for n elements, it takes n * log2(n) to add all the elements to a heap.
+            
+            5.4.2 Removing All Nodes For Sorting
+
+                To remove the root and rebuild the heap, it takes at most h steps traverse through the path from a root to a leaf. So the total time for removing n nodes takes n * log2(n).
+
+            So the total time will be 2 * (n logn), thus, O(n logn)
+            
 
 
 
