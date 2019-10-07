@@ -159,6 +159,59 @@ Chapter 23 Sorting
                 To remove the root and rebuild the heap, it takes at most h steps traverse through the path from a root to a leaf. So the total time for removing n nodes takes n * log2(n).
 
             So the total time will be 2 * (n logn), thus, O(n logn)
+
+    6. Bucket Sort (Distribution Sort)
+
+        "Bucket sort and radix sort are efficient for sorting integers." (p.881)
+
+        It is consisdered not possible to sort general elements in a way that can perform better than O(n logn). While if the elements are integers, a bucket sort can be used without comparing the elements.
+
+        The general algotihm is that the element of value i is put into an associated bucket, where each bucket itself can be a list storing similar elements and each bucket is sorted individually.
+
+        Note that the Bucket Sort consists of an important factor - the number of buckets.
+            
+            The time complexity of the bucket sort is O(n + k), where k refers to the number of buckets.
+            The space complexity of the bucket sort is O(n + k).   
+
+        In the worst case scenorio, all the elements are placed in one bucket, the time complexity can be O(n^2) depending on the inner sorting algorithm for each bucket.
+
+        In the best case scenorio, all the elements are already 'sorted' when they are placed in the bucket, so the time complexity is O(n). 
+
+        In the average case scenorio, the time complexity is O(n + k) or O(n).
+
+    7. Radix Sort/ Digital Sort (Based on the Bucket Sort)
+
+        Radix sort can be used when the number of buckets is too great. Radix sort is based on the bucket sort except that it has only 10 buckets. "The idea for the radix sort is to divide the keys into subgroups based on their radix positions. It applies a bucket sort repeatedly for the key values on radix positions, starting from the least-significant position." (p.882)
+
+        Radix position : refers to a specific digit of all elements, which ranges from 0 - 9.
+
+        It first sort elements based on their most-significant digits or the least-significant digits, and then continually sorting the rest of the digits using the bucket sort. 
+
+    8. External Sort
+
+        External Sort is used for the large file that is unable to be stored internally in the memory. The external sort can be broken down into two phases:
+
+            Phase 1 : Create Initial Sorted Segments
+                "Repeatedly bring data from the file to an array, sort the array using an internal sorting algorithm, and output the data from the array to a temporary file." (p.883) Each group of data is called segment, the size of the segment will still depend on the size of the memory allocated to the JVM.
+
+                    Essentially, it: 1) loads a segment of data, 2) sort this segment, 3) write this segment to a temp file, 4) and repeatively conduct this process until all data are loaded into the temp file.
+
+            Phase 2 : Merge Sorted Segments
+                "Merge a pair of sorted segments (e.g., S1with S2, S3 with S4, c, and so on) into a larger sorted segment and save the new segment into a new temporary file. Continue the same process until only one sorted segment results."(p.884)
+
+                    Essentially, it: 1) splits the temp file into two temp files (through copying from the original temp file) where the first temp file has the first half of segements and another temp file has the rest of the segments, 2) then merge the segments from the two files by comparing the first int of each segment.
+
+        It has a Time Complexity of O(n logn).
+
+
+
+
+        
+
+
+        
+
+
             
 
 
