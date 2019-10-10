@@ -1,3 +1,9 @@
+Index:
+    1. Basic Git Commands
+    2. Git Environment Setup
+    3. .gitignore
+    4. Branching
+
 ---------------------------------------
 
 Basic Git Commands
@@ -34,12 +40,32 @@ Basic Git Commands
     git clone<url>
 // clone repo into a new dir
 
+---------------------------------------
+
+Git Environment Setup
+
+---------------------------------------
+
     git config --global user.name '<username>'  
-    git config -- global user.email '<email>'
+    git config --global user.email '<email>'
 // setup username and email
 
     git reset
 // unstage all the added files in the staging area
+
+    git config --global branch.autosetuprebase always
+// avoid merge commits for pulling from the remote.
+
+    git config --global color.ui <true/false>
+    git config --global color.status <auto>
+    git config --global color.branch <auto>
+    git config --global color.status.changed <color>
+    git config --global color.status.untracked <color>
+// Color highlighting
+
+    git config --list
+// show configuration of the local repository, and the commands above e.g., color highlighting can be modified following the result of the configuration.
+
 
 ---------------------------------------
 
