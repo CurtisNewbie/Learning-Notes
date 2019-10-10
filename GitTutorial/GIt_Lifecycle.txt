@@ -1,0 +1,15 @@
+Git Lifecycle:
+    1. Working Copy
+         Clone the git repository as a working copy to the local repositioy.
+
+    2. Modify Working Copy
+        Edit, add and move files in the local working repository.
+
+    3. Review Changes
+        Uisng status and diff.
+
+    4.a Commit and Push Changes
+        Once changes are reviewed, commit and push it to the remote.
+
+    4.b Amend and Push Changes
+        If mistakes are found during the review, ammend the commit and then push the operation.
