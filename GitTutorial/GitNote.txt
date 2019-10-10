@@ -1,0 +1,83 @@
+---------------------------------------
+
+Basic Git Commands
+
+---------------------------------------
+
+    git init
+//initialise local git repository (this should be typed in the folder.)
+
+    git add<file>   
+//add File(s) to index
+
+    git add .       
+//add all
+
+    git status      
+//check status of working tree
+
+    git commit
+    git commit -m'<message>'
+    git commit -m'<mess1>' -m'<mess2>'  
+// commit changes in index
+
+    git push    
+    git push <repoName> <branchName>
+// push to the current branch on the local repo or a specific branch on a remote repo
+
+    git fetch
+// fetch the updates of this branch from the remote repo, and see what is changed in comparison to the local repo
+
+    git pull    
+// pull latest from remote repo
+
+    git clone<url>
+// clone repo into a new dir
+
+    git config --global user.name '<username>'  
+    git config -- global user.email '<email>'
+// setup username and email
+
+    git reset
+// unstage all the added files in the staging area
+
+---------------------------------------
+
+.gitignore
+
+---------------------------------------
+
+<fileName>
+# ignore this file
+
+*.class
+# ingore any files with an extension of ".class"
+
+/<dirName>
+# ignore folder with this name
+
+
+---------------------------------------
+
+Branching
+
+---------------------------------------
+
+The main branch is called "Master"
+
+    git branch <branchName>
+// create a new branch
+
+    git checkout <branchName>
+// switch to a branch, where the files are changed based on the branch as well. 
+
+    git merge <branchName>
+// merge current branch to another branch, so that the current branch will be fastforwading the changes.
+
+    git remote
+// list remote repo
+
+    git remote add <remoteName> <url>
+// add or connect to a remote repo
+
+

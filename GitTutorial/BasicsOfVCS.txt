@@ -1,0 +1,49 @@
+Basics of Version Control System:
+    
+    There are two types of VCS:
+        Centralised Version Control System (CVCS)
+        Distributed/Decentralised Version Control System (DVCS)
+
+    CVCS:
+        CVCS uses a central server to store all files, while it may encounter the single point of failure.
+
+    DVCS:
+        With DVCS, clients can mirror the who repo. Git does not rely on a central server, so git is a type of DVCS, that all the changes are made locally and pushed to the remote repo.
+
+    DVCS Terminologies:
+        [Local Repository]: workplace or the local computer
+        
+        [Working Repository and Staging Area or Index]: working repo is the place where the files are checked out. When a file is commited, it is presented in the staging area. Git does not track all the files, instead it tracks on the files that present in the staging area.
+
+        [Tree]: Tree is an object, which represents a directory. A tree is a binary file that stores references to blobs and trees which are also named as SHA1 hash of the tree object.
+
+        [Commit]: Commits hold the current state of the repository. A commit is named by a SHA1 hash. 
+
+        [Branch]: A line of development. By default, the major line of development is the master branch. A new branch is usually created to work on a new feature, once the feature is completeed, it is merged to the master.
+
+        [Tag]: Tag is a naming a specific version in the repository. It is a immutable snapshot of the repo, which is usually created for product releases.
+
+        [Clone]: Clone operation creates the instance/copy of the complete repo.
+
+        [Pull]: Pull operation copies the changes from a remote repo to the local repo. It is synchronisation bewteen the remote repo and the local repo.
+
+        [HEAD]: HEAD is a pointer, which always points to the latest commit in the branch.
+
+    Basic Workflow:
+        Local & Working Repo
+                |  
+                |              
+                |     git add 
+                |              
+                |             
+            Staging Area  
+                |              
+                |              
+                |     git commit         
+                |              
+                |              
+            Git repository
+
+
+
+    
