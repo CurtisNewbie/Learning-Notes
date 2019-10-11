@@ -2,13 +2,15 @@ Index:
     1. Basic Git Commands
     2. Git Tagging
     3. Git Environment Setup
-    4. .gitignore
-    5. Branching
-    6. Git Fix Mistakes
+    4. Git Patch
+    5. .gitignore
+    6. Branching
+    7. Git Handling Conflicts
+    8. Git Fix Mistakes
 
 ---------------------------------------
 
-Basic Git Commands
+1. Basic Git Commands
 
 ---------------------------------------
 
@@ -74,7 +76,7 @@ Basic Git Commands
 
 ---------------------------------------
 
-Git Tagging
+2. Git Tagging
 
 ---------------------------------------
 
@@ -96,7 +98,7 @@ Git Tagging
 
 ---------------------------------------
 
-Git Environment Setup
+3. Git Environment Setup
 
 ---------------------------------------
 
@@ -125,7 +127,7 @@ Git Environment Setup
 
 ---------------------------------------
 
-Git Patch
+4. Git Patch
 
 ---------------------------------------
 
@@ -146,13 +148,9 @@ Patch is a text file that records the changes of the files in a repository. It i
     git apply <example.patch>
 // modify the files in repository but do not create commit.
 
-
-
-
-
 ---------------------------------------
 
-.gitignore
+5. .gitignore
 
 ---------------------------------------
 
@@ -168,7 +166,7 @@ Patch is a text file that records the changes of the files in a repository. It i
 
 ---------------------------------------
 
-Branching
+6. Branching
 
 ---------------------------------------
 
@@ -185,14 +183,54 @@ The main branch is called "Master"
     git checkout <branchName>
 // switch to a branch, where the files are changed based on the branch as well. 
 
-    git merge <branchName>
-// merge current branch to another branch, so that the current branch will be fastforwading the changes.
+    git checkout -b <newBranchName>
+// create a new branch and immediately switch to it.
+
+    git branch -D <branchName>
+// delete a branch, but before deleting the branch, you should switch to another branch first.
+
+    git branch -m <currentBranch> <newBranchName>
+// rename a branch
 
     git remote
 // list remote repo
 
     git remote add <remoteName> <url>
-// add or connect to a remote repo
+// add or connect to a remote repo. It is common that the remote is named "origin".
+
+    git merge <branchName>
+// merge current branch to another branch, so that the current branch will be fastforwading the changes.
+
+    git merge --abort
+// abort the merge operation, and recover the repository back to the state before attempting to merge
+
+    git merge --continue
+// continue the merge, (e.g., when conflicts are solved)
+
+    git rebase <branchName>
+// apply all of a unique commits from branch b on top of branch a and replacing the branch b with this revised version. 
+
+    The difference between merge and rebase is that rebase put the unique commits from a branch onto another branch. 
+    
+    The good things about merge is that it preserves history and order of commits, while the history may become pulluted by lots of merge commits. 
+
+    The good things about rebase is that it keeps only the history of one branch (as the commits are put onto another branch), which keeps the history linear, facilitating debuging. There won't be many merge commits to be created in the history, but as the number of commits are removed, the context may be hidden. Especially, rebasing the public repositories can be dangerous when working as a team.
+
+    git rebase --abort
+// abort the conducted git rebase operation, recovering the repository back to status before attempting the rebase.
+
+    git rebase --continue
+// continue the rebase, (e.g., when conflicts are solved)
+
+---------------------------------------
+
+7. Git Handling Conflicts
+
+---------------------------------------
+
+Conflicts can be same functions or lines being modified, or same file being modified. This happends when one want to pull or merge commits. In such case, git doesn't not what to do with the conflicts.
+
+when this happen, the conflicts need to be manually solved. The conflicts can e checked using git diff. After editing the files and solving the conflicts, the git merge -continue can be used to continue the merge operation, or simply add the edited files and commit a message similar to "merge conflicts resolved". If conflicts are found when conducting git pull operation, simply execute git pull again after the commits.
 
 ---------------------------------------
 
