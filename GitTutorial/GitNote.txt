@@ -123,6 +123,31 @@ Git Environment Setup
     git config --global core.editor "<pathToEditorExecutable> -multiInst -notabbar -nosession -noPlugin"
 // setup the default text editor for git commit message, by default it's vim.
 
+---------------------------------------
+
+Git Patch
+
+---------------------------------------
+
+Patch is a text file that records the changes of the files in a repository. It is like a file which contains the information of commits and changes. The patch file can be created and sent to someone, and the receiver can apply the patch to the working repository. The patch is of an file extension of .patch.
+
+    git format-patch -<n> <commitSHA1>
+// patch n commits from the specified commit (inclusive) onwards.
+
+    git format-patch -<1> <commitSha1>
+// patch only one commit and only the specified commit.
+
+    git format-patch -1 HEAD
+// patch the latest commit, i.e., the HEAD.
+
+    git am <example.patch>
+// modify the files in repository and create commit.
+
+    git apply <example.patch>
+// modify the files in repository but do not create commit.
+
+
+
 
 
 ---------------------------------------
