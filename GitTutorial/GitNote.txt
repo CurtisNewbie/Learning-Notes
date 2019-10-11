@@ -1,8 +1,10 @@
 Index:
     1. Basic Git Commands
-    2. Git Environment Setup
-    3. .gitignore
-    4. Branching
+    2. Git Tagging
+    3. Git Environment Setup
+    4. .gitignore
+    5. Branching
+    6. Git Fix Mistakes
 
 ---------------------------------------
 
@@ -40,6 +42,58 @@ Basic Git Commands
     git clone<url>
 // clone repo into a new dir
 
+    git log
+// show commit logs
+
+    git show
+    git show <commitSHA1>
+// show commit details, e.g., what is added and removed
+
+    git diff HEAD
+    git diff --staged
+    git diff <commitSHA1>
+// show the difference between the staged files and the previous commits
+
+    git commit --amend
+// amend the last commit, including the commited files and commit messages
+
+    git stash 
+// stash the current changes to a temporary spaces, so that you can commit it later on. To stach the changes, the changes must be added (or staged).
+
+    git stash list
+// list the stash
+
+    git stash pop
+// pop the changes that is previously stashed
+
+    git mv <source> <destination>
+// move or rename a file. In case of moving a file, and if the destination is a folder, the destination path it should be like this: "folder/" with a forward slash.
+
+    git rm <file>
+// remove file from the local repo
+
+---------------------------------------
+
+Git Tagging
+
+---------------------------------------
+
+    git tag -a <Annotated Tags> -m <message> HEAD
+    git tag -a <Annotated Tags> -m <message> <commitSHA1>    
+// tag current HEAD or a speicfic commit
+
+    git push <remote> tag <tagName>
+// to publish a tag to a remote
+
+    git show <tagName>
+// check a specific tag
+
+    git tag -d <tagName>
+// remove a tag from the repository
+
+    git tag
+// list all tags
+
 ---------------------------------------
 
 Git Environment Setup
@@ -51,7 +105,7 @@ Git Environment Setup
 // setup username and email
 
     git reset
-// unstage all the added files in the staging area
+// unstage all the added files in the staging area, this command is equivalent to "git reset --mixed"
 
     git config --global branch.autosetuprebase always
 // avoid merge commits for pulling from the remote.
@@ -65,6 +119,10 @@ Git Environment Setup
 
     git config --list
 // show configuration of the local repository, and the commands above e.g., color highlighting can be modified following the result of the configuration.
+
+    git config --global core.editor "<pathToEditorExecutable> -multiInst -notabbar -nosession -noPlugin"
+// setup the default text editor for git commit message, by default it's vim.
+
 
 
 ---------------------------------------
@@ -94,6 +152,11 @@ The main branch is called "Master"
     git branch <branchName>
 // create a new branch
 
+    git branch
+    git branch -a
+    git branch -r
+// check all branches, with option -a, it shows all local and remote branches, while with option -r, it shows only remote branches.
+
     git checkout <branchName>
 // switch to a branch, where the files are changed based on the branch as well. 
 
@@ -105,5 +168,43 @@ The main branch is called "Master"
 
     git remote add <remoteName> <url>
 // add or connect to a remote repo
+
+---------------------------------------
+
+Git Fix Mistakes
+
+---------------------------------------
+
+1. In case of deleting or modifying the uncommited files, use git checkout command to obtain the orginal files. E.g.,
+
+    git checkout <file>
+
+2. In case of reverting committed changes, use git reset to move the HEAD pointer to a specific commit. E.g.,
+
+        git reset --soft <commitSHA1>
+        git reset --hard <commitSHA1>
+
+    The option <--soft> tries to move the HEAD to a specific commit, but ikeeps   all     the changes in the directory
+    The option <--hard> tries to move the HEAD to a specific commit, but iremoves all   the changes.
+
+    2.1 Instead of moving to specific commit, reset command can move the HEAD pointer      back by n positions. E.g.,
+    
+        git reset --soft HEAD~n
+        git reset --hard HEAD~n
+    
+        git reset --soft HEAD~
+        git reset --soft HEAD~1
+    
+    HEAD~ is equivalent ot HEAD~1. 
+
+    2.2 As this command helps move backward, there are also commands moving forward to, such as, the last commit. To move forward to the last commit:
+    
+        git reset HEAD@{1}
+        git reset HEAD@{n};
+    
+    This is like traversing the linked list, where the HEAD is just the pointer on the linked list, and the n is the index.
+
+
+
 
 
