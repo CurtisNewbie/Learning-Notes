@@ -195,7 +195,7 @@ Git Fix Mistakes
         git reset --soft HEAD~
         git reset --soft HEAD~1
     
-    HEAD~ is equivalent ot HEAD~1. 
+    HEAD~ is equivalent to HEAD~1. 
 
     2.2 As this command helps move backward, there are also commands moving forward to, such as, the last commit. To move forward to the last commit:
     
