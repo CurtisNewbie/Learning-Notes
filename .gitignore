@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+# (Temp) files created by programs
+*.dat
+
 # Log file
 *.log
 
