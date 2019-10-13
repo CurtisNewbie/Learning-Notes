@@ -247,10 +247,10 @@ Git Fix Mistakes
         git reset --soft <commitSHA1>
         git reset --hard <commitSHA1>
 
-    The option <--soft> tries to move the HEAD to a specific commit, but ikeeps   all     the changes in the directory
-    The option <--hard> tries to move the HEAD to a specific commit, but iremoves all   the changes.
+    The option <--soft> tries to move the HEAD to a specific commit, but it keeps all the changes in the directory
+    The option <--hard> tries to move the HEAD to a specific commit, but it removes all the changes.
 
-    2.1 Instead of moving to specific commit, reset command can move the HEAD pointer      back by n positions. E.g.,
+    2.1 Instead of moving to specific commit, reset command can move the HEAD pointer back by n positions. E.g.,
     
         git reset --soft HEAD~n
         git reset --hard HEAD~n
