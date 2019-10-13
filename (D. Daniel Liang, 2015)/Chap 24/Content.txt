@@ -17,5 +17,3 @@ Chapter 24 Implementing Lists, Stacks, Queues, And Priority Queues:
                                                     | <- MyArrayList
             Iterable <- MyList <- MyAbstractList <- | 
                                                     | <- MyLinkedList
-
-        
