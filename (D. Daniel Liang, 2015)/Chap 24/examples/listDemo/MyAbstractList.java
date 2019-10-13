@@ -39,4 +39,10 @@ public abstract class MyAbstractList<E> implements MyList<E> {
             return false;
     }
 
+    protected void checkIndex(int i) {
+        if (i < 0 || i >= size) {
+            throw new IndexOutOfBoundsException("Index:" + i + " out of bounds. Size:" + size);
+        }
+    }
+
 }

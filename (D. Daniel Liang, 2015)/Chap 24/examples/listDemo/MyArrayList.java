@@ -138,10 +138,4 @@ public class MyArrayList<E> extends MyAbstractList<E> {
         return sb.toString();
     }
 
-    private void checkIndex(int i) {
-        if (i < 0 || i >= size) {
-            throw new IndexOutOfBoundsException("Index:" + i + " out of bounds. Size:" + size);
-        }
-    }
-
 }
