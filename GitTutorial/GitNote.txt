@@ -68,6 +68,9 @@ Index:
     git stash pop
 // pop the changes that is previously stashed
 
+    git stash drop <stashName>
+// drop the stash, e.g., "git stash drop stash@{0}"
+
     git mv <source> <destination>
 // move or rename a file. In case of moving a file, and if the destination is a folder, the destination path it should be like this: "folder/" with a forward slash.
 

@@ -11,6 +11,7 @@
     2.6 https://thoughtbot.com/blog/send-a-patch-to-someone-using-git-format-patch
     2.7 https://www.git-tower.com/learn/git/faq/solve-merge-conflicts
     2.8 https://www.freecodecamp.org/news/an-introduction-to-git-merge-and-rebase-what-they-are-and-how-to-use-them-131b863785f/
+    2.9 https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning
     
 
 3. Youtube Videos:
