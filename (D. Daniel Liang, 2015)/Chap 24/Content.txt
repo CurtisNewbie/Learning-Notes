@@ -1,0 +1,21 @@
+Chapter 24 Implementing Lists, Stacks, Queues, And Priority Queues:
+
+    Design Guide:
+        "The common operations can be generalized in an interface or an abstract class. A good strategy is to combine the virtues of interfaces and abstract classes by providing both an interface and a convenience abstract class in the design so that the user can use either of them, whichever is convenient. The abstract class provides a skeletal implementation of the interface, which minimizes the effort required to implement the interface." (p.896)
+
+
+    1. Lists:
+    "A list is a popular data structure for storing data in sequential order." (p.896)
+
+        There are two ways to implement a list:
+            - Array
+            - LinkedList
+
+
+        In the example, MyList is an interface that defines the design of the class, the MyAbstractList is a abstract class provides partial implementation of the interface. 
+
+                                                    | <- MyArrayList
+            Iterable <- MyList <- MyAbstractList <- | 
+                                                    | <- MyLinkedList
+
+        
