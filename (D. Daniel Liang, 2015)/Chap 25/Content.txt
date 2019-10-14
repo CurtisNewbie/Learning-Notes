@@ -1,0 +1,34 @@
+Chapter 25 Binary Search Trees:
+
+    "A binary search tree can be implemented using a linked structure."(p.930)
+
+    1. Binary Tree:
+        "A binary tree is a hierarchical structure. It either is empty or consists of an element,   called the root, and two distinct binary trees, called the left subtree and right subtree,    either or both of which may be empty."(p.930)
+
+        - [Root] : It has a root and the left-subtree and right-subtree.
+        - [Length of A Path] : The length of a path is the number of edges (that connect two elements)      in the path. 
+        - [Depth of A Node] : The depth of a node is the length of the path from the root to the node.
+        - [Level of A Tree] : The set of all nodes at a given depth is sometimes called a level of the  tree.
+        - [Height of A Tree] : The height of a tree that contains a single node is 0. Conventionally,   the height of an empty tree is —1.
+        - [Siblings] : Nodes that share the same parent node.
+        - [Node without Children] : A node without children is called a leaf
+
+    2. Binary Search Tree (BST):
+        BST allows duplicates.
+
+        "A BST (with no duplicate elements) has the property that:
+            for every node in the tree, 
+            1) the value of any node in its left subtree is less than the value of the node, and 
+            2) the value of any node in its right subtree is greater than the value of the node." (p.930)
+
+    3. Tree Traversal:
+        "Tree traversal is the process of visiting each node in the tree exactly once." (p.934)
+        
+        There are numerous ways to traverse a tree:
+            - inorder traversal,
+            - postorder traversal,
+            - preorder traversal, 
+            - depth-first traversal, and
+            - breadth-first traversal
+
+        
