@@ -60,7 +60,11 @@ Index:
 // amend the last commit, including the commited files and commit messages
 
     git stash 
-// stash the current changes to a temporary spaces, so that you can commit it later on. To stach the changes, the changes must be added (or staged).
+// stash the current changes to a temporary spaces, so that you can commit it later on. To stach the changes, the changes do not need to be added (or staged).
+
+	git stash show <stashName>
+	git stash show -p <stashName>
+// show the stash details and diff, -p options allows showing details of the stashed changes.
 
     git stash list
 // list the stash
@@ -110,6 +114,7 @@ Index:
 // setup username and email
 
     git reset
+	git restore --staged <file>
 // unstage all the added files in the staging area, this command is equivalent to "git reset --mixed"
 
     git config --global branch.autosetuprebase always
