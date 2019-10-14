@@ -5,15 +5,40 @@ Chapter 24 Implementing Lists, Stacks, Queues, And Priority Queues:
 
 
     1. Lists:
-    "A list is a popular data structure for storing data in sequential order." (p.896)
+        "A list is a popular data structure for storing data in sequential order." (p.896)
 
         There are two ways to implement a list:
             - Array
             - LinkedList
-
 
         In the example, MyList is an interface that defines the design of the class, the MyAbstractList is a abstract class provides partial implementation of the interface. 
 
                                                     | <- MyArrayList
             Iterable <- MyList <- MyAbstractList <- | 
                                                     | <- MyLinkedList
+
+        Circular, Singly Linked List:
+            In the example of MyLinkedList, the implementation is a singly linked list. There are variations such as "circular and singly linked list", where the tail is not needed, and the last node points to the first node, as it is named circular. 
+        
+            This type of linked list is very useful for certain scenorios, e.g., "...in the os that serves multiple users in a timesharing fashion."(p.919) 
+
+        Doubly Linked List or Circular, Doubly Linked List:
+            Another variation is the doubly linked list, wherein each node has two pointer, one to the next and one to the previous. This allows the iterator to traverse forward and backward. It can also be circular as well.
+    
+    2. Stacks and Queues: 
+        "Stacks can be implemented using array lists and queues can be implemented using linked lists." (p.920)
+
+        Stack - First in last out.
+        Queue - First in first out.
+
+        To implement the stack and queue classes, there are two ways to design them:
+            1. Inheritance: extend ArrayList and LinkedList to override and make custom methods.
+            2. Composition: have an ArrayList and LinkedList as a data field.
+
+    3. PriorityQueue:
+        The elements with highest priority is removed first. Such structure can be implemented using heap, where the root is the node with the highest priority.
+
+
+
+
+
