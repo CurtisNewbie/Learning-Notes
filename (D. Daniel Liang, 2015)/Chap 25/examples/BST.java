@@ -18,7 +18,7 @@ public class BST<E extends Comparable<E>> {
         if (root == null)
             root = insertedNode;
         else {
-            TreeNode<E> parent = root;
+            TreeNode<E> parent = null;
             TreeNode<E> current = root;
             while (current != null) {
                 parent = current;
