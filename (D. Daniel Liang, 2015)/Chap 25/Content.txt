@@ -30,5 +30,47 @@ Chapter 25 Binary Search Trees:
             - preorder traversal, 
             - depth-first traversal, and
             - breadth-first traversal
+        
+        3.1 Inorder Traversal
+            "... the left subtree of the current node is visited first recursively, then the current node, and finally the right subtree of the current node recursively."(p.934) 
+            
+            It follows a left-to-right order, where the left is always nodes less than current node and the right is always nodes greater than current node, which is why it's called inorder.
+
+        3.2 Postorder Traversal
+            "... the left subtree of the current node is visited recursively first, then recursively the right subtree of the current node, and finally the current node itself." (p.934)
+            
+            One of the application of postorder traversal is calculating the size of the directory, which calculates the files and subdir before finding the size of the root dir.
+        
+        3.3 Preorder Traversal / Depth-First Traversal 
+            "... the current node is visited first, then recursively the left subtree of the current node, and finally the fight subtree of the current node recursively." (p.934)
+
+            One application of Preorder Traversal / Depth-First Traversal is printing the table of contents of a book.
+
+            A BST can be reconstructed by inserting the elements in preorder.
+
+        3.4 Breadth-First Traversal 
+            "With breadth-first traversal, the nodes are visited level by level. First the root is visited, then all the children of the root from left to right, then the grandchildren of the root from left to right, and so on." (p.934)
+        
+        3.5 Inserting and Deleting Node
+            Inserting new nodes and deleting nodes are demonstrated in the examples. Inserting new node just simply traverse the tree starting from the root, and insert the node in the proper position. While deleting a node can be very complicated, before deleting a node, two cases should be considered, that whether the node has a left child.
+
+            Case 1: Current node doesn't have left child (regardless of whether it has right child)
+                This means that the current node only has one child, so, just simply compares it with the parent node and connect it with the parent (as a left or right child).
+                
+                However, the current may be root where the pointer hasn't moved yet. In this case, the point is whether it only has one child, the reason why left child is considered,is that the current node is always less than the right subtree, so regardless of whether the right subtree exists, it always reconnects to the parent of the current node.
+
+            Case 2: Current node has a left child (regardless of whether it has right child)
+                As the right subtree is always greater than the current node, it is not changed, it will only be reconnected. However, after removing the current node, there is node that has the 'greatest value' in the left subtree that needs to move up to become the new parent, in which case, the rightmost node in the left subtree is the greatest node.
+
+                So, for this case, the rightmost node in the left subtree should be found and set the current node's value to be the rightmost node's value, and finally removes the rightmost node. This process can be done by creating a new node of the right most node's value, and reconnecting all the pointers, whichever is convenient.
+
+                As in the example, there can be case where there is no right node at all in the left sub-tree. In such case, just copy the value of current's left child, and reconnect the child nodes of the current's left child (i.e., skip current's left child, as its value is copied to replace the previous value of current node).
+
+
+
+
+
+
+
 
         

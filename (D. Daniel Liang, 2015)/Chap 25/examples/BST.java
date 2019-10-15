@@ -140,6 +140,76 @@ public class BST<E extends Comparable<E>> {
         }
     }
 
+    /**
+     * Delete an element if it is in the tree.
+     * 
+     * @param e element
+     * @return
+     */
+    public boolean delete(E e) {
+        TreeNode<E> parent = null;
+        TreeNode<E> current = root;
+        while (current != null) {
+            if (e.compareTo(current.getElement()) > 0) {
+                parent = current;
+                current = current.getRight();
+            } else if (e.compareTo(current.getElement()) < 0) {
+                parent = current;
+                current = current.getLeft();
+            } else { // found
+
+                // case 1: current does not have left child
+                if (current.getLeft() == null) {
+
+                    // if parent is null, meaning current is root, and there is not left
+                    if (parent == null) {
+                        // replace root with the right child
+                        root = current.getRight();
+                    } else {
+                        if (current.getRight().getElement().compareTo(parent.getElement()) > 0)
+                            parent.setRight(current.getRight());
+                        else // not duplicates
+                            parent.setLeft(current.getRight());
+                    }
+                } else { // case 2: current does have a left child
+
+                    // find the greatest in left subtree and make it the current, which is rightmost
+                    // node. This is because parent is always less than the right child, the right
+                    // subtree doesn't need to change.
+                    TreeNode<E> leftTreeParent = current;
+                    TreeNode<E> leftTreeRightMost = current.getLeft();
+                    while (leftTreeRightMost.getRight() != null) {
+                        leftTreeParent = leftTreeRightMost;
+                        leftTreeRightMost = leftTreeRightMost.getRight();
+                    }
+
+                    // swap current and the rightmost node in left subtree, and remove the previous
+                    // position of rightmost node
+                    current.setElement(leftTreeRightMost.getElement());
+
+                    // remove the previous rightmost
+                    if (leftTreeParent == current) {
+                        /*
+                         * leftTreeParent is still current and leftTreeRightMost is still
+                         * current.getLeft(), which means that there is no right child nodes in left
+                         * subtree at all. Thus, leftTreeRightMost doesn't have right children. As
+                         * current has set its element to the element of current.getLeft(), the previous
+                         * current is dumped already, tho its right pointer is still linked to the
+                         * previous right subtree. So, just simply link the current and
+                         * current.getLeft().getLeft().
+                         */
+
+                        leftTreeParent.setLeft(leftTreeRightMost.getLeft());
+                    } else {
+                        leftTreeParent.setRight(leftTreeRightMost.getLeft());
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "BST: Root:" + root.getElement() + "In Total Of " + size() + "Nodes";

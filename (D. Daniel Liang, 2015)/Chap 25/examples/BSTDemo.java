@@ -19,5 +19,10 @@ public class BSTDemo {
         System.out.println("\nPreorder");
         bst2.preorder();
 
+        System.out.println();
+        bst.inorder();
+        bst.delete("Banana");
+        System.out.println("\nBanana deleted:");
+        bst.inorder();
     }
 }
