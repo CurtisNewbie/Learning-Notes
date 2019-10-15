@@ -13,6 +13,14 @@ public class BST<E extends Comparable<E>> {
         root = null;
     }
 
+    public BST(E[] arr) {
+        root = null;
+
+        for (E e : arr) {
+            this.addNode(e);
+        }
+    }
+
     public boolean addNode(E e) {
         TreeNode<E> insertedNode = new TreeNode<E>(e);
         if (root == null)
@@ -59,6 +67,77 @@ public class BST<E extends Comparable<E>> {
                 return true;
         }
         return false;
+    }
+
+    public void inorder() {
+        inorderTraversal(root);
+    }
+
+    public void postorder() {
+        postorderTraversal(root);
+    }
+
+    public void preorder() {
+        preorderTraversal(root);
+    }
+
+    // public void post
+
+    /**
+     * Inorder Traversal, left-subtree first, then current node, finally the
+     * right-subtree.
+     * 
+     * @param current current node
+     */
+    private void inorderTraversal(TreeNode<E> current) {
+        if (current != null) {
+            // left subtree first
+            inorderTraversal(current.getLeft());
+
+            // current node
+            System.out.print(current.getElement() + " ");
+
+            // right subtree
+            inorderTraversal(current.getRight());
+        }
+    }
+
+    /**
+     * Postorder Traversal, left-subtree first, then right-subtree, finally the
+     * current node.
+     * 
+     * @param current current node
+     */
+    public void postorderTraversal(TreeNode<E> current) {
+        if (current != null) {
+            // left subtree first
+            postorderTraversal(current.getLeft());
+
+            // right subtree
+            postorderTraversal(current.getRight());
+
+            // current node
+            System.out.print(current.getElement() + " ");
+        }
+    }
+
+    /**
+     * Preorder Traversal / Depth-First Traversal, current node first, then
+     * left-subtree, and finally the right-subtree.
+     * 
+     * @param current current node
+     */
+    public void preorderTraversal(TreeNode<E> current) {
+        if (current != null) {
+            // current node first
+            System.out.print(current.getElement() + " ");
+
+            // left subtree
+            preorderTraversal(current.getLeft());
+
+            // right subtree
+            preorderTraversal(current.getRight());
+        }
     }
 
     @Override
