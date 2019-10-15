@@ -30,4 +30,8 @@ public class TreeNode<E> {
     public E getElement() {
         return element;
     }
+
+    public void setElement(E e) {
+        this.element = e;
+    }
 }
