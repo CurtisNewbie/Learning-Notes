@@ -1,0 +1,160 @@
+The title of each section follows the tutorial. 
+
+Index:
+    1. Python Syntax
+    2. Python Comments
+    3. Python Variables
+    4. Python Data Types
+
+
+---------------------------------------
+
+1. Python Syntax
+
+---------------------------------------
+
+    py <file.py>
+// Execute .py file
+
+    print()
+// stdout
+
+    if <condition>:
+        <someCode>
+// if statement
+
+---------------------------------------
+
+2. Python Comments
+
+---------------------------------------
+
+    # <one-line comment>
+// One line comment
+
+    """
+    <Multiple-lines comment>
+    """
+// Multiple lines comment
+
+---------------------------------------
+
+3. Python Variables
+
+---------------------------------------
+
+    x = "John"
+    # is the same as
+    x = 'John'
+// " " is the same as ' ' in python
+
+    x, y, z = "Orange", "Banana", "Cherry"
+    x = y = z = "Orange"
+// assign values to multiple variables
+
+    print("someText" + x)
+// Concatenation, but concatenating number and string is not supported.
+
+    x = 10
+    "someText" + str(x)
+// To concatenate between number and string, use str() method first 
+
+    x = "awesome"
+
+    def func():
+        print(x)
+    func()
+// Global Variables - variables created outside of a function, in the example, x is a global variable
+
+    x = "awesome"
+
+    def func():
+        x = "nah"
+        print(x)
+    func()
+// Local variable - variables created inside a function, same concept as in java. In the example, the x variable is within the scope of the func() method, so it is printed instead.
+
+    def createGlobalVar():
+        global globalVar 
+        globalVar = "I am global variable created within a func"
+    createGlobalVar()
+    print(globalVar)
+// Creating a global variable within a function using keyword - "global"
+
+---------------------------------------
+
+4. Python Data Types
+
+---------------------------------------
+
+    Text Type: str
+
+    Numeric Types: int, float, complex
+
+    Sequence Types: list, tuple, range
+
+    Mapping Type: dict
+
+    Set Types: set, frozenset
+
+    Boolean Type: bool
+
+    Binary Types: bytes, bytearray, memoryview
+
+    type(x)
+// get the data type of the variable, i.e., show the class it belongs to
+
+    x = "abc"
+    x = str("abc") # explicitly
+// string data type
+
+    x = 10
+    x = int(10) # explicitly
+// int data type
+
+    x = 10.0
+    x = float(10.0) # explicitly
+// float data type
+
+    x = 1j
+    x = complex(1j) # explicitly
+// complext data type
+
+    x = ["apple", "banana", "cherry"]
+    x = list(("apple", "banan", "cherry")) # explicitly
+// list data type (similar to array, but contains different types of elements).
+
+    x = ("apple", "banana", "cherry")
+    x = tuple(("apple", "banana", "cherry"))
+// tuple data type
+
+    x = range(6)
+// range, a sequence of number
+
+    x = {"name": "John", "age": 100}
+// dict data type
+
+    x = {"apple", "banana", "cherry"}
+// set data type
+
+    x = frozenset({"apple", "banana", "cherry"})
+// frozenset, (immutable set)
+
+    x = bool(True)
+    x = True
+// boolean data type (case sensitive)
+
+    x = b<String>
+    x = b"Hello"
+    x = bytes("Hello")
+    x = bytes("Hello", encoding="UTF-8") # better option
+// Convert string to bytes literals (immutable)
+
+    x = bytearray(5)
+// bytearray
+
+    x = memoryview(bytes(5))
+// memoryview. "memoryview objects are great when you need subsets of binary data that only need to support indexing." (StackOverflow: [https://stackoverflow.com/questions/18655648/what-exactly-is-the-point-of-memoryview-in-python])
+
+
+
