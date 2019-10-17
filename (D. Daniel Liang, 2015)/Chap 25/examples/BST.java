@@ -166,7 +166,7 @@ public class BST<E extends Comparable<E>> {
                         // replace root with the right child
                         root = current.getRight();
                     } else {
-                        if (current.getRight().getElement().compareTo(parent.getElement()) > 0)
+                        if (e.compareTo(parent.getElement()) > 0)
                             parent.setRight(current.getRight());
                         else // not duplicates
                             parent.setLeft(current.getRight());
@@ -208,6 +208,7 @@ public class BST<E extends Comparable<E>> {
             }
         }
         return false;
+
     }
 
     @Override
