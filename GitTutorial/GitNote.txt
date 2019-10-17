@@ -200,6 +200,10 @@ The main branch is called "Master"
     git branch -m <currentBranch> <newBranchName>
 // rename a branch
 
+    git branch --set-upstream-to <remoteRepo> <branchName>
+    git push
+// setup the upstream and push the new branch that doesn't exist in the remote
+
     git remote
 // list remote repo
 
