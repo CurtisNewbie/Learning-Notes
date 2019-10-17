@@ -24,5 +24,50 @@ public class BSTDemo {
         bst.delete("Banana");
         System.out.println("\nBanana deleted:");
         bst.inorder();
+        System.out.println();
+
+        // test from text book
+        BST<String> tree = new BST<>();
+        tree.addNode("George");
+        tree.addNode("Michael");
+        tree.addNode("Tom");
+        tree.addNode("Adam");
+        tree.addNode("Jones");
+        tree.addNode("Peter");
+        tree.addNode("Daniel");
+        tree.inorder();
+        System.out.println();
+        tree.preorder();
+        System.out.println();
+        tree.postorder();
+        System.out.println();
+
+        System.out.println("\nAfter delete George:");
+        tree.delete("George");
+        tree.inorder();
+        System.out.println();
+        tree.preorder();
+        System.out.println();
+        tree.postorder();
+        System.out.println();
+
+        System.out.println("\nAfter delete Adam:");
+        tree.delete("Adam");
+        tree.inorder();
+        System.out.println();
+        tree.preorder();
+        System.out.println();
+        tree.postorder();
+        System.out.println();
+
+        System.out.println("\nAfter delete Michael:");
+        tree.delete("Michael");
+        tree.inorder();
+        System.out.println();
+        tree.preorder();
+        System.out.println();
+        tree.postorder();
+        System.out.println();
+
     }
 }
