@@ -5,6 +5,9 @@ Index:
     2. Python Comments
     3. Python Variables
     4. Python Data Types
+    5. Python Numbers
+    6. Python Casting
+    7. Python Strings
 
 
 ---------------------------------------
@@ -156,5 +159,137 @@ Index:
     x = memoryview(bytes(5))
 // memoryview. "memoryview objects are great when you need subsets of binary data that only need to support indexing." (StackOverflow: [https://stackoverflow.com/questions/18655648/what-exactly-is-the-point-of-memoryview-in-python])
 
+
+---------------------------------------
+
+5. Python Numbers
+
+---------------------------------------
+
+There are three numeric types in py:
+    - int 
+        (of unlimited length)
+    - float 
+        ('e' can be used to indicate the power of 10 as a scientific numbers)
+        e.g., 
+        x = 35e3 (which is 35 * 10^3)
+        x = 12E4 (wich is 12 * 10^4)
+    - complex
+        ("j" is used to indicate the imaginary part of the complex number)
+
+Type conversion, can be achieved using int(), float(), complex(). However COMPLEX NUMBER cannot! be converted to other numbers.
+
+    x = 1
+    y = float(x)
+// convert int to float
+
+    x = 2.8
+    y = int(x)
+// convert float to int
+
+    x = 1
+    y = complext(x)
+// convert int to complext
+
+---------------------------------------
+
+6. Python Casting
+
+---------------------------------------
+
+There are many cases where there is a need to specify a type of a variable, this is done using casting or constructor, including the primitive types.
+    e.g.,
+        x = int(1) # 1
+        x = int("2.8") # 2
+
+        y = float(1) # 1.0
+        y = float("2.2") # 2.2
+        y = float(3.5) # 3.5
+
+        z = str(2) # "2"
+        z = str("2") # "2"
+        z = str(3.0) # "3.0"
+
+---------------------------------------
+
+7. Python Strings
+
+---------------------------------------        
+
+String literals are surrounded by ' ' or " ".
+
+    'abc' is the same as "abc"
+
+A multiline string is assigned as follows:
+
+    a = """This is a multiple line Strings,
+    very many words, etc etc etc etc balbalbala
+    balbalbala"""
+
+In python, strings are arrays of bytes representing the unicode characters. However, python doesn't have character data type, a single character is a string with a length of 1.
+
+To get one character from a string:
+
+    a = "Hello world"
+    c = a[0] # index starts from 0
+
+Slicing (i.e., substring), the ending index is excluded
+
+    a = "Hello world"
+    b = a[0:4] # 4 exclusive
+
+Slicing using negative indices, which starts from the end with the index of -1, and the ending index is excluded
+
+    a = "Hello world"
+    b = a[-11:-6] # Hello
+    b = a[-1] #d   
+
+To check the length of a string:
+
+    a = "Hello world"
+    stringLength = len(a)    
+
+A few built-in methods for handling strings (all of them do not change original string, they return new values):
+
+    - strip() method that removes whitespace from the beginning or the end
+        a = "   Hello world   "
+        a_without_space = a.strip() # "Hello world"
+    
+    - lower() that returns the string in lowercase
+        a = "AAA"
+        print(a.lower()) # aaa    
+
+    - upper() that returns the string in uppercase
+        a = "aaa"
+        print(a.upper()) # AAA
+
+    - replace() that replaces the specified string(of any length) exactly a number of times
+        a = "abcaaa"
+        print(a.replace("a", "A", 1)) # "Abcaaa"
+
+    - split() that replit the string into a list of substrings
+        a = "aaa,bbbb"
+        print(a.split(",")) #['aaa', 'bbbb']
+
+    - keywords "in" or "not in" are used to check whether a string contains certain sequenc of characters
+        a = "aaa,bbb"
+        print("aaa" in a)
+        print("c" in a)
+        print("Does Not Have \"c\"?", "c" not in a)
+
+    - Concatenation
+        a = "Hello"
+        b = "World"
+        print(a + b)
+
+    - format() that combines different variables (especially those cannot be concatenated). It takes the passed arguments, formats them, and places them in the string where the placeholders {} are:
+        age = 24
+        habit = "programming"
+        name = "Curtis is {} and I love {} "
+        print(name.format(age, habit))
+
+
+    
+    
 
 
