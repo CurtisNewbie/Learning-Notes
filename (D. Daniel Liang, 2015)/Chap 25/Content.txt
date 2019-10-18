@@ -66,6 +66,21 @@ Chapter 25 Binary Search Trees:
 
                 As in the example, there can be case where there is no right node at all in the left sub-tree. In such case, just copy the value of current's left child, and reconnect the child nodes of the current's left child (i.e., skip current's left child, as its value is copied to replace the previous value of current node).
 
+    4. Tree Visualisation and MVC
+        MVC architecture is used in the example, where:
+            Model - BST.java
+            View - BSTView.java
+            Controller - BSTViewController.java
+
+        There is debate in the mvc implementation in java. The way the text book implements it is that the controller hands all the panes as how it's implemented here, and controls (e.g., buttons, textfield) are instantiated directly within the controller class. As such, it has access to all these controls and it will add all the handler.
+      
+        This is consistent with
+        http://www.fredosaurus.com/notes-java/GUI/structure/40mvc.html.
+      
+        However, some developers suggest that the handlier or listener should be handled by the view rather than the controller.
+        https://stackoverflow.com/questions/26517856/java-and-gui-where-do-actionlisteners-belong-according-to-mvc-pattern
+
+
 
 
 
