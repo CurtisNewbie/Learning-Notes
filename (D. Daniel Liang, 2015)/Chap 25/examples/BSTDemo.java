@@ -1,3 +1,4 @@
+import java.util.Iterator;
 
 public class BSTDemo {
     public static void main(String[] args) {
@@ -67,7 +68,17 @@ public class BSTDemo {
         tree.preorder();
         System.out.println();
         tree.postorder();
-        System.out.println();
+        System.out.println("\n\n");
+
+        System.out.println("Iterator Demo:");
+        System.out.println("Inorder");
+        tree.inorder();
+        Iterator it = tree.iterator();
+        System.out.println("\nNext: " + it.next());
+        System.out.println("Has Next: " + it.hasNext());
+        System.out.println("Remove: ");
+        it.remove();
+        tree.inorder();
 
     }
 }

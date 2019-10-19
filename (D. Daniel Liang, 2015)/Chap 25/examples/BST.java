@@ -1,23 +1,31 @@
+import java.util.*;
+
 /**
  * Binary Search Tree without duplicates
  */
-public class BST<E extends Comparable<E>> {
+public class BST<E extends Comparable<E>> implements Iterable<E> {
 
     private TreeNode<E> root;
+    private int size;
 
     public BST(E e) {
         root = new TreeNode<E>(e);
+        size = 1;
     }
 
     public BST() {
         root = null;
+        size = 0;
+
     }
 
     public BST(E[] arr) {
         root = null;
+        size = 0;
 
         for (E e : arr) {
             this.addNode(e);
+            size++;
         }
     }
 
@@ -50,6 +58,7 @@ public class BST<E extends Comparable<E>> {
                 parent.setLeft(insertedNode);
             }
         }
+        size++;
         return true;
     }
 
@@ -238,4 +247,67 @@ public class BST<E extends Comparable<E>> {
         }
         return sum;
     }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new InorderIterator();
+    }
+
+    // inorder traversal
+    class InorderIterator implements Iterator<E> {
+
+        // use a list to temperarily simulate the traversal
+        private ArrayList<E> list;
+        private int pointer;
+
+        public InorderIterator() {
+            list = new ArrayList<>();
+            pointer = 0;
+
+            // put elements to the list through inorder traversal
+            inorderTrav();
+        }
+
+        public void inorderTrav() {
+            inorderTrav(root);
+        }
+
+        public void inorderTrav(TreeNode<E> node) {
+            if (node != null) {
+                // add elements from the left subtree
+                inorderTrav(node.getLeft());
+
+                // add current element
+                list.add(node.getElement());
+
+                // add elements from the right subtree
+                inorderTrav(node.getRight());
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (pointer < size)
+                return true;
+            else
+                return false;
+        }
+
+        @Override
+        public E next() {
+            return list.get(pointer++);
+        }
+
+        @Override
+        public void remove() {
+            delete(list.get(pointer));
+
+            // rebuild the list
+            list = new ArrayList<E>();
+            pointer = 0;
+            inorderTrav();
+        }
+
+    }
+
 }
