@@ -1,0 +1,45 @@
+Chapter 26 AVL Trees:
+
+    1.Introduction:
+    AVL Tree is a balanced binary search tree. Regarding the BST, the search, insertion and deletion are dependent on the height of the tree. When the tree is balanced, the time complexity is O(logn), while in the worst case, the time complexity is O(n).
+    
+    For example:
+
+            o       level 0     For each level, select one path to go, so O(1)      
+           / \
+          o   o     level 1     O(1)
+         / \ / \
+        o  o o  o   level 2     O(1)
+        .
+        .
+        .
+
+        As each node has two child nodes, and the root level starts from 0, 2^(h+1) = n + 1, where h is the height (number of levels) and n is the number of nodes. Each level takes O(1) time, so: 
+
+            2^(h+1) = n + 1, h = log2(n+1)
+            h levels or the total time will be: log2(n+1) * O(1) -> O(logn)
+
+        In the worst case, the height of the tree is n, it's as follows:
+        
+            o       height = n
+            |       Time Complexity = n * O(1) = O(n)
+            o
+            |
+            o
+            .
+            .
+            .
+
+    Maintaining a balanced BST decreases the time complexity of search, insertion, and deletion times for a binary tree, but doing so can be costly. 
+
+    2. AVL Tree:
+        In an AVL tree, the difference between the heights of every node’s two subtrees is 0 or 1. So that the maximum height of a AVL tree is maintained as log2(n+1). The inserting and deleting operation is the same as in the BST, but in AVL tree you have to rebalance the tree after the modification.
+
+        Balance Factor:
+            "The balance factor of a node is the height of its right subtree minus the height of its left subtree. A node is said to be balanced if its balance factor is -1, 0, or 1. A node is considered left-heavy if its balance factor is -1, and right-heavy if its balance factor is +1."(p.966)
+
+            
+
+
+
+
