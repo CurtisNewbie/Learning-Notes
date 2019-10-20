@@ -39,7 +39,7 @@ Chapter 23 Sorting
         Explaination:
             The Merge Sort algortihm is a divide-and-conquer algorithm, the divide and conquer operation are essentially copying the two subarrays to the temp arrays, and recursively sorting two subarrays. The merge time for two subarrays takes at least n time to move them to the correct position, so the merge time will be T(n).
             
-            N elements are divided by two recursively until there is only 1 element, so it is like a tree with a tree height of log2(n) + 1. As the problem is divided into two part recursively, the recurrence relation is as follows:
+            N elements are divided by two recursively until there is only 1 element, so it is like a tree with a tree height of log2(n+1) where n = 2^h - 1 (In case where the root level starting from 0). As the problem is divided into two part recursively, the recurrence relation is as follows:
 
                 T(n) = T(n/2) + T(n/2) + T(merge)
 
@@ -55,12 +55,12 @@ Chapter 23 Sorting
                     n/2           n/2   mergeTime = (n)/2 + (n)/2 = n
 
                 when h = 2, mergeTime = (n)/4 + (n)/4 + (n)/4 + (n)/4 = n
-                when h = log2(n) + 1, (where there is only one element), mergeTime = n/n * n = n.
-                So, the merge time in total will be n at each level regardless of which levle the recursion is at, so the mergeTime in total is n * (log2(n) + 1). 
+                when h = log2(n+1), where there is only one element, mergeTime = n/n * n = n.
+                So, the merge time in total will be n at each level regardless of which levle the recursion is at, so the mergeTime in total is n * log2(n+1). 
 
-                As the division takes O(1) time, say, the division happens k time (more specifically 2^log2(n) times), the time for division will be T(k), which is rather insignificant. Taking into account the merge time, the time complexity for merge sort will be:
+                As the division takes O(1) time, say, the division happens k time (more specifically 2^log2(n+1) times), the time for division will be T(k), which is rather insignificant. Taking into account the merge time, the time complexity for merge sort will be:
 
-                    T(n) = T(1) * 2^log2(n) + n * log2(n), therefore, O(n logn).
+                    T(n) = T(1) * 2^log2(n+1) + n * log2(n+1), therefore, O(n logn).
 
     4. Quick Sort   
 
@@ -148,17 +148,17 @@ Chapter 23 Sorting
             Since a heap is a binary tree, its characteristics can be calculated as follows:
 
             If there are n nodes in the Heap,
-            h (height) = log2(n),
+            h (height) = log2(n+1),
 
             5.4.1 Adding All Nodes
                 
-                To add a new node to the heap, it at most traverses the heap h levels (i.e., it takes h steps) to add the new element to the heap, for n elements, it takes n * log2(n) to add all the elements to a heap.
+                To add a new node to the heap, it at most traverses the heap h levels (i.e., it takes h steps) to add the new element to the heap, for n elements, it takes n * log2(n+1) to add all the elements to a heap.
             
             5.4.2 Removing All Nodes For Sorting
 
-                To remove the root and rebuild the heap, it takes at most h steps traverse through the path from a root to a leaf. So the total time for removing n nodes takes n * log2(n).
+                To remove the root and rebuild the heap, it takes at most h steps traverse through the path from a root to a leaf. So the total time for removing n nodes takes n * log2(n+1).
 
-            So the total time will be 2 * (n logn), thus, O(n logn)
+            So the total time will be 2 * n * log2(n+1), thus, O(n logn)
 
     6. Bucket Sort (Distribution Sort)
 
