@@ -35,11 +35,197 @@ Chapter 26 AVL Trees:
     2. AVL Tree:
         In an AVL tree, the difference between the heights of every node’s two subtrees is 0 or 1. So that the maximum height of a AVL tree is maintained as log2(n+1). The inserting and deleting operation is the same as in the BST, but in AVL tree you have to rebalance the tree after the modification.
 
-        Balance Factor:
+    2.1 Balance Factor:
             "The balance factor of a node is the height of its right subtree minus the height of its left subtree. A node is said to be balanced if its balance factor is -1, 0, or 1. A node is considered left-heavy if its balance factor is -1, and right-heavy if its balance factor is +1."(p.966)
 
+        2.1.1 To Calculate Balance Factor:
+            Balance Factor = right(height) - left(height)
+            The height of bottom level is 1 or 0.
+
+                        o      H = 4, B = 0 - 3 = -3 , whic is less than -1, so it's left heavy 
+                       /
+                      o        H = 3, B = 2 - 0 = 2
+                       \
+                        o      H = 2, B = 1 - 0 = 1
+                         \
+                          o    H = 1, B = 0  
             
 
+    2.3 Rebalancing Tree:
+            Tree may need to be rebalanced everytime inserting or deleting an element if the balance factor is greater than +1 or less than -1. Rotation is the process of rebalancing the tree.
+
+            There are four ways of rotations that rebalance the tree:
+                - LL Rotation -> LL Imbalance  
+                - RR Rotation -> RR Imbalance
+                - LR Rotation -> LR Imbalance
+                - RL Rotation -> RL Imbalance
+
+            Among these rotations and imbalance,
+                LL refers to Left Left Imbalance that the tree is left heavy. E.g.,
+
+                        o Balance Factor of -2
+                       /
+                      o
+                     / 
+                    o
+
+                RR refers to Right Right Imbalance and LR refers to Left Right Imbalance, vice versa.
+
+                LR imbalance is as follows:
+                
+                        o  Balance Factor of -3
+                       /
+                      o
+                       \
+                        o
+                         \
+                          o  
+
+                RL imbalance is as follows:
+
+                        o  Balance Factor of +3
+                         \                   
+                          o 
+                         /
+                        o
+                       /
+                      o
+
+        Move info about rebalancing : https://www.tutorialspoint.com/data_structures_algorithms/avl_tree_algorithm.htm
+
+        2.3.1 LL Imbalance and Single Right Rotation:
+
+            "An LL imbalance occurs at a node A, such that A has a balance factor of -2 and a left child B with a balance factor of -1 or 0..." (p.967) This type of imbalance is fixed using single right rotation at A.
+
+                    A
+                   / \
+                  B  H(r)   where, H(r) - (H(l) + 1) = -2 so if, H(r)=h, H(l) = h + 1 
+                 /   
+                H(l)
+
+            Right Rotation will be making A to be the right child node of B, as B is the left child node of A meanig B < A, and making A to be the right child node of B is essentially the same thing as A > B.
+
+                   B
+                  / \        
+                H(l) A       As H(r) = h, and H(l) = h+1, the current balance factor of B is:
+                      \        (H(r) + 1) - H(l) = (h + 1) - (h + 1) = 0
+                      H(r)   
+
+            I.e., Single Right Rotation is swaping the left(B) with the current (A), making it that the left(B) becomes the node at the top and the previous current(A) becomes the right child of the B. B -> A, A -> B's right child
+        
+        2.3.2 RR Imbalance and Single Left Rotation:
+
+            "An RR imbalance occurs at a node A, such that A has a balance factor of +2 and a right child B with a balance factor of +1 or 0..." (p.967)
+
+            This is the oppisite situation of LL Imbalance,
+
+                A
+               /  \
+              H(l) B       Where, (H(r) + 1) - H(l) = +2, so if H(l) = h, H(r) = h + 1
+                    \   
+                     H(r) 
+
+            A single left rotation will be making A to be the left child of B, and let B to be the node at the top. This follows the same logic of LL Rotation.  B -> node at the top, A -> B's left child
+
+                    B
+                   / \
+                  A   H(r)   So the balance factor of B will be H(r) - (H(l) + 1) = h + 1 - h + 1 = 0
+                 /
+                H(l)    
+
+        2.3.3 LR Imbalance and Double Rotation (Left Rotation then Right Rotation):
+
+            "An LR imbalance occurs at a node A, such that A has a balance factor of -2 and a left child B with a balance factor of +1..." (p.967)
+
+                      A
+                     / \
+                    B   H(Ar)   
+                   / \
+                H(Bl) C
+                     / \
+                  H(Cl) H(Cr)    
+
+            A is the node at the top. B is the left child of A and C is the right child of B. The Double rotation starts from single left rotation on B, and then a single right rotation on A.
+
+            2.3.3.1 First - Left Rotation
+
+                So for B, B -> C's left child, C -> A's left child
+
+                              A
+                             / \
+                            C   H(Ar)   
+                           / \
+                          B   H(Cr)
+                         / \              
+                    H(Bl)  H(Cl)
+
+            More detailed Explanation (of how their subtrees are settled): 
+                - B's left must be less than B       
+                - C must be greater than B
+                - So, C's left and right must also be greater than B since the inserting operation starts from the root.
+                - Since, C's left is less than C but greater than B, C's left can now become B's right. That B is C's child and C's left is B's right child.
+                - C's right remains greater than C, so its subtree remains unchanged.
+
+            2.3.3.2 Second - Right Rotation
+
+                The second rotation will take place on A, so C -> node at the top, A -> C's right child
+
+                              C      
+                           /     \
+                          B       A 
+                         / \     / \        
+                    H(Bl) H(Cl) H(Cr) H(Ar)
+
+            More detailed Explanation (of how their subtrees are settled): 
+                - A's right must be greater than A
+                - A must be greater than C as well
+                - So, A will be the C's right child, and A's right child remains unchanged
+                - Since C's right is greater than C but less than A, C's right child will be A's left child
+
+        2.3.4 RL Imbalance and Double Rotation (Right Rotation then Left Rotation):
+            
+            "An RL imbalance occurs at a node A, such that A has a balance factor of +2 and a right child B with a balance factor of -1..."(p.967)
+
+                    A
+                  /   \
+                H(Al)  B
+                      / \
+                     C   H(Br)
+                    / \
+                H(Cl)  H(Cr)
 
 
+            A is the node at the top. B is the right child of A and C is the left child of B. The Double rotation starts from single right rotation on B, and then a single left rotation on A.
 
+            2.3.4.1 First, Single Right Rotation
+
+                So, B -> C's right child, C -> A's right child
+
+                        A
+                      /   \
+                    H(Al)  C
+                         /   \
+                      H(Cl)   B
+                             /  \   
+                          H(Cr) H(Br)
+
+                More detailed Explanation (of how their subtrees are settled): 
+                    - C must be less than B, including C's left and right
+                    - B's right must be greater than B and C as well.
+                    - So, B's right position remains unchanged, while C's right will be the B's left as it is greater than C but less than B. And C's left will remain unchanged. 
+
+
+            2.3.4.2 Second, Single Left Rotation
+
+                so,  C -> node at the top, A -> C's left child
+
+                              C
+                           /     \ 
+                          A        B    
+                        /   \     /  \                          
+                    H(Al) H(Cl) H(Cr) H(Br)       
+
+                More detailed Explanation (of how their subtrees are settled):
+                    - C must be less than A, and C must be greater than C's left
+                    - C's left is less than C but greater than A, so it will be A's right child
+                    - A's left remains unchanged.
