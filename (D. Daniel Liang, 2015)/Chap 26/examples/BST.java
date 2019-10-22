@@ -260,7 +260,7 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 
         @Override
         public boolean hasNext() {
-            if (pointer < size)
+            if (pointer < list.size())
                 return true;
             else
                 return false;
