@@ -5,6 +5,10 @@ import java.util.*;
  */
 public class AVLTree<E extends Comparable<E>> extends BST<E> implements Rebalanceable<E> {
 
+    public AVLTree(E[] arr) {
+        super(arr);
+    }
+
     /**
      * Create AVLTreeNode with element.
      * 
@@ -28,11 +32,80 @@ public class AVLTree<E extends Comparable<E>> extends BST<E> implements Rebalanc
     }
 
     /**
+     * Insert a new node and rebalance this node and all of its parents (the parents
+     * of its parents and so on, including the root)
+     */
+    @Override
+    public boolean addNode(E e) {
+        var result = super.addNode(e);
+        if (result)
+            rebalance(e);
+        return result;
+    }
+
+    @Override
+    /**
+     * Delete an element if it is in the tree.
+     * 
+     * @param e element
+     * @return
+     */
+    public boolean delete(E e) {
+        TreeNode<E> parent = null;
+        TreeNode<E> current = getRoot();
+        while (current != null) {
+            if (e.compareTo(current.getElement()) > 0) {
+                parent = current;
+                current = current.getRight();
+            } else if (e.compareTo(current.getElement()) < 0) {
+                parent = current;
+                current = current.getLeft();
+            } else { // found
+
+                // case 1: current does not have left child
+                if (current.getLeft() == null) {
+
+                    // if parent is null, meaning current is root, and there is not left
+                    if (parent == null) {
+                        // replace root with the right child
+                        setRoot(current.getRight());
+                    } else {
+                        if (e.compareTo(parent.getElement()) > 0)
+                            parent.setRight(current.getRight());
+                        else // not duplicates
+                            parent.setLeft(current.getRight());
+                        rebalance(parent.getElement());
+                    }
+                } else { // case 2: current does have a left child
+                    TreeNode<E> leftTreeParent = current;
+                    TreeNode<E> leftTreeRightMost = current.getLeft();
+                    while (leftTreeRightMost.getRight() != null) {
+                        leftTreeParent = leftTreeRightMost;
+                        leftTreeRightMost = leftTreeRightMost.getRight();
+                    }
+                    current.setElement(leftTreeRightMost.getElement());
+
+                    // remove the previous rightmost
+                    if (leftTreeParent == current) {
+                        leftTreeParent.setLeft(leftTreeRightMost.getLeft());
+                    } else {
+                        leftTreeParent.setRight(leftTreeRightMost.getLeft());
+                    }
+                    // As the 'rightmost' node is deleted, the parent of it needs to rebalance
+                    rebalance(leftTreeParent.getElement());
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Rebalance the node upward (towards the root)
      */
     @Override
-    public void rebalance(TreeNode<E> node) {
-        ArrayList<TreeNode<E>> path = pathToRoot(node.getElement());
+    public void rebalance(E e) {
+        ArrayList<TreeNode<E>> path = pathToRoot(e);
         for (int i = path.size() - 1; i >= 0; i--) {
             var nodeA = path.get(i);
             var parentOfA = (i == 0) ? null : path.get(i - 1);

@@ -1,8 +1,8 @@
 
 public interface Rebalanceable<E> {
 
-    /** Rebalance given node all the way to the root */
-    void rebalance(TreeNode<E> node);
+    /** Rebalance the node of the given element all the way to the root */
+    void rebalance(E e);
 
     /** Left Left Rotation */
     void llBalance(TreeNode<E> nodeA, TreeNode<E> parentOfA);
