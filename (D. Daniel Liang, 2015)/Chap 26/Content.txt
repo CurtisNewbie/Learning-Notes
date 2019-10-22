@@ -229,3 +229,13 @@ Chapter 26 AVL Trees:
                     - C must be less than A, and C must be greater than C's left
                     - C's left is less than C but greater than A, so it will be A's right child
                     - A's left remains unchanged.
+
+   3. AVL Tree Time Complexity Analysis:
+
+        Since the AVL Tree tries to maintain the balance of the tree, the tree's height is maintained at about Log2(n+1). Which means that the time complexity of searching, inserting and deleting is O(logn).
+
+        Assuming the root is at level 0, the recurrence relation of traversing h height becomes:
+        
+            T(h) = T(h-1) + T(h-2) + 1 
+        
+
