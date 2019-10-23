@@ -1,0 +1,133 @@
+Chapter 27 Hashing:
+    Hashing is efficient in that searching, insertion, deleting only takes O(1) time with hashing.
+
+    1. What is Hashing?
+        "Hashing uses a hashing function to map a key to an index." (p.986)
+
+    2. Map, Dictionary, HashTable, or Associative Array
+
+        Map, Dictionary (in py), HashTable, and so on are synonymous terms. Hashing is the key function to implement this type of structure.
+
+        In Java, java.util.Map interface speicifies the design of a Map:
+
+                             -> LinkedHashMap (implemented using LinkedList)   
+            Map <interaface> -> HashMap (implemented using pure hashing)
+                             -> TreeMap (implemented using red-black tree)
+
+    3. Perfect Hashing Function
+        Preferrably, a perfect hashing function produces unique key for each value. However, it is difficult or even impossible.
+
+    4. Collision
+        Collision occurs when two or more keys are mapped to the same hash value, i.e., the hashing function is not perfect. 
+    
+    5. Hash Codes for Primitive Types
+        
+        5.1 Hashing Byte, Short, Int and Char
+            For byte, short, int and char, simply cast them to int. So different types can produce different hash codes. (E.g., if hash code is implemented for byte, so long as the byte that is hashed is unique, the generated hash code will also be unique.)
+
+        5.2 Hashing Float
+            For float, use Float.floatToIntBits(key) method to produce the key. Simlar to the ways the above primitive types are hashed, this method also returns a int value representing the float.
+
+        5.3 Hashing Long and Folding 
+            For long, it's not sensible to cast it to int. As all keys that have the same first 32 bits will still be considered as the same. Regarding this, a process called folding is needed. 
+            
+            "To take the first 32 bits into consideration, divide the 64 bits into two halves and perform the exclusiveor operation to combine the two halves. This process is called folding." (p.987)
+
+            5.3.1 Folding Process 
+                Use the (bitwise) right-shift operator to shifts the 32 bits to the right. Then use the ^ bitwise exclusive-or operator (called XOR Operator) to compres each pair of corresponding bits of the two binaries, if the corresponding bits are different, gives 1, else 0.         
+
+                5.3.1.1 Right Shift Operator
+                    E.g., 1010110 >> 2, the rightmost two bits ("10") are dumped, the binary will become "0010101". 
+
+                5.3.1.2 Exclusive-Or Operator
+                    Compares each pair of corresponding bits, e.g., 0110101 ^ 1010110
+
+                        0110101
+                     ^  1010110
+                    -------------
+                        1000011   
+
+                The implementation is as follows:       
+                    int hashCode = (int) (key ^ (key >> 32))
+
+            <https://www.geeksforgeeks.org/bitwise-operators-in-java/>
+             
+        5.4 Hashing Double and Folding
+            For double, first convert it to a long value using Double.doubleToLongBits(), and then use the right-shift and XOR operators in the same way as that for long.
+
+                long l = Double.doubleToLongBits(key);
+                return (int) (l ^ (l >> 32))
+
+        5.5 Hashing String and Polynomial Hash Code
+            Simply calculating the sum of the unicode of all characters can cause many collisions. A better approach will be to take into consideration the position of each character. This can be done as follows using polynomial:
+
+                S0 * c^(n-1) + S1 * c^(n-2) + ... + Sn-1
+
+            where the Si is str.charAt(i), and the c is a constant. However, this can cause arithmetic overflow for long strings. An appropriate value for constant c should be chosen to minimise collisions. Good choices include: 31, 33, 37, 39. This method is used in the hashcode method in String class, where the constant is set as 31.
+
+    6. Compressing Hash Codes (To Avoid Exceeding Index Range)
+        The hashcode generated can be a large integer that exceeds the range of the hash table index. So, there is a need to scale down or compress the hash codes.
+
+        Assuming the range is between 0 and n-1. The implementation will be:
+
+            compressedCode = hashCode % n;
+
+        To make sure that the indices are distributed evenly, n should be a prime number greater than 2. However, it can be time consuming to find a large prime number. In java.util.HashMap the number n is set to the value of the power of 2. Most importantly, bitwise & operator performs much faster than % modular operator.
+
+            If n is the power of 2: 
+
+                compressedCode = hashCode % n;
+
+            is the same as
+
+                compressedCode = hashCode & (n - 1)
+
+            I.e.,g x % 2^n == x & (2^n -1)
+
+            For example, assuming n == 2, and hashCode == 3,
+
+                compressedCode = 3 % 2 = 1;
+
+                In binary:
+                    000 0
+                    001 1
+                    010 2
+                    011 3
+
+                compressedCode = 3 & (2 - 1), thus (note, & gives 1 if both are 1, else 0)
+
+                    011
+                &   001
+                ---------
+                    001     and 001 is 1 in decimal number system, so the result is the same.
+
+        To make sure the hashing is evenly distributed, a supplement hash function is also used along with the primary hash function in the java.util.HashMap. The >>> is the unsigned right bitwise shift.
+
+            /**
+            In java.util.HashMap
+            **/
+            private static int supplementalHash(int h){
+                h ^= (h >>> 20) ^ (h >>> 12);
+                return h ^ (h >>> 7) ^ (h >>> 4);
+            }
+
+            So, the complete hash function is as follows, where the hashCode is implemented in the object's class using the hashCode() function (e.g., overriden hashCode() in class MyExample). The hashcode is used as a key, and the HashMap uses the supplementalHash() function to ensure the hash is evenly distributed. 
+
+                comprssedCode = supplementalHash(hashCode) % n;
+            
+            Since n is the power of 2, it's same as:
+
+                compressedCode = supplementalHash(hashCode) & (n - 1);
+
+    7. Good Hashing Function and Avalanche Effect
+        A good hashing function aims to reduce collisions, i.e., having a good avalanche effect.
+
+        "...the operations must use a chain of computations to achieve avalanche. Avalanche means that a single bit of difference in the input will make about 1/2 of the output bits be different." (StackOverflow)
+
+        <https://stackoverflow.com/questions/9335169/understanding-strange-java-hash-function>
+
+
+
+
+
+            
