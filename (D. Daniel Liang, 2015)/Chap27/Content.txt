@@ -127,6 +127,94 @@ Chapter 27 Hashing:
         <https://stackoverflow.com/questions/9335169/understanding-strange-java-hash-function>
 
 
+    8. Handling Collisions Using Open Addressing
+        Generally, there are two ways to handle collisions, 1) Open Addressing and 2) Seperate Chaining.
+        
+        8.1 Open Addressing
+            "Open addressing is the process of finding an open location in the hash table in the event of a collision. Open addressing has several variations: linear probing, 
+            quadratic probing, and double hashing." (p.989) 
+
+            8.1.1 Linear Probing
+                "When a collision occurs during the insertion of an entry to a hash table, linear probing finds the next available location sequentially." (p.989) 
+                
+                    IF collision found at index[k % N] { // where k is the output of supplementalHash() and N is the size of the hashTable
+
+                        index = hash(hashCode) // k % N
+                        while [index] is occupied {
+                            index = ++k % N
+
+                            if(index reaches the end of the hashTable){
+                                index = 0; // start over
+                            }
+                        }
+
+                        Insert the entry
+                    }
+                
+                Thus this operation is of linear time, when the hash table grows bigger, the linear probing can be much slower. This is called cluster problem, a cluster is a group of consecutive cells that are to be occupied. More specifically, "each cluster is actually a probe sequence that you must search when retrieving, adding, or removing an entry."(p.990)
+
+            8.1.2 Quadratic Probing
+                Quadratic Probing solves the clustering problem happends in linear probing. It works the same ways as the Linear Probing except that the cells being checked are not sequential.
+
+                    In Linear Probing, the index starts from k % N
+                        index = k % N, where k++
+                    
+                    However, in Quadratic Probing, the index increments as follows:
+                        index = (k + j^2) % N, where j >=1 and j ++
+
+                        the index will be like this: e.g., 4 -> 5 -> 8 -> 14 ...
+                    
+                However, Quadratic Probing also has its own clustering problem, called secondary clustering. Which is that "...the entries that collide with an occupied entry use the same probe sequence." (p.991) Further, Linear Probing ensures that the empty cell to be found so long as the table is not full, while Quadratic Probing does not guarantee this.
+
+            8.1.3 Double Hashing
+                Linear Probing increments k by 1, Quadratic Probing increments k by j^2, while Double Hashing uses a secondary hash function on the keys to determine the increments. 
+                
+                "Specifically, double hashing looks at the cells at indices 
+                    
+                    (k + j* h′(key)) % N, for j >= 0, 
+                    
+                that is, k % N, (k + h′(key))% N, (k + 2* h′(key)) % N, (k + 3* h′(key)) % N, and so on." (p.991)
+
+                where h'(key) is the secondary hash function. 
+
+                For example, say key = 12 and N(size) = 11, assuming the original hashing function is:
+                    hash(key) = key % N = 12 % 11 = 1;
+
+                    and, the secondary hash function is:
+
+                        h'(key) = 7 - key % 7 = 2;
+
+                    If index 1 is occupied, start using Double Hashing to handle collisions:
+
+                        so, the next index  will become:
+
+                            hash(key) = (k + j * h'(key)) % N   // k is the first index checked
+                                      = (1 + 1 * 2) % 11
+                                      = 3
+
+                    Further, if index 3 is also occupied, j is further incremented by 1:
+
+                            hash(key) = (1 + 2 * 2) % 11
+                                      = 5
+                    ... until empty cell is found ...
+
+        8.2 Separate Chaining
+            "The separate chaining scheme places all entries with the same hash index in the same location, rather than finding new locations. Each location in the separate chaining scheme uses a bucket to hold multiple entries." (p.993)
+
+    9. Loading factor and Rehashing
+        Rehashing is the process of increase the hash table size and reloading the entries into a new larger hash table when the load factor is exceeded. 
+
+        Load factor is a ratio of the number of elmenets to the size of the hash table. Thus, the load factor is always between 0 and 1. 
+
+        "Studies show that you should maintain the load factor under 0.5 for the open addressing scheme and under 0.9 for the separate chaining scheme." (p.994) As rehashing is costly, it's recommended to at least double the size of the hash table.
+
+        
+
+
+
+
+
+
 
 
 
