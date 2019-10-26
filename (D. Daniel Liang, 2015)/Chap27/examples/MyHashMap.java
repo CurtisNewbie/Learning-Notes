@@ -52,6 +52,12 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         this.size = 0;
     }
 
+    /**
+     * Allocating a new array (and garbage collecting the old one) is probably more
+     * time consuming than iterating over the existing array and setting the
+     * references of all the elements to null. So, this is not a good way of
+     * "clearing".
+     */
     @Override
     public void clear() {
         hashTable = new LinkedList[capacity];
