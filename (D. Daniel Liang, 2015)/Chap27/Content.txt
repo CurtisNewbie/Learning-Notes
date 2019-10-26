@@ -208,6 +208,11 @@ Chapter 27 Hashing:
 
         "Studies show that you should maintain the load factor under 0.5 for the open addressing scheme and under 0.9 for the separate chaining scheme." (p.994) As rehashing is costly, it's recommended to at least double the size of the hash table.
 
+    10. Implementation of HashMap (See Example)
+    11. Implementation of HashSet (See Example)
+        There are three concrete implementation of Set, LinkedHashSet, TreeSet, and HashSet. Where, HashSet is implemented using a HashMap internally, LinkedHashSet using LinkedList and TreeSet using red-black trees.
+
+        
         
 
 
