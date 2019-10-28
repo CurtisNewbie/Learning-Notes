@@ -104,6 +104,43 @@ Chapter 28 Graphs and Applications:
                 ...
             };
 
+        3.5 Representing Edges - Adjacency Lists For Vertices and Edges
+            Edges can also be represented using Adjacency Vertex Lists or Adjacency Edge Lists. "An adjacency vertex list for a vertex i contains the vertices that are adjacent to i and an adjacency edge list for a vertex i contains the edges that are adjacent to i." (p.1022)
+
+            This is very similar to the Adjacency Matrices, except that it doesn't use the value of 0 and 1 to indicate which vertices are adjacent to them.
+
+            E.g., 
+                // for vertex i = 0, the vertices that are adjacent include: 1, 3, 5 (indices)
+                adjacencyList[0] = {1, 3, 5};
+
+            Same applied to Adjacency Lists for Edges:
+            E.g., 
+                // for edge i = 0
+                adjacencyList[0] = {2, 5, 8};
+
+                or
+
+                adjacencyList[0] = {edgeObj2, edgeObj5, edgObj8}; // these are objects
+
+            3.5.1 Adjacency Vertex List or Adjacency Edge List?
+                Adjacency Vertex list is easier to implement in comparison to Adjacency Edge List, nonetheless, the Adjacency Edge List is more flexible, and it's easier to add additional constraints on edges.
+
+        3.6 Using Adjacency Matricies or Adjacency Lists?
+            Adjacency Matrix is a two dimensional array (or list) that includes the relationship between all vertices regardless of whether they are adjacent. Though the Adjacency List is quite similar, it ignores the vertices that are not adjacenct. 
+
+            The general rule to select one among them, is based on whether the graph is dense (of many edges) or sparse (of few edges). If the graph is dense, Adjacency Matrix is preferred. While, if the graph is sparse, the Adjacency List should be used as the Adjacency Matrix can waste a lot of space in such case (e.g., storing many unnecessary 0).
+
+    4. Modeling Graphs
+        Simlar to the collections in Java Collection Framwork, the Graph interface and implementation can be designed as follows:
+                                                  | <-- UnweightedGraph                
+            Graph<interface> <-- AbstractGraph <--|
+                                                  | <-- WeightedGraph
+
+         
+
+
+
+
 
 
     
