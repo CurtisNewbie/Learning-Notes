@@ -135,6 +135,68 @@ Chapter 28 Graphs and Applications:
                                                   | <-- UnweightedGraph                
             Graph<interface> <-- AbstractGraph <--|
                                                   | <-- WeightedGraph
+        
+        In this design including the ones in example, the unweightedGraph is simply the extension of AbstractGraph without introducing new methods, it is used to indicate that the graph is unweighted. It doesn't realy distinguish from the AbstractGraph except that it can be instantiated.
+
+    5. Depth-First Search in Graph
+        "The depth-first search of a graph starts from a vertex in the graph and visits all vertices in the graph as far as possible before backtracking." (p.1038)
+        
+        The DFS in a Graph is similar to the DFS in a tree, except that the DFS in a tree starts from a root or a root of a subtree, and the DFS can start from any vertex in the Graph.
+
+        The general idea is as follows:    
+            1. Visits a vertex (from which the DFS is started)
+            2. Recursively visists all the adjacent vertices to this vertex.
+
+        So, the DFS in Graph is very similar to that in Tree. However, in Graph, there can be circles that leading to the infinite recursion. So, the vertices that are visited should be tracked.
+
+        The Breadth-First Search is similar to this logic, however, the DFS prioritises visitng the unvisited neighbors.
+
+        "
+            Input: Graph G = (V, E) and a starting vertex v
+            Output: a DFS tree rooted at v
+                
+                Tree dfs(vertex v) {
+                    visit v;
+                for each neighbor w of v
+                    if (w has not been visited) {
+                        set v as the parent for w in the tree;
+                        dfs(w);
+                    }
+                }
+        "
+
+    6. Breath-First Search In Graph
+        "The breadth-first search of a graph visits the vertices level by level. The first level consists of the starting vertex. Each next level consists of the vertices adjacent to the vertices in the preceding level." (p.1045)
+
+        The general idea is as follows:
+            1. Visits the vertex (from which the BFS is started at)
+            2. Visits all the neighbors of current vertex
+            3. Go down one level of these neighbors, visits the neighbors (one level down) of these neighbors one by one. Say, in step 2, there are neighbors A, B, C found, in step 3 will visits the neighbors of A first, then the neighbors of B, and finally the neighbors of C. Then, this further goes down one level, until there is no unvisited neighbors.
+
+        "
+            Input: G = (V, E) and a starting vertex v
+            Output: a BFS tree rooted at v
+
+            Tree bfs(vertex v) {
+                create an empty queue for storing vertices to be visited;
+                add v into the queue;
+                mark v visited;
+
+                while (the queue is not empty) {
+                    dequeue a vertex, say u, from the queue;
+                    add u into a list of traversed vertices;
+
+                    for each neighbor w of u
+                        if w has not been visited {
+                            add w into the queue;
+                            set u as the parent for w in the tree;
+                            mark w visited;
+                        }
+                    }
+                }
+        "
+
+        
 
          
 
