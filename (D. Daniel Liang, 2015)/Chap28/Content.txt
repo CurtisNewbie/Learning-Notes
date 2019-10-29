@@ -196,6 +196,20 @@ Chapter 28 Graphs and Applications:
                 }
         "
 
+    7. Graph Visualisation
+        To display a graph, the coordinates of each vertex should be known. One way to design the graph visualisation is to create an interface for display (e.g., call Displayble), and make the classes that will be visually displayed to implement this interface. Using the coordinates provided to draw the vertices and the edges (based on the Adjacent List). 
+
+            e.g., 
+                class E implements Displayable{...}
+
+                Graph <E extends Displayable>{...}
+
+                interface Displayable{
+                    int coordinateX();
+                    int coordinateY();
+                    ...
+                }
+
         
 
          
