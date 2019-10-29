@@ -158,7 +158,7 @@ public abstract class AbstractGraph<E> implements Graph<E> {
     public String toString() {
         StringBuilder sb = new StringBuilder("Adjacency List for Edges\n");
         for (int i = 0; i < neighbors.size(); i++) {
-            sb.append("For (" + vertices.get(i) + ") [");
+            sb.append("    For ([" + i + "]" + vertices.get(i) + ") [");
             for (Edge e : neighbors.get(i)) {
                 // print the adjacent edges for edge[i]
                 sb.append("(" + e.getVert1() + ", " + e.getVert2() + ")");
