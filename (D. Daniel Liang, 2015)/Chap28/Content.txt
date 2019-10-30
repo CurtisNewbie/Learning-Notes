@@ -168,6 +168,15 @@ Chapter 28 Graphs and Applications:
                     }
             "
 
+            5.1.1 Applications of DFS
+                DFS can be used to solve following problems: (p.1042)
+                    - Detecting whether a graph is connected, see whether the number of vertices traversed/searched is the same as the number of vertices in the graph.
+                    - Detecting whether there is a path between vertices
+                    - Finding a path between two vertices (that consists of multiple edges)
+                    - Finding all connnected components (a connected component is a maximal connnected subgraph)
+                    - Detecting whether there is a cycle in the graph
+                    - Finding a Hamitonian path/cycle (which is a path that visits each vertex exactly once and returns to the starting vertex).
+
             5.2 Breath-First Search In Graph
                 "The breadth-first search of a graph visits the vertices level by level. The first level    consists of the starting vertex. Each next level consists of the vertices adjacent to  the vertices in the preceding level." (p.1045)
 
@@ -197,7 +206,16 @@ Chapter 28 Graphs and Applications:
                             }
                         }
                     }
-            "
+                "
+
+            5.2.1 Applications of BFS
+                BFS can be used to solve: (p.1047)
+                    - Detecting whether a graph is connected, (if there is a path between any two vertices in the graph).
+                    - Detecting wehther there is a paht between two vertices.
+                    - Find shortest path between two vertices. (In the resulted SpanningTree of BFS, the path between the root and any node is the shortest path).
+                    - Find all connected components (a connected component is a maximal connnected subgraph)
+                    - Detect and find whether there is a cycle in the path
+                    - Test whether a graph is bipartite. (a bipartite graph (or bigraph) is a graph whose vertices can be divided into two disjoint and independent sets U and V such that every edge connects a vertex in U to one in V).
 
     7. Graph Visualisation
         To display a graph, the coordinates of each vertex should be known. One way to design the graph visualisation is to create an interface for display (e.g., call Displayble), and make the classes that will be visually displayed to implement this interface. Using the coordinates provided to draw the vertices and the edges (based on the Adjacent List). 
