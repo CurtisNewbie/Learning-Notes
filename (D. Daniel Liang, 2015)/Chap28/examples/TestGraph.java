@@ -31,8 +31,36 @@ public class TestGraph {
         System.out.println("The vertex with index 1 is " + graph1.getVertex(1));
         System.out.println("The index for Miami is " + graph1.getIndex("Miami"));
         System.out.println("The edges for graph1:\n" + graph1.toString());
-        System.out.println("DFS from Miami: " + graph1.depthFirstSearchTree(graph1.getIndex("Chicago")));
-        System.out.println("BFS from Miami: " + graph1.breadthFirstSearchTree(graph1.getIndex("Chicago")));
+
+        // DFS Tree
+        AbstractGraph.SearchTree dfs = graph1.depthFirstSearchTree(graph1.getIndex("Miami"));
+        System.out.println("DFS1 from " + vertices[dfs.getRoot()] + ": \n  " + dfs.toString());
+        System.out.println("    Path from Dallas to Root " + dfs.getPathToRoot(graph1.getIndex("Dallas")));
+        System.out.println(
+                "    Path from Dallas to Root " + dfs.pathToName(dfs.getPathToRoot(graph1.getIndex("Dallas"))));
+
+        // BFS Tree
+        AbstractGraph.SearchTree bfs = graph1.breadthFirstSearchTree(graph1.getIndex("Miami"));
+        System.out.println("BFS1 from " + vertices[bfs.getRoot()] + ": \n  " + bfs.toString());
+        System.out.println("    Path from Dallas to Root " + bfs.getPathToRoot(graph1.getIndex("Dallas")));
+        System.out.println(
+                "    Path from Dallas to Root " + bfs.pathToName(bfs.getPathToRoot(graph1.getIndex("Dallas"))));
+        System.out.println("");
+
+        // DFS Tree
+        AbstractGraph.SearchTree dfs2 = graph1.depthFirstSearchTree(graph1.getIndex("Boston"));
+        System.out.println("DFS2 from " + vertices[dfs2.getRoot()] + ": \n  " + dfs2.toString());
+        System.out.println("    Path from Dallas to Root " + dfs2.getPathToRoot(graph1.getIndex("Dallas")));
+        System.out.println(
+                "    Path from Dallas to Root " + dfs2.pathToName(dfs2.getPathToRoot(graph1.getIndex("Dallas"))));
+
+        // BFS Tree
+        AbstractGraph.SearchTree bfs2 = graph1.breadthFirstSearchTree(graph1.getIndex("Boston"));
+        System.out.println("BFS2 from " + vertices[bfs2.getRoot()] + ": \n  " + bfs2.toString());
+        System.out.println("    Path from Dallas to Root " + bfs2.getPathToRoot(graph1.getIndex("Dallas")));
+        System.out.println(
+                "    Path from Dallas to Root " + bfs2.pathToName(bfs2.getPathToRoot(graph1.getIndex("Dallas"))));
 
     }
+
 }

@@ -327,6 +327,48 @@ public abstract class AbstractGraph<E> implements Graph<E> {
             bs.append("]");
             return bs.toString();
         }
+
+        public List<Integer> getPathToRoot(int i) {
+
+            // System.out.println(Arrays.toString(parentOfVertices) + " Root" + root + " i"
+            // + i);
+            List<Integer> path = new ArrayList<>();
+            path.add(i);
+            int index = i;
+            int parent = parentOfVertices[index];
+            while (parent != root) {
+                // System.out.println(parent);
+                path.add(parent);
+                index = parent;
+                parent = parentOfVertices[index];
+            }
+            path.add(root);
+            return path;
+        }
+
+        /**
+         * Return a path to the root which consists of name of vertices rather than the
+         * indices. Vertices must implement Displayable interface, as this method uses
+         * the getName method in Displayble internally.
+         * 
+         * @param path a {@code List<Integer>} that specifiy the path to the root, which
+         *             consists of the indices of vertices in the graph.
+         * @return {@code null} if the vertices of the graph are not string or there is
+         *         no vertex at all. Else a {@code List<String>}that speicify the path
+         *         to the root.
+         */
+        public List<String> pathToName(List<Integer> path) {
+            if (vertices.size() <= 0 || !(vertices.get(0) instanceof String)) {
+                return null;
+            } else {
+                List<String> namePath = new ArrayList<>();
+                for (int p : path) {
+                    namePath.add((String) vertices.get(p));
+                }
+                return namePath;
+            }
+        }
+
     }
 
     /**
