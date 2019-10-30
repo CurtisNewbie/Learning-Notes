@@ -213,14 +213,14 @@ public abstract class AbstractGraph<E> implements Graph<E> {
      * @param visited     indicating whether the vertex is visited
      */
     private void internalDFS(int i, int[] parents, List<Integer> searchOrder, boolean[] visited) {
-        // check if i is visisted, if not make it visited and add it to the search
-        // order (or order of traversal).
-        if (!visited[i]) {
-            visited[i] = true;
-            searchOrder.add(i);
+        visited[i] = true;
+        searchOrder.add(i);
 
-            List<Edge> adjacentEdges = neighbors.get(i);
-            for (Edge e : adjacentEdges) {
+        // check if the neighbors of i are visisted, if not make them visited and add
+        // them to the search order (or order of traversal).
+        List<Edge> adjacentEdges = neighbors.get(i);
+        for (Edge e : adjacentEdges) {
+            if (!visited[e.getVert2()]) {
                 int adjacentVertex = e.getVert2();
                 // set these adjacent vertices' parent to be i
                 parents[adjacentVertex] = i;
