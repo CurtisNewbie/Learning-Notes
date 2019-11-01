@@ -329,15 +329,11 @@ public abstract class AbstractGraph<E> implements Graph<E> {
         }
 
         public List<Integer> getPathToRoot(int i) {
-
-            // System.out.println(Arrays.toString(parentOfVertices) + " Root" + root + " i"
-            // + i);
             List<Integer> path = new ArrayList<>();
             path.add(i);
             int index = i;
             int parent = parentOfVertices[index];
             while (parent != root) {
-                // System.out.println(parent);
                 path.add(parent);
                 index = parent;
                 parent = parentOfVertices[index];
