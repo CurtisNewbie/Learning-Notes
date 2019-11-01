@@ -60,4 +60,9 @@ public class Edge {
         return vert2;
     }
 
+    @Override
+    public String toString() {
+        return "{" + vert1 + "-" + vert2 + "}";
+    }
+
 }
