@@ -21,7 +21,7 @@ public class UnweightedGraph<E> extends AbstractGraph<E> {
      * Construct Unweighted Graph using a vertices List and edges List
      * 
      * @param vertices vertices represented using List
-     * @param edges    edges represented using two-dimentional edges List
+     * @param edges    edges represented using List
      */
     public UnweightedGraph(List<E> vertices, List<Edge> edges) {
         super(vertices, edges);
