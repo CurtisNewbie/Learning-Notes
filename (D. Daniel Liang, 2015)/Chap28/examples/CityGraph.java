@@ -96,17 +96,17 @@ class City {
 }
 
 /** Representing Edges as objects */
-class Edge {
+class CityEdge {
 
     private int vert1;
     private int vert2;
 
-    public Edge(int vert1, int vert2) {
+    public CityEdge(int vert1, int vert2) {
         this.vert1 = vert1;
         this.vert2 = vert2;
     }
 
-    public boolean equals(Edge e) {
+    public boolean equals(CityEdge e) {
         return this.getVert1() == e.getVert1() && this.getVert2() == e.getVert2();
     }
 
