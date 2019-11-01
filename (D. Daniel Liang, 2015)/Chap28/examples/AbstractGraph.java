@@ -15,13 +15,13 @@ public abstract class AbstractGraph<E> implements Graph<E> {
     /**
      * Construct Graph using a vertices array and edges array
      * 
-     * @param vertices vertices represented using array
-     * @param edges    edges represented using two-dimentional edges array
+     * @param v     vertices represented using array
+     * @param edges edges represented using two-dimentional edges array
      */
-    AbstractGraph(E[] vertices, int[][] edges) {
+    AbstractGraph(E[] v, int[][] edges) {
         this.vertices = new ArrayList<>();
         this.neighbors = new ArrayList<>();
-        for (E e : vertices)
+        for (E e : v)
             addVertex(e);
         addEdges(edges);
     }
@@ -29,13 +29,13 @@ public abstract class AbstractGraph<E> implements Graph<E> {
     /**
      * Construct Graph using a vertices List and edges List
      * 
-     * @param vertices vertices represented using List
-     * @param edges    edges represented using two-dimentional edges List
+     * @param v     vertices represented using List
+     * @param edges edges represented using two-dimentional edges List
      */
-    AbstractGraph(List<E> vesrtices, List<Edge> edges) {
+    AbstractGraph(List<E> v, List<Edge> edges) {
         this.vertices = new ArrayList<>();
         this.neighbors = new ArrayList<>();
-        for (E e : vertices)
+        for (E e : v)
             addVertex(e);
         addEdges(edges);
     }
@@ -60,7 +60,7 @@ public abstract class AbstractGraph<E> implements Graph<E> {
      */
     private void addEdges(List<Edge> edges) {
         for (Edge edge : edges) {
-            addEdge(edge.getVert1(), edge.getVert2());
+            addEdge(edge);
         }
     }
 
@@ -95,9 +95,6 @@ public abstract class AbstractGraph<E> implements Graph<E> {
         // adjacent edges share the same vertex (vert1), which connects vert1 and
         // vert2,
         // for vertex vert1:
-        if (edge.getVert1() > neighbors.size()) {
-
-        }
         var edgesForVertex1 = neighbors.get(edge.getVert1());
         if (edgesForVertex1.contains(edge))
             return false;
