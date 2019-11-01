@@ -230,6 +230,70 @@ Chapter 28 Graphs and Applications:
                     int coordinateY();
                     ...
                 }
+    8. The Nine Tails Problem
+        "Nine coins are placed in a three-by-three matrix with some face up and some face down. A legal move is to take a coin that is face up and reverse it, together with the coins adjacent to it (this does not include coins that are diagonally adjacent). Your task is to find the minimum number of moves that lead to all coins being face down." (p.1048) 
+        
+        I.e., select one facing up, flip it, and the adjacent (up, bottm, left and right) coins will reverse their facing. When all coins are facing down, it wins.
+
+        e.g., 
+        a)
+            U U U
+            D D D
+            U U U 
+        
+        After fliping the second coin in the last row:
+        b)
+            U U U
+            D U D
+            D D D
+        
+        After fliping the second coin in the first row:
+        c) Win!
+            D D D
+            D D D
+            D D D
+
+        There are nine coins in this game board, which has a 2^9 possible combinations. Considering each combination is a node, and en edge between two nodes (two combinations) is assinged if it is a legal move between them. 
+        
+        Say, the node [index of 511] (note that the index starts from 0 to 511, with a total of 512 (2^9)), is one has all the coins facing down. 
+
+        I.e., Node[511] (last node)
+        
+            D D D
+            D D D 
+            D D D
+        
+        8.1 Finding The Path
+            The process of solving the game will be to find the shortest path from the current node to  the final node, which is the winning condition. Thus, this problem can be treated as a graph traversal problem. Note that this gameborad can be represented using binary, where 1 is down, 0 is up, etc. 
+
+            The position of each coin can be considered as follows:
+
+                U U U
+                D D D   -->   U U U D D D U U U
+                U U U         0 1 2 3 4 5 6 7 8
+
+            In other words, the Node[0] (it means the vertex at index 0) is as follows:
+
+                U U U U U U U U U 
+
+            And the second vertex is:
+
+                U U U U U U U U D
+
+            ... 
+            
+            There are 512 unique vertices in the graph. And this path can be found by constructing a graph consists of the 512 vertices, then use this graph to produce a BFS tree for getting the shortest path between the current vertex and the target vertex.
+
+        
+
+        
+
+
+
+
+        
+        
+
 
         
 
