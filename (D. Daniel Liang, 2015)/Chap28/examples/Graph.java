@@ -76,7 +76,7 @@ public interface Graph<E> {
      * @param edge edge
      * @return whether the insertion is successful or not
      */
-    boolean addEdge(AbstractGraph<E>.Edge edge);
+    boolean addEdge(Edge edge);
 
     /**
      * Get a depth first search tree starting from the specified vesrtex
