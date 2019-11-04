@@ -2,9 +2,9 @@ import java.util.*;
 
 public abstract class AbstractGraph<E> implements Graph<E> {
 
-    private List<E> vertices;
+    protected List<E> vertices;
     /** Adjacency List for Edges */
-    private List<List<Edge>> neighbors;
+    protected List<List<Edge>> neighbors;
 
     /** Empty Graph */
     AbstractGraph() {
@@ -115,6 +115,10 @@ public abstract class AbstractGraph<E> implements Graph<E> {
         return (List<E>) new ArrayList<E>(vertices);
     }
 
+    /**
+     * Add vertex and create the associating List in the adjacency list
+     * ({@code List<List<Edge>>}) for this vertex.
+     */
     @Override
     public boolean addVertex(E e) {
         if (!vertices.contains(e)) {
