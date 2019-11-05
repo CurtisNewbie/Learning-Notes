@@ -1,0 +1,145 @@
+Chapter 29 Weighted Graph:
+    1. Weighted Graph:
+        A graph is a weighted graph if each edge is assigned a weight.
+
+    2. Minimum Spanning Tree (MST) Problem and Shortest Path Problem
+        Weighted Graph is often used to solve real world problems, where the edges between vertices are weighted. Two common probelms and algorithms are important that the MST Problem and Shortest Path Problem.
+
+        - Minimum Spanning Tree (MST) Problem
+            MST problem refers to constructing a spanning tree which has a minimum weight. E.g., We are building a telecommunication network through setting up the lines (Edges) between locations (Verticies). The length of lines effect the money spent, so the optimal solution will be using shortest lines to connect all vertices. This is the MST problem. 
+
+        - Shortest Path Problem
+            Shortest Path Problem is simply finding a shortest path between two vertices. I.e., a path that has the minimum weight. This can be similar to the MST problem, however, it doesn't need to connect all nodes nor need to create a spanning tree.
+
+    3. Representing Weighted Graphs
+        Weighted edges can be stored in adjacency lists. There are two types of weighted graph, 1) vertex weighted and 2) edge weighted. Here, edge weighted is considered.
+
+        Weighted graphs can be represented using the adjacency list in the same way as the unweighted graphs, except that the weight of the edges is stored in the edges. 
+
+        Generally, there are three ways to represent edges in weighted graphs:
+    
+        3.1 Representing Weighted Edges: Edge Array
+            Weighted Edges can be represented using a two-dimensional array. E.g.,
+
+            Object[][] edges = {
+                {new Integer(0), new Integer(1), new TypeForWeight(2)},
+                {new Integer(0), new Integer(2), new TypeForWeight(3)},
+            }
+
+            This way to represent the edges is the same as how unweighted edges are represented. The first two Integer objects represent the indicides of the two vertices, the third object can be of any type indicating/recording the weights of the edges.
+
+            E.g., int[][] edges = {{0,1,2} ....}        vertex 1 = 0
+                                                        vertex 2 = 1
+                                                        weight   = 2
+
+        3.2 Representing Weighted Edges: Weighted Adjacency Matrices
+            This is the same as the adjacency matrix in unweighted graphs. However, in unweighted graphs, the values 1 and 0 are used to indicate whether there is an edge between the two vertices. In weighted graph, the adjacency matrices will use "null" to indicate that there is no edge between the two vertices, and for non-null values, these are used to represent the weight on edges.
+
+            E.g.,
+            
+            Integer[][] adjacencyMatrix = {
+                {null, 2, null, 8, null},               null -> no edge between i and j [i][j]
+                ....                                    2 / 8 -> weights on edges
+            }
+
+        3.3 Representing Weighted Edges: Adjacency Lists
+            Another way to represent the edges is to define it as objects (See WeightedEdge in examples), and store it in a list for each vertex.
+
+            With the defined class for the weighted edges, the adjacency list is as follows:
+            
+            List<WeightedEdge>[] adjacencyList = new List[size];
+
+            wherein,
+            {
+                list[0] -> List<WeightedEdge> -> {new WeighedEdge(0,1,2)}
+                list[1] -> List<WeightedEdge> -> {new WeighedEdge(1,3,2), new WeighedEdge(1,3,4)}
+                    ...
+            } 
+
+    4. Minimum Spanning Tree and Shortest Path Problem
+       Similar to the Depth-First Search Tree and Breadth-First Search Tree, the MST is just a spanning tree with minimum total weight. A graph can have many spannning trees and there are several algorithms for finding the MST. 
+       
+       Shortest Path is strightforward, it just aims to find a path between two vertices with the minimum total weight. It is unnecessarily to reach all the vertices (It does in Dijkstra's algorithm tho). Further, finding a MST does not mean that the shortest path between the source and destination is found, since the primary purpose of MST is to create a spanning tree with minimum total weight.
+
+    5.Prim's Algorithm (Greedy Algorithm)
+        "Prim's algorithm starts with a spanning tree T that contains an arbitrary vertex. The algorithm expands the tree by repeatedly adding a vertex with the lowest-cost edge incident to a vertex already in the tree." (p.1073)
+
+            Prim's Algorithm
+        "
+            Input: A connected undirected weighted G = (V, E) with non-negative weights
+            Output: MST (a minimum spanning tree)
+
+            1   MST minimumSpanningTree() {
+            2       Let T be a set for the vertices in the spanning tree;
+            3       Initially, add the starting vertex to T;
+            4   
+            5       while (size of T < n) {
+            6           Find u in T and v (that is not in the Spanning Tree T) 
+            7               with the smallest weight on the edge (u, v)
+            8           Add v to T and set parent[v] = u;
+            9       }
+            10  }
+        "
+
+        However, in order to make this algorithm work, the graph must be connected and undirected.
+
+            Refined Prim's Algorithm
+        "
+            Input: A connected undirected weighted G = (V, E) with non-negative weights
+            Output: a minimum spanning tree with the starting vertex s as the root
+
+            1   MST getMinimumSpanngingTree(s) {
+            2       Let T be a set that contains the vertices in the spanning tree;
+            3       Initially T is empty;
+            4       Set cost[s] = 0; and cost[v] = infinity for all other vertices in V;
+            5       
+            6       while (size of T < n) {
+            7           Find u not in T with the smallest cost[u];
+            8           Add u to T;
+            9           for (each v not in T and (u, v) in E)
+            10              if (cost[v] > w(u, v)) { // Adjust cost[v]
+            11                  cost[v] = w(u, v); parent[v] = u;
+            12              }
+            13      }
+            14  }
+        "
+
+        Note that in the actual implementation, the Double.POSITIVE_INFINITY is used. Since, the this function always tries to find the edges of the least weights, or i.e., the vertices of least costs. 
+
+        The Double.POSITIVE_INFINITY is always greater than the finit positive values and is less than 0. So, it can be used to detect the first vertex added into the list T, and then to identify the following adjacent edges of minimum weights.
+
+    6. Dijkstra's Single-Source Shortest-Path Algorithm
+        Dijkstra's algortihm is similar to Prim's algorithm in that they both divide the vertices into two part T and V-T (where the vertices are not added). 
+        
+        In Prim's algorithm for finding MST, T stores vertices that are added to the tree, while in Dijkstra's algorithm the T stores vertices whose shortest paths to the source have been found.
+
+        Further, in the case of Prim’s algorithm, the vertex is adjacent to some vertices in the set with the minimum weight on the edge. In Dijkstra’s algorithm, the vertex is adjacent to some vertices in the set with the minimum total cost to the source. 
+    
+            "
+            Input: a graph G = (V, E) with non-negative weights
+            Output: a shortest path tree with the source vertex s as the root
+
+            1   ShortestPathTree getShortestPath(s) {
+            2       Let T be a set that contains the vertices whose
+            3           paths to s are known; Initially T is empty;
+            4       Set cost[s] = 0; and cost[v] = infinity for all other vertices in V;
+            5       
+            6       while (size of T < n) {
+            7           Find u not in T with the smallest cost[u];
+            8           Add u to T;
+            9           for (each v not in T and (u, v) in E)
+            10              if (cost[v] > cost[u] + w(u, v)) {
+            11                  cost[v] = cost[u] + w(u, v); parent[v] = u;
+            12              }
+            13      }
+            14  }
+            "
+        
+        After implementing the algorithm, a shortest path tree is built. Using Dijkstra's algorithm, this tree will include all vertices in the graph. Costs array and List searchOrder are used to records the path of traversal and the costs to each vertices. 
+        
+        The Costs array is updated during the traversal, recording the shortest weight of the path to each vertex. The parents[] is used for backtracking, or i.e., finding the path from each vertices to the root(source).
+
+        Most importantly, with this tree, the paths from each vertices to the source (vice versa) are the shortest paths.  
+
+
+     
