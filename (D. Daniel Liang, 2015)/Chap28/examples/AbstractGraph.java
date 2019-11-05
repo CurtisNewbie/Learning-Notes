@@ -288,11 +288,11 @@ public abstract class AbstractGraph<E> implements Graph<E> {
 
     /** Breadth first search tree or depth first search tree */
     public class SearchTree {
-        private int root;
+        protected int root;
         /** parent of each vertex */
-        private int[] parentOfVertices;
+        protected int[] parentOfVertices;
         /** the search order, or the vertices that are visited */
-        private List<Integer> searchOrder;
+        protected List<Integer> searchOrder;
 
         /**
          * 
