@@ -8,6 +8,14 @@ Index:
     6. ORDER BY Statement
     7. Alias
     8. WHERE Clause, AND, OR NOT, BETWEEN AND, IN, LIKE, IS NULL
+    9. Distinct clause
+    10. AND Operator
+    11. OR Operator
+    12. IN operator and NOT IN operator
+    13. BETWEEEN AND operator, NOT and dates
+    14. LIKE operator
+    15. LIMIT clause
+    16. IS NULL, IS NOT NULL
 */
 
 -------------------------------
@@ -297,8 +305,240 @@ FROM
 WHERE 
     officeCode <> 1;
 
+-------------------------------
+
+-- 9. Distinct clause
+
+------------------------------
+
+/* Basic syntax of DISTINCT clause */
+SELECT DISTINCT
+    *
+FROM
+    employees;
+
+SELECT
+    DISTINCT fname
+FROM
+    employees;
+
+/* DISTINCT and NULL, In case where there are more than one NULL, it returns only one */
+SELECT 
+    DISTINCT state 
+FROM 
+    customers;
+
+/* DISTINCT with multiple columns, it checks the unique combination of all the columns after DISTINCT clause */
+SELECT DISTINCT
+    col1, col2
+FROM
+    table1
+WHERE
+    col1 IS NOT NULL
+ORDER BY 
+    col1, 
+    col2;
+
+/* Using GROUP BY without Aggregate Funtions (e.g., SUM(), COUNT()), it acts like DISTINCT clause */
+SELECT 
+    col1
+FROM
+    table1
+GROUP BY 
+    col1;
+-- is the same as (before mysql 8.0, it has additional sorting with GROUP BY) follows:
+SELECT DISTINCT
+    col1
+FROM
+    table1;
+
+/* Using DISTINCT with Aggregate Functions */
+SELECT 
+    COUNT(DISTINCT col1)
+FROM
+    table1
+WHERE cal1 like '%abc';
+
+-------------------------------
+
+-- 10. AND Operator
+
+------------------------------
+...
+WHERE
+    expression1 AND expression2;
+
+...
+WHERE 
+    (expresssion1 OR expression2) AND expression3
+
+-------------------------------
+
+-- 11. OR Operator
+
+------------------------------
+
+...
+WHERE
+    expression1 OR expression2;
+
+-------------------------------
+
+-- 12. IN operator and NOT IN operator
+
+-- (It internally sorts the list of values and uses binary search, thus it's very fast.)
+
+------------------------------
+
+/* Return true if col1 or col2 matches the values in the bracket */
+...
+WHERE  
+    (col1|col2) IN ('value1', 'value2', ...);
+
+/* Return true if the result of the expression1 or col1 mathces the values in the bracket */
+...
+WHERE
+    (expression1|col1) IN ('value1', 'value2', ...);
+
+...
+WHERE
+    (expression1|col1) NOT IN ('value1', 'value2', ...);
+
+/* IN operator with subquery */
+SELECT 
+    *
+FROM
+    orders
+WHERE
+    orderNumber IN (
+                    SELECT
+                        orderNumber
+                    FROM 
+                        orderdetails
+                    GROUP BY 
+                        orderNumber
+                    HAVING
+                        SUM(quantityOrdered * priceEach) > 60000
+                    );
+
+-------------------------------
+
+-- 13. BETWEEEN AND operator, NOT and dates
+
+------------------------------
+
+/* BETWEEN AND  */
+...
+WHERE
+    col BETWEEN 100 AND 150;
+
+/* BETWEEN AND and NOT clause */
+...
+WHERE
+    col NOT BETWEEN 100 AND 150;
+
+/* BETWEEN AND and NULL value, it returns NULL if any expression returns NULL */
+...
+WHERE
+    col BETWEEN NULL AND 150;
+
+/* Using expression with BETWEEN AND */
+...
+WHERE
+    expression1 BETWEEN 100 AND 150;
+
+...
+WHERE
+    expression1 BETWEEN expression2 AND expression3;
+
+/* BETWEEN AND dates. CAST() function cast types */
+...
+WHERE
+    orderdate BETWEEN 
+        CAST('2019-01-01' AS DATE) AND
+        CAST('2019-01-05' AS DATE);
+
+-------------------------------
+
+-- 14. LIKE operator
+
+------------------------------
+
+/* Use LIKE to match pattern, % wildcard for string of any lenght, and _ wildcard for one char. (case-insensitive)*/
+...
+WHERE
+    fname LIKE 'curtis_y%';
 
 
+/* Use LIKE with NOT */
+...
+WHERE
+    fname NOT LIKE 'curtis_y%';
 
+/* Use LIKE with ESCAPE or '\', the _ is escaped */
+...
+WHERE
+    code LIKE '%\_20%';
 
+/* Make '$' a escaped character, so that _ is escaped. The default escape character is \ */
+...
+WHERE
+    code LIKE '%$_20$' ESCAPE '$';
+
+-------------------------------
+
+-- 15. LIMIT clause
+
+------------------------------
+
+/* LIMIT row count, return rowCount number of rows, starting from the first row returned */
+FROM
+    ...
+LIMIT rowCount;
+
+/* LIMIT offset and row count, starting from the offset (exclusive), 
+e.g., if offset=4, the results returned starts from row 5. */
+FROM
+    ...
+LIMIT [offset] , [rowCount];
+
+FROM
+    ...
+LIMIT 5, 4;
+
+/* Use LIMIT to find the one with largest value or least value */
+FROM
+    ...
+ORDER BY 
+    score DESC
+LIMIT
+    1;
+
+/* Use LIMIT to find the nth largest value or nth least value. This example find 2nd largest */
+FROM
+    ...
+ORDER BY
+    score DESC
+limit 1, 1;
+
+-------------------------------
+
+-- 16. IS NULL, IS NOT NULL 
+
+------------------------------
+
+...
+    score IS NULL;
+
+...
+    score IS NOT NULL;
+
+/* Special features for IS NULL and Date type, if the DATE column is defined to have a NOT NULL, 
+IS NULL can be used to find DATE type with a value of '0000-00-00' */
+SELECT
+    *
+FROM
+    project_details
+WHERE
+    complete_date IS NULL; -- search for '0000-00-00'
 
