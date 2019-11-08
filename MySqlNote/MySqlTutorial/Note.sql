@@ -7,6 +7,7 @@ Index:
     5. SELECT Statement
     6. ORDER BY Statement
     7. Alias
+    8. WHERE Clause, AND, OR NOT, BETWEEN AND, IN, LIKE, IS NULL
 */
 
 -------------------------------
@@ -201,6 +202,103 @@ ORDER BY
     totalPrice 
 LIMIT 
     5;
+
+-------------------------------
+
+-- 8. WHERE Clause, AND, OR NOT, BETWEEN AND, IN, LIKE, IS NULL
+
+------------------------------
+
+/* WHERE clause specifies the search condition for the rows returned by the query. The search condition is a combination of one or more predicates, that may involve using AND, OR and NOT operators. */
+SELECT
+    col
+FROM
+    tab
+WHERE
+    num = 1 OR num = 2;
+    
+/*
+For the WHERE clause, the order of evaluation is as follows:
+    FROM -> WHERE -> SELECT -> ORDER BY
+*/
+
+/* WHERE with AND operator */
+SELECT
+    col
+FROM 
+    tab
+WHERE
+    UPPER(job) = 'SALES REP' AND
+    money = 15;
+ORDER BY
+    col ASC;
+
+/* WHERE with OR operator */
+SELECT
+    col
+FROM
+    tab
+WHERE
+    UPPER(job) = 'SALES REP' OR
+    jobCode = 1;
+
+/* WHERE with BETWEEN [] AND [] operators*/
+SELECT
+    col
+FROM
+    tab
+WHERE
+    officeCode BETWEEN 1 AND 3;
+
+/* WHERE with LIKE operator. % wildcard matches any 0 or more chars, and _ wildcard mathces one single char. */
+SELECT
+    fname
+FROM
+    tab
+WHERE
+    fname like '%curtis_me'
+
+/* WHERE with IN operator. Select within a range of values. */
+SELECT
+    title
+FROM
+    job
+WHERE
+    code IN (1, 2, 3);
+
+/* WHERE with IS NULL and IS NOT NULL operators */
+SELECT
+    title
+FROM
+    job
+WHERE
+    office IS NULL;
+
+SELECT
+    title
+FROM
+    job
+WHERE
+    office IS NOT NULL;
+
+/* 
+Comparison operators:
+    =
+    <> or !=   means not equal to
+    <
+    >
+    <=
+    >=
+*/
+SELECT 
+    * 
+FROM 
+    employees 
+WHERE 
+    officeCode <> 1;
+
+
+
 
 
 
