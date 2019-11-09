@@ -211,7 +211,7 @@ The main branch is called "Master"
 // add or connect to a remote repo. It is common that the remote is named "origin".
 
     git merge <branchName>
-// merge current branch to another branch, so that the current branch will be fastforwading the changes.
+// merge another branch to current branch, so that the current branch will be fastforwading the changes. E.g., if we are at master, we want to merge branch "NewFeature" to master, i.e., fast forwarding master, we should call "git merge NewFeature" at master.
 
     git merge --abort
 // abort the merge operation, and recover the repository back to the state before attempting to merge
