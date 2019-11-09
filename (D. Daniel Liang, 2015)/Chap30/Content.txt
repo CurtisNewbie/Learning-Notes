@@ -94,6 +94,12 @@ Chapter 30: Multithreading And Parallel Programming
 
                 A thread may never run if there is always a higher-priority thread running, the thread of same-priority never pause or yields. This situation is known as Contention or Starvation. To avoids, the thread with higher priority should periodically calls the sleep method or yield method so that the threads with lower-priority can run.
 
+        4.5 Thread in Javafx
+            When handling threads that are associated with the controls of GUI components or controls (e.g., Pane, Label etc), the Runnable object should be handled by the Javafx.Platform as follows:
+
+                // pass the Runnable object to the Javafx.
+                Platform.runLater(Runnable r); 
+
 
 
 
