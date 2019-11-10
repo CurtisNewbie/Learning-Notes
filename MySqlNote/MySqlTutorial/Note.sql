@@ -16,6 +16,8 @@ Index:
     14. LIKE operator
     15. LIMIT clause
     16. IS NULL, IS NOT NULL
+    17. Alias
+    18. Join
 */
 
 -------------------------------
@@ -541,4 +543,235 @@ FROM
     project_details
 WHERE
     complete_date IS NULL; -- search for '0000-00-00'
+
+-------------------------------
+
+-- 17. Alias 
+
+/* There is a difference between ' nad `, where '' or "" are used to dilimits strings, while `` are used for delimits identifiers. */
+
+-- https://stackoverflow.com/questions/2672945/mysql-difference-between-%C2%B4-and
+
+------------------------------
+
+/* Alias for column */
+SELECT
+    col1 AS alias
+FROM 
+    table1;
+
+/* Alias for expression. Here using delimiters '' are fine, as it is not used as identifier. */
+SELECT
+    expression1 AS 'alias with space'
+FROM
+    table1;
+
+/* AS is optional and can be omited. Here using delimiters '' are fine, as it is not used as identifier. */
+SELECT
+    expression1 'alias with space'
+FROM
+    table1;
+
+/* CONCAT_WS() is a function for concatenation with seperator. The first string is a seperator for the following list of string. Here using delimiters '' are fine, as it is not used as identifier.*/
+SELECT
+    CONCAT_WS(', ', lastName, firstName) AS 'Full Name'
+FROM 
+    employees
+LIMIT
+    5;
+
+/* CONCAT() is a function for concatenation, note that || in Oracle doesn't work in MySQL unless config changed. Here using delimiters '' are fine, as it is not used as identifier. */
+SELECT
+    CONCAT(lastName, ', ', firstName) AS 'Full Name'
+FROM
+    employees
+LIMIT
+    5;
+
+/* Column alisa can be used in ORDER BY, GROUP BY and HAVING clauses once they are defined. Must use `` as it is used for identifier, else it won't sort the result sets. */
+SELECT
+    CONCAT_WS(', ', lastName, firstname) `Full name`
+FROM
+    employees
+ORDER BY
+    `Full name`
+LIMIT
+    5;
+
+/* Example of using Alias in GROUP BY and HAVING clauses. Note that it can't be used in WHERE, as WHERE is evaluated first. */
+SELECT 
+    orderNumber `Order no.`, SUM(quantityOrdered * priceEach) `Total`
+FROM 
+    orderDetails
+GROUP BY 
+    `Order no.`
+HAVING 
+    `Total` > 60000;
+
+/* Alias for tables. AS keyword is optional and can be omitted, once the alias is used it must be used everywhere. Note that the order of evaluation is FROM -> WHERE -> SELECT -> ORDER BY*/
+SELECT 
+    e.firstName 
+FROM 
+    employees e 
+WHERE 
+    e.firstName 
+LIKE 
+    'A%' 
+ORDER BY e.firstName;
+
+/* Example of using column alias, table alias in different clauses. */
+SELECT
+    customerName, COUNT(ord.orderNumber) `Total Number Of Orders`
+FROM
+    customers cus, orders ord
+WHERE
+    cus.customerNumber = ord.customerNumber
+GROUP BY 
+    customerName
+ORDER BY
+    `Total Number Of Orders` DESC;
+
+-------------------------------
+
+-- 18. Join 
+
+-- Reasons why using join instead of where if possible
+    -- No difference in terms of performance
+    -- Join is more readable, explicit, consistent and easy to maintain
+
+-- https://stackoverflow.com/questions/2241991/in-mysql-queries-why-use-join-instead-of-where
+
+------------------------------
+
+/*
+    Join is generally a method of linking data between one or more tables based on values of the common column between tables.
+
+    MySql supports:
+        1. Inner Join
+        2. Left Join
+        3. Right Join
+        4. Cross Join
+*/
+
+/* 1. INNER JOIN - keeps matched from both tables
+
+    "The inner join clause compares each row from the first table with every row from the second table. If values in both rows cause the join condition evaluates to true, the inner join clause creates a new row whose column contains all columns of the two rows from both tables and include this new row in the final result set. In other words, the inner join clause includes only rows whose values match."
+ */
+
+/* This query uses INNER JOIN to compare each rwo from the table1 with every row from the table2, and combine the data from both rows if the joinCondition is met. */
+SELECT
+    col1
+FROM
+    table1
+INNER JOIN table2 on joinCondition;
+
+/* In case where the = equal operator is used to compare the column from two tables, USING keyword can be used instead. */
+SELECT
+    col1
+FROM
+    table1
+INNER JOIN table2 ON table1.pri_col = table2.pri_col;
+-- is same as
+SELECT
+    col1
+FROM
+    table1
+INNER JOIN table2 USING (pri_col);
+
+/* Another example of INNER JOIN */
+SELECT 
+    m.name
+FROM 
+    members m
+INNER JOIN committees USING (name);
+
+SELECT 
+    m.name
+FROM 
+    members m
+INNER JOIN committees c ON m.name = c.name;
+
+/* 2. LEFT JOIN  - keeps left matched
+
+    The LEFT JOIN is very similar to the INNER JOIN except that "if the values in the two rows are not matched, the left join clause still creates a new row whose columns contain columns of the row in the left table and NULL for columns of the row in the right table."
+
+*/
+SELECT
+    col
+FROM
+    table1
+LEFT JOIN table2 USING (someColumn);
+
+/* Example of LEFT JOIN. */
+SELECT 
+    * 
+FROM 
+    members 
+LEFT JOIN committees USING (name);
+/* Result Set:
+    +--------+-----------+--------------+
+    | name   | member_id | committee_id |
+    +--------+-----------+--------------+
+    | John   |         1 |            1 |
+    | Mary   |         3 |            2 |
+    | Amelia |         5 |            3 |
+    | Jane   |         2 |         NULL |
+    | David  |         4 |         NULL |
+    +--------+-----------+--------------+
+*/
+
+/* Continued. With LEFT JOIN, if trying to find the people who are member but not in committee, simply using IS NULL operator. I.e., this query aims to find people who are only memebers (or who are only in left tables. */
+SELECT 
+    *
+FROM
+    members
+LEFT JOIN committees USING (name)
+WHERE committee_id IS NULL;
+/* Result Set:
+    +-------+-----------+--------------+
+    | name  | member_id | committee_id |
+    +-------+-----------+--------------+
+    | Jane  |         2 |         NULL |
+    | David |         4 |         NULL |
+    +-------+-----------+--------------+
+*/
+
+/* 3. RIGHT JOIN - keeps right matched
+
+    "The right join clause selects all rows from the right table and matches rows in the left table. If a row from the right table does not have matching rows from the left table, the column of the left table will have NULL in the final result set."
+
+*/
+SELECT
+    col
+FROM
+    table1
+RIGHT JOIN table2 USING (someColumn);
+
+/* Example of RIGHT JOIN. Think of it as a oppisite version of LEFT JOIN. This query trying to find people who are in committees but not members. I.e., finding the rows that are only in committees table. */
+SELECT 
+    * 
+FROM 
+    members 
+RIGHT JOIN committees USING (name)
+WHERE member_id IS NULL;
+/* Result Set:
+
+    +------+--------------+-----------+
+    | name | committee_id | member_id |
+    +------+--------------+-----------+
+    | Joe  |            4 |      NULL |
+    +------+--------------+-----------+
+*/
+
+/* 4. CROSS JOIN - keeps all regardless of condition, i.e., create a cartesian product 
+
+    "Unlike the inner join, left join, and right join, the cross join clause does not have a join condition. The right join makes a Cartesian product of rows from the joined tables. The cross join combines each row from the first table with every row from the right table to make the result set."
+
+*/
+SELECT
+    *
+FROM
+    table1
+CROSS JOIN table2;
+
 
