@@ -100,11 +100,155 @@ Chapter 30: Multithreading And Parallel Programming
                 // pass the Runnable object to the Javafx.
                 Platform.runLater(Runnable r); 
 
+    5. Thread Pools
+        Thread Pools are convenient for a large number of tasks. It can be very inefficient creating a new thread for each single task. To create a Thread Pool for a number of tasks to execute concurrently, Java provides the Executor interface and the ExecutorService interface for managing and controlling tasks in the Thread Pool.
 
+            Executor<interface> <- ExecutorService
 
+        5.1 To Create Thread Pool
+            To create the Executor object, the static methods in the Executors (plural!) class are needed.
+                
+                e.g.,
+                    Executors.newFixedThreadPool(int) : ExecutorService - which creates a Thread Pool that contains a fixed number of threads for executing tasks, and the threads in the Thread Pool can be reused once the current tasks are finished.
+                    A thread in a thread pool is terminated when it has not been used for 60 seconds.
 
+                    Executors.newCachedThreadPool() : ExecutorService - which creates a thread pool that creates new threads as needed, it may reuse previously created threads when they are available. A thread in a thread pool is terminated when it has not been used for 60 seconds. This method is efficient for many short tasks.
 
+             
+            For example:
 
+                // create a thread pool with 3 threads running concurrently, if there is only one 
+                // thread in the pool, tasks are executed sequentially
+                ExecutorService pool = Executors.newFixedThreadPool(3);
+
+                // add Runnable tasks to the pool, which are then executed by 3 threads
+                pool.execute(Runnable object);
+                pool.execute(Runnable object);
+                pool.execute(Runnable object);
+
+                // shutdown the pool, i.e., no more tasks added to the poole, while the tasks are 
+                // still running until finished
+                pool.shutdown();
+
+    6 Thread Synchronisation
+
+        6.1 Racing Condition
+            Racing Condition is the condition where two or more tasks running concurrnetly which shares the common resources or one's behaviour being dependent on the other, that causing a conflict or undesirable outcome.
+
+        6.2 Thread Safe
+            A class is said to be thread-safe if an instance of it doesn't cause race condition in the context of Multithreading.
+
+        6.3 The synchronized Keyword
+            synchronized keyword can be used to force a method to only be accessed by one thread at a time. It implicitly uses lock mechanism. As it internally uses a lock that is bound to the object, the synchonisation is not limited to method only, but the object that these methods belong to. For the static methods, in JVM an "object" for each class exists, thus the lock is bound to the class.
+
+            More on: <https://www.baeldung.com/java-synchronized>
+
+                Syntax:
+
+                    // instance method
+                    public synchronized void update(int n){
+                        ....
+                    }            
+                
+                    // static method
+                    public static synchronized void uddate(Record record, int n){
+                        ...
+                    }
+
+                    // synchronized block
+                    synchronized(object){
+                        object.doSometthing();
+                    }
+
+        6.4 Synchronisation Using Locks
+            Lock is a mechanism similar to that the threads are prevented to call the synchronizd methods or access the object's methods within the synchronized block, unless the Lock is released and one of them has acquired a 'Lock'. There can only be one lock acquired among the threads, thus it's a way to prevent racing condition. 
+
+            The synchronized methods implicitly acquires a lock on the instance before the methods are executed. However, a Lock can be acquire explicitly.
+
+            Java provides:
+
+                Lock<interface>, which defines the methods for acquiring and releasing locks.
+                    - lock() : void, acquires the lock
+                    - unlock() : releases the lock
+                    - newCondition() : create Condition object bound to this Lock object, it's used     for communication between threads.
+
+                ReentrantLock, which implements Lock interface. 
+
+            E.g., 
+                // created in constructor or as a static object
+                Lock lock = new ReentrantLock();
+
+                    ...
+
+                public void update(double d){
+                    lock.lock(); // Acquire the lock
+
+                    try{
+                        ...
+                    }catch(InterruptedException e){
+
+                    }finally{
+                        lock.unlock(); // release the lock
+                    }
+                }
+
+    7. Cooperation Among Threads
+        "Conditions on locks can be used to coordinate thread interactions." (p.1115) Condition can be used to faciliate the comminucation between threads. With Condition, threads can specify what to do under the certain conditions. Conditions are objects created by Lock object's newCondition() method. The Condition objects created are associated with the Lock object. 
+
+            The methods provided by Condition object include:
+                - await() : void, cause current thread to wait until condition is signaled.
+                - signal() : void, wakes up one waiting thread.
+                - signalAll() : void, wakes up all waiting thread.
+
+        For more details see ThreadCooperation.java
+
+        It should be noticed that Condition should be waiting in a loop (e.g., while loop) as mentioned in API documentation that: 
+        
+            "a Condition should always be waited upon in a loop, testing the state predicate that is being waited for. An implementation is free to remove the possibility of spurious wakeups but it is recommended that applications programmers always assume that they can occur and so always wait in a loop."
+
+        More on: <https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Condition.html>
+
+        Importantly, once a Condition is waiting for signal, it will only run when it receives signal. When no other signal being sent to awake this thread, this thread will wait forever.
+
+    8. Blocking Queues
+        Blocking Queues are special kind of queue that applies the similar logic as how Condition is used. Java Collections Framework provides ArrayBlockingQueue, LinkedBlockingQueue, and PriorityBlockingQueue for supporting blocking queues.
+
+            Collections<interface> <- Queue<interface> <- BlockingQueue<interface>
+
+        In BlockingQueue, the put and take methods are synchronized, and they waits for signal when there is no space to put new element or there is no element to take from the queue.
+
+            There are three concrete implementation of BlockingQueue interface:
+                - java.util.concurrent.ArrayBlockingQueue
+                - java.util.concurrent.LinkedBlockingQueue
+                - java.util.concurrent.PriorityBlockingQueue
+
+        For ArrayBlockingQueue, the capacity or optional firness must be speicify to construct it. For fairness, it is a policy that ensures that the threads are served in FIFO order. This is specified in ReentrantLock's constructor and the implementation of BlockingQueue:
+            
+            e.g.,
+                ReentrantLock(fair: boolean)
+
+                ArrayBlockingQueue(capacity: int, fair: boolean)
+
+        More on What actually is Fairness: <https://stackoverflow.com/questions/44964979/what-is-fairness-in-multi-threading-programming>
+
+        For LinkedBlockingQueue, the BlockingQueue is implmeneted using LinkedList, it can be bounded (if capacity is specified) or unbounded.
+
+        For PriorityBlockingQueue, it is implemented using PriorityQueue, which can also be bounded or unbounded (if capacity is specified).
+
+    9. Semaphores
+        Semaphore is used to restrict the number of threads accessing a shared resource. To access the shared resource, a thread must gain permit from the semaphore, and it returns the permit back to semaphore when it finishes.
+            
+            // Semaphore with 1 permimts
+            Semaphore semaphore = new Semaphore(1);
+
+            semaphore.acquire();
+            semaphore.release();
+        
+        One possible usage of Semaphore is that limiting number of simultaneous access of one user, which may say have multiple devices, and each device uses one thread. 
+
+            More on: <https://crunchify.com/what-is-java-semaphore-and-mutex-java-concurrency-multithread-explained-with-example/>
+
+        
 
 
          
