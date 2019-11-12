@@ -651,6 +651,9 @@ ORDER BY
         2. Left Join
         3. Right Join
         4. Cross Join
+        5. Self Join
+
+    In case where you need to join multiple tables, regardless of which join is used, it should follow a specific order, so that the table has the neede columns to join when needed. 
 */
 
 /* 1. INNER JOIN - keeps matched from both tables
@@ -690,6 +693,53 @@ SELECT
 FROM 
     members m
 INNER JOIN committees c ON m.name = c.name;
+
+/* Example of joining multiple tables with INNER JOIN. */
+SELECT 
+    orders.orderNumber, 
+    orders.orderDate, 
+    orders.status,
+    orderdetails.quantityOrdered,
+    orderdetails.priceEach,
+    products.productName
+FROM
+    orders
+INNER JOIN orderdetails USING (orderNumber)
+INNER JOIN products USING (productCode)
+WHERE orders.orderNumber = 10100;
+
+/* Complex conditions for INNER JOIN. 
+
+Display order number, product name (of products in each order), and price of each product, where product code is 'S10_1678', and the priceEach is greater than 80. */
+SELECT
+    orders.orderNumber,
+    products.productName,
+    orderdetails.priceEach
+FROM
+    orders
+INNER JOIN orderDetails 
+    ON orders.orderNumber = orderdetails.orderNumber
+    AND orderdetails.priceEach > 80
+INNER JOIN products USING (productCode)
+WHERE productCode = 'S10_1678';
+
+/* WHERE clause and ON clause in INNER JOIN, they have equivalent effect */
+SELECT 
+    *
+FROM
+    table1
+INNER JOIN table2
+    ON table1.col1 = table2.col1
+    AND table1.col2 = 10;
+-- is same as
+SELECT 
+    *
+FROM
+    table1
+INNER JOIN table2
+    ON table1.col1 = table2.col1
+WHERE
+    table1.col2 = 10;
 
 /* 2. LEFT JOIN  - keeps left matched
 
@@ -736,6 +786,24 @@ WHERE committee_id IS NULL;
     +-------+-----------+--------------+
 */
 
+/* WHERE clause and ON clause in LEFT JOIN, they have different meanings. WHERE clause displays only the rows that meet the requirments, while ON still return the rows that doesn't meet the requirements and making the columns of table2 'NULL'. */
+SELECT 
+    *
+FROM
+    table1
+LEFT JOIN table2
+    ON table1.col1 = table2.col1
+    AND table1.col2 = 10;
+-- is different from
+SELECT 
+    *
+FROM
+    table1
+LEFT JOIN table2
+    ON table1.col1 = table2.col1
+WHERE
+    table1.col2 = 10;
+
 /* 3. RIGHT JOIN - keeps right matched
 
     "The right join clause selects all rows from the right table and matches rows in the left table. If a row from the right table does not have matching rows from the left table, the column of the left table will have NULL in the final result set."
@@ -763,9 +831,30 @@ WHERE member_id IS NULL;
     +------+--------------+-----------+
 */
 
+/* WHERE clause and ON clause in RIGHT JOIN, they have different meanings. WHERE clause displays only the rows that meet the requirments, while ON clause still returns the rows that doesn't meet the requirements and making the columns of table1 'NULL'. */
+SELECT 
+    *
+FROM
+    table1
+RIGHT JOIN table2
+    ON table1.col1 = table2.col1
+    AND table1.col2 = 10;
+-- is different from
+SELECT 
+    *
+FROM
+    table1
+RIGHT JOIN table2
+    ON table1.col1 = table2.col1
+WHERE
+    table1.col2 = 10;
+
+
 /* 4. CROSS JOIN - keeps all regardless of condition, i.e., create a cartesian product 
 
     "Unlike the inner join, left join, and right join, the cross join clause does not have a join condition. The right join makes a Cartesian product of rows from the joined tables. The cross join combines each row from the first table with every row from the right table to make the result set."
+
+    I.e., It creates a table that has all the possible combinations. If table1 has 3 rows, table2 has 2 rows, there will have 6 combined rows in the CROSS JOIN table.
 
 */
 SELECT
@@ -773,5 +862,128 @@ SELECT
 FROM
     table1
 CROSS JOIN table2;
+
+/* Example of using CROSS JOIN to solve problems that cannot be solved with other JOIN.
+
+Say, we have three tables, sales, products, and stores. If we want to know which store had no sales of a specific product, INNER JOIN cannot be used to solve this problem, as the NULL value are filtered out. We can use CROSS JOIN as it covers all the combinations as well as the NULL rows.
+
+First, We select all associated products, stores and sales using inner join, if there is no sales of specific products, they are filtered out.
+*/
+SELECT 
+    *
+FROM products p
+INNER JOIN sales sa ON p.id = sa.product_id 
+INNER JOIN stores st ON sa.store_id = st.id; 
+/* Result Set:
++----+--------------+---------+------------+----------+----------+------------+----+------------+
+| id | product_name | price   | product_id | store_id | quantity | sales_date | id | store_name |
++----+--------------+---------+------------+----------+----------+------------+----+------------+
+|  1 | iPhone       |  699.00 |          1 |        1 |    20.00 | 2017-01-02 |  1 | North      |
+|  2 | iPad         |  599.00 |          2 |        1 |    15.00 | 2017-01-05 |  1 | North      |
+|  3 | Macbook Pro  | 1299.00 |          3 |        1 |    25.00 | 2017-01-05 |  1 | North      |
+|  1 | iPhone       |  699.00 |          1 |        2 |    30.00 | 2017-01-02 |  2 | South      |
+|  2 | iPad         |  599.00 |          2 |        2 |    35.00 | 2017-01-05 |  2 | South      |
++----+--------------+---------+------------+----------+----------+------------+----+------------+
+*/
+
+/* Second, As the products in each store that have not sales are removed, we can take advantaged of this to find these products.  CROSS JOIN tables products and stores, and then LEFT JOIN the above table, so that when one product has not sale in specific store, the column on the table that is just left joined are null.*/
+SELECT 
+    *
+FROM
+    products p
+CROSS JOIN
+    stores st
+LEFT JOIN
+        (SELECT 
+            p.id p_id, st.id st_id
+        FROM products p
+        INNER JOIN sales sa ON p.id = sa.product_id 
+        INNER JOIN stores st ON sa.store_id = st.id) comb
+    ON comb.p_id = p.id
+    AND comb.st_id = st.id; 
+
+/* Result Set:
++----+--------------+---------+----+------------+------+-------+
+| id | product_name | price   | id | store_name | p_id | st_id |
++----+--------------+---------+----+------------+------+-------+
+|  1 | iPhone       |  699.00 |  1 | North      |    1 |     1 |
+|  1 | iPhone       |  699.00 |  2 | South      |    1 |     2 |
+|  2 | iPad         |  599.00 |  1 | North      |    2 |     1 |
+|  2 | iPad         |  599.00 |  2 | South      |    2 |     2 |
+|  3 | Macbook Pro  | 1299.00 |  1 | North      |    3 |     1 |
+|  3 | Macbook Pro  | 1299.00 |  2 | South      | NULL |  NULL |
++----+--------------+---------+----+------------+------+-------+
+*/
+
+/* Third, If the results on the right table (the one that is left-joined) are NULL (see the last row, whose' p_id and st_id are NULL), meaning that this product has not been sold in this store.*/
+SELECT 
+    *
+FROM
+    products p
+CROSS JOIN
+    stores st
+LEFT JOIN
+        (SELECT 
+            p.id p_id, st.id st_id
+        FROM products p
+        INNER JOIN sales sa ON p.id = sa.product_id 
+        INNER JOIN stores st ON sa.store_id = st.id) comb
+    ON comb.p_id = p.id
+    AND comb.st_id = st.id
+WHERE comb.p_id IS NULL OR comb.st_id IS NULL;
+
+/* However, we can also solve this problem with simple query without the use of sub-query. */
+SELECT 
+    *
+FROM
+    products p
+CROSS JOIN
+    stores st
+LEFT JOIN sales sa 
+    ON sa.product_id = p.id
+    AND sa.store_id = st.id
+WHERE
+    sa.product_id IS NULL OR sa.store_id IS NULL; 
+
+/* 5. Self Join - Join a table to itself using INNER JOIN or LEFT join.
+
+    "The self join is often used to query hierarchical data or to compare a row with other rows within the same table. To perform a self join, you must use table aliases to not repeat the same table name twice in a single query."
+
+*/
+
+/* Using INNER JOIN for Self join. Say, a manager is an employee, and a number of employees need to report to a manager. In this case, a self-join is needed to find out the details of managers etc. However, the employees who are not managed by a manager is filtered out in this table by INNER JOIN. */
+SELECT
+    CONCAT(manager.lastName, ' ', manager.firstName) `Manager`,
+    CONCAT(emp.lastName, ' ', emp.firstName) `Employees Being Managed`
+FROM
+    employees emp
+INNER JOIN employees manager
+    ON emp.reportsTo = manager.employeeNumber
+ORDER BY  
+    `Manager`;
+
+/* Using Left Join for Self join. Different from using INNER JOIN, the employees who are not managed by a manager is not filtered out, instead, it has a value of NULL. It can be set to a more meaningful name using IFNULL() function, such as CEO (who are not managed by anyone). */ 
+SELECT
+    CONCAT(manager.lastName, ' ', manager.firstName) `Manager`,
+    CONCAT(emp.lastName, ' ', emp.firstName) `Employees Being Managed`
+FROM
+    employees emp
+LEFT JOIN employees manager
+    ON emp.reportsTo = manager.employeeNumber
+ORDER BY  
+    `Manager`;
+-- IF NULL, set to 'CEO'    
+SELECT
+    IFNULL(CONCAT(manager.lastName, ' ', manager.firstName), 'CEO') `Manager`,
+    CONCAT(emp.lastName, ' ', emp.firstName) `Employees Being Managed`
+FROM
+    employees emp
+LEFT JOIN employees manager
+    ON emp.reportsTo = manager.employeeNumber
+ORDER BY  
+    `Manager`;
+
+
+
 
 
