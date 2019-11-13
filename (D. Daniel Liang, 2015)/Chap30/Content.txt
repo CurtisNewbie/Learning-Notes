@@ -248,9 +248,106 @@ Chapter 30: Multithreading And Parallel Programming
 
             More on: <https://crunchify.com/what-is-java-semaphore-and-mutex-java-concurrency-multithread-explained-with-example/>
 
+    10. Thread States
+        Thread states indicate the status of the a thread, which include:
+            - New
+            - Ready
+            - Running
+            - Blocked
+            - Finished
+
+        10.1 New State
+            When a thread is just created, it is in the New state. This is before the thread calling start() method.
+
+        10.2 Ready State
+            After a thread starts by calling the start() method, it enters the Ready state. This is state where it hasn't started to operate.
+
+        10.3 Running State
+            When a thread starts executing, it enters the Running state. A running thread may enters Ready state when it's allocated time is finished or it calling the yield() method.
         
+        10.4 Blocked State
+            A thread enters Blocked state when it becomes the inactive. This may involve calling join(), sleep() or wait() methods. A thread may be Blocked or deactivated when it's waiting for I/O operation to finish. A thread may be reactivated and back to the ready state.
 
+        10.5 Finished State
+            A thread is Finished if it completes the execution of its run() method. 
 
-         
+        10.6 isAlive() method
+            To know the state of a thread, calls the isAlive() method. This method returns true if a thread is in READY, BLOCKED or RUNNING states; it returns false if a thread is in NEW thread and FINISHED states.
 
-        
+        10.7 interrupt() method
+            This method interrupts a thread as follows: 1. if a thread is in READY or RUNNING states, it sets its interrupted set. If a thread is currently BLOCKED, the thread will be awakened, it enters the READY state and throws the InterruptedException. 
+
+            More on Thread State: <https://www.javatpoint.com/life-cycle-of-a-thread> 
+
+    11. Synchronized Collections
+        Java Collections Framework includes synchronized version of the Collections class. The Collections class provides six static methods for wrapping a collection into synchronized version. These methods are called synchronisation wrappers.
+
+        // static methods/ synchronisation wrappers
+        java.util.Collections
+            + synchronizedCollection(c: Collection) : Collection
+            + synchronizedList(list: List) : List
+            + synchronizedMap(m: Map) : Map
+            + synchronizedSet(s: Set) : Set
+            + synchronizedSortedMap(s: SortedMap) : SortedMap
+            + synchronizedSortedSet(s: SortedSet) : SortedSet
+
+        11.1 Fail-Fast and Fail-Safe
+            Iterator is used to traverse elements in collection. The synchronized collections are thread-safe, however, the iterators can be fail-fast and fail-safe. Fail-fast iterator means that if an iterator is used to traverse a collection while the collection is being modified by another thread, the iterator will immediately throw the ConcurrentModificationException, which is a subtype of RuntimeException. To avoid this, use a Lock or syncrhonized block as follows:
+
+                // uses syncrhonisation wrapper methods
+                Set hashSet = Collections.synchronizedSet(new HashSet());
+
+                // use synchronized block to avoid fail-fast problem
+                synchronized(hashSet){
+                    Iterator iterator = hashSet.iterator();
+
+                    while(iterator.hasNext()){
+                        System.out.println(iterator.next());
+                    }
+                }
+
+            More on Fail-Fast Iterator: <https://medium.com/@mr.anmolsehgal/fail-fast-and-fail-safe-iterations-in-java-collections-11ce8ca4180e>
+
+    12. Parallel Programming
+        Parallel Programming takes advantage of multicores that splits nonoverlapping subproblems, and solve these problems in parallel in order to increase performance. To achieves this, Java provides: Fork/Join Framework. 
+
+        12.1 Fork/Join Framework
+            Creating forks is the process of dividing a task into independent subtasks, where each independent task is called a fork that runs on a thread.
+
+            Joinning forks is the process of joining these subproblems to obtain the overall solutions.
+
+            A Fork/task is defined using the ForkJoinTask class, and executes a task in an instance of ForkJoinPool. A ForkJoinPool is a ExecutorService.
+
+                ExecutorService<interface> <- ForkJoinPool
+    
+                    wherein ForkJoinPool:
+                        +ForkJoinPool()
+                        +ForkJoinPool(parallelism: int) - numebr of available processors
+                        +invoke(ForkJoinTask<T>): T - perform a ForkJoinTask
+
+            For the ForkJoinTask<T>:
+                                                    RecursiveTask
+                Future<interface> <- ForkJoinTask <- 
+                                                    RecursiveAction
+            
+                In ForkJoinTask:
+                    +adapt(Runnable task): ForkJoinTask<V>
+                    +fork(): ForkJoinTask<V>
+                    +join(): V
+                    +invoke(): V
+                    +invokeAll(tasks ForkJoinTask<?> ...): void
+
+            The tasks are primarily coordinated using the fork() and join() methods. fork() method is for asynchronous execution, and join method waits until the task is completed. The invoke() and invokeAll() methods implicitly invoke fork() and join(). 
+
+        12.2 Divide and Conquer 
+            The Fork/Join framework is designed to parallelise divide-and-conquer solutions, thus which are naturally recursive. This is reflected in the two subtypes of ForkJoinTask: RecursiveTask and RecursiveAction. 
+
+            In both subtypes, the compute() method is defined, that specify how the task is performed. However, RecursiveAction is for task that doesn't return a value, and RecursiveTask is designed for task that returns a value.
+
+                RecursiveAction:
+                    +compute(): void
+
+                RecursiveTask:
+                    +compute(): V
+
+                    
