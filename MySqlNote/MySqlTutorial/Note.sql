@@ -18,6 +18,10 @@ Index:
     16. IS NULL, IS NOT NULL
     17. Alias
     18. Join
+    19. Group By
+    20. Functions
+    21. HAVING clause
+    22. WITH ROLLUP & GROUPING
 */
 
 -------------------------------
@@ -982,6 +986,248 @@ LEFT JOIN employees manager
     ON emp.reportsTo = manager.employeeNumber
 ORDER BY  
     `Manager`;
+
+-------------------------------
+
+-- 19. Group By 
+
+------------------------------
+
+/* Group By
+
+        The GROUP BY clause returns ONE ROW for each group. In other words, it reduces the number of rows in the result set. This is often used with aggregate functions, e.g., SUM, AVG, MAX, MIN and COUNT.
+
+        MYSQL evaluates cluases in such order:
+            FROM -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY -> LIMIT
+*/
+SELECT
+    col1, col2, SUM(col3)
+FROM
+    table1
+GROUP BY col1, col2, ..., col10;
+
+/* Example of using GROUP BY clause and HAVING clause. Grouped rows in result set can also be ordered by adding DESC or ASC in GROUP BY clause. */
+SELECT
+    YEAR(orderDate) `Year`, SUM(quantityOrdered * priceEach) AS 'Revenue of shiped orders'
+FROM 
+    orders INNER JOIN orderdetails USING (orderNumber)
+WHERE 
+    status = 'Shipped'
+GROUP BY 
+    `Year` DESC
+HAVING 
+    `Year` > 2003;
+
+-------------------------------
+
+-- 20. Funtions 
+
+------------------------------
+
+/* CONCAT function that concatenate strings */
+CONCAT(string1, string2, string3)
+
+
+/* CONCAT_WS is a function for concatenation with seperator. The first string is a seperator for the following list of string. */
+CONCAT_WS(delimiter, string1, string2 ..)
+
+/* YEAR function that extract year field from date */
+YEAR(date)
+
+/* Calculate sum */
+SUM(col)
+
+/* FIEDL function that identifies specified strings and return corresponding indices */
+FIELD(orderStatus,
+        'In Process', -- return 1
+        'On Hold',    -- return 2
+        'Cancelled',  -- return 3
+        'Resolved',   -- return 4
+        'Disputed',   -- return 5
+        'Shipped');   -- return 6
+
+/* UPPER function that returns the uppercase of the string */
+UPPER(col)
+
+/* LOWER function that returns the lowercase of the string */
+LOWER(col)
+
+/* COUNT function that counts the presense of the column */
+COUNT(col)
+
+/* CAST function that can cast a String to a Date type */
+CAST('2019-01-01' AS DATE)
+
+/* INFULL function that returns the content in the second parameter when the col or expression  in the first parameter return NULL value. */
+IFNULL(col|expre, content)
+
+/* IF function that checks the condition, if condition is true, return content1 else content2. This function creates a new column, thus is used in SELECT clause. */
+SELECT
+    IF(condition, content1, content2)
+
+/* GROUPING function, To check whether NULL in the result set represents the subtotals or grand totals, you use the GROUPING() function. The GROUPING() function returns 1 when NULL occurs in a super-aggregate row, otherwise, it returns 0. */
+SELECT
+    productLine,
+    SUM(orderValue),
+    GROUPING(productLine)
+FROM
+    sales
+GROUP BY
+    productLine WITH ROLLUP;
+/* Result Set:
+    +------------------+-----------------+-----------------------+
+    | productLine      | SUM(orderValue) | GROUPING(productLine) |
+    +------------------+-----------------+-----------------------+
+    | Classic Cars     |        19668.13 |                     0 |
+    | Motorcycles      |         9044.15 |                     0 |
+    | Planes           |        11700.79 |                     0 |
+    | Ships            |        13147.86 |                     0 |
+    | Trains           |         9021.03 |                     0 |
+    | Trucks and Buses |        14194.95 |                     0 |
+    | Vintage Cars     |        12245.78 |                     0 |
+    | NULL             |        89022.69 |                     1 |
+    +------------------+-----------------+-----------------------+
+*/
+
+-------------------------------
+
+-- 21. HAVING clause 
+
+------------------------------
+
+/* The  HAVING clause 
+
+    is used in the SELECT statement to specify filter conditions for a group of rows or aggregates. If GROUP BY is omitted, the HAVING clause behaves like WHERE clause.
+
+    HAVING is evaluated as follows:
+        FROM -> WHERER -> SELECT -> GROUP BY -> HAVING -> ORDER BY -> LIMIT
+
+*/
+SELECT
+    col
+FROM
+    table1
+WHERE
+    condi
+GROUP BY
+    col2|expre
+HAVING
+    condi2;
+
+/* Example of using GROUP BY, HAVING, AND and OR clauses. */
+SELECT
+    orderNumber 'Order No.',
+    SUM(quantityOrdered) `Quantity`,
+    SUM(priceEach * quantityOrdered) `Total Sales`
+FROM
+    orderDetails
+GROUP BY 
+    orderNumber
+HAVING 
+    `Total Sales` > 1000 AND
+    `Quantity` > 600;
+
+-------------------------------
+
+-- 22. WITH ROLLUP & GROUPING
+
+------------------------------
+
+/* WITH ROLLUP
+
+    A grouping set is a set of columns to which you want to group. For example, query "... GROUP BY column1;" creates a grouping set of column1. “WITH ROLLUP” is a modifier that is used with GROUP BY clause. Mainly, it causes the summary output to include extra rows that represent higher-level summary operations. For example, SUM(*) function is used with GROUP BY, by having the "WITH ROLL UP" extension, MySQL adds an additional column displaying the grand total of all.  
+*/
+SELECT
+    col1
+FROM
+    table1
+GROUP BY
+    c1, c2, c3 WITH ROLL UP;
+
+/* Example of WITH ROLL UP */
+SELECT 
+    productLine, 
+    SUM(orderValue) totalOrderValue
+FROM
+    sales
+GROUP BY 
+    productline WITH ROLLUP;
+/* Result Set:
+    +------------------+-----------------+
+    | productLine      | totalOrderValue |
+    +------------------+-----------------+
+    | Classic Cars     |        19668.13 |
+    | Motorcycles      |         9044.15 |
+    | Planes           |        11700.79 |
+    | Ships            |        13147.86 |
+    | Trains           |         9021.03 |
+    | Trucks and Buses |        14194.95 |
+    | Vintage Cars     |        12245.78 |
+    | NULL             |        89022.69 |
+    +------------------+-----------------+
+*/
+
+/* WITH ROLLUP can be hierarchical when more than one column speicified, the hierarchy is based on the order of columns specified. It will create the grouping set for the first column specified in GROUP BY clause, and create the second grouping set for the second columns and so on.
+
+For example, in the following query, the grand total grouping set is created for productline, that returns the SUM of all orderValue of all productLine in all years(the one with two NULL), then it creates the grouping set for the orderYear, thus it returns the SUM of all years of each productline. The order does effect the result set.
+*/
+SELECT 
+    productLine, 
+    orderYear,
+    SUM(orderValue) totalOrderValue
+FROM
+    sales
+GROUP BY 
+    productline, 
+    orderYear 
+WITH ROLLUP;
+
+/* GROUPING function, To check whether NULL in the result set represents the subtotals or grand totals, you use the GROUPING() function. The GROUPING() function returns 1 when NULL occurs in a super-aggregate row, otherwise, it returns 0. */
+SELECT
+    productLine,
+    SUM(orderValue),
+    GROUPING(productLine)
+FROM
+    sales
+GROUP BY
+    productLine WITH ROLLUP;
+/* Result Set:
+    +------------------+-----------------+-----------------------+
+    | productLine      | SUM(orderValue) | GROUPING(productLine) |
+    +------------------+-----------------+-----------------------+
+    | Classic Cars     |        19668.13 |                     0 |
+    | Motorcycles      |         9044.15 |                     0 |
+    | Planes           |        11700.79 |                     0 |
+    | Ships            |        13147.86 |                     0 |
+    | Trains           |         9021.03 |                     0 |
+    | Trucks and Buses |        14194.95 |                     0 |
+    | Vintage Cars     |        12245.78 |                     0 |
+    | NULL             |        89022.69 |                     1 |
+    +------------------+-----------------+-----------------------+
+*/
+
+/* We can take advantage of the GROUPING function, and identifies which are the Grand total, or super-aggregate row */
+SELECT
+    IF(GROUPING(productLine), "Grand Total Order Value", productLine) 'Product Line',  -- if is grouping, substitute NULL in productLine with the string.
+    SUM(orderValue) 'Order Value'
+FROM
+    sales
+GROUP BY
+    productLine WITH ROLLUP;
+/* Result Set:
+    +-------------------------+-------------+
+    | Product Line            | Order Value |
+    +-------------------------+-------------+
+    | Classic Cars            |    19668.13 |
+    | Motorcycles             |     9044.15 |
+    | Planes                  |    11700.79 |
+    | Ships                   |    13147.86 |
+    | Trains                  |     9021.03 |
+    | Trucks and Buses        |    14194.95 |
+    | Vintage Cars            |    12245.78 |
+    | Grand Total Order Value |    89022.69 |
+    +-------------------------+-------------+
+*/
 
 
 
