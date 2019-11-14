@@ -1,0 +1,59 @@
+Chapter 31 Networking:
+
+    1. Internet: Compter connect to Internet through an Internet Service Provider (ISP) using a dialup, DSL, or cable modem, or through a Local Area Network (LAN).
+
+    2. Communication betweeen Computers:
+        For communication between devices, computer needs to know:
+
+            - Internet Protocol (IP) Address, that identifies the computer on the Internet. IP consists of four dotted decimal numbers [0-255].
+            
+            - Domain Name Server(DNS), is used to translate host names or domain names into IP addresses. Domain name or host names like "curtis.blablabla.org" are translated by the DNS to the numeric IP addesss, and the computer sends the request using the IP address.
+
+            Protocols:
+
+                1. IP Protocol 
+                    - is a low-level protocol for delivering data between two computers in packets.
+                
+                2. Transimission Control Protocol (TCP) 
+                    - is a high-level protocol used in conjunction with IP that establishes a connection between two computers and exchange streams of data. I.e., TCP is stream-based communication, the communication is lossless and reliable, that guarantees the order ot data sent.
+
+                3. User Datagram Protocol (UDP) 
+                    - is a high-level protocol used in conjunciton with IP that enables sending packets of datagram. It is a connectionless, host-to-host protocol. I.e., UDP is packet-based communication, the communication is not lossless.
+
+    3. Client/Server Computing
+        In Java, ServerSocket class is used for creating a server socket, and Socket class is for creating a client socket. Socket is the endpoint of logical connection between two hosts, which are used to send and receive data.
+
+               -> sends request ->
+        Clinet                     server 
+               <-  responds to  <-
+
+        3.1 Server Socket
+            To establish a server, a ServerSocket needs to be created and attached to a port. The port identifies the TCP service on the socket. Port number ranges from 0 to 65536, but the port number 0 to 1024 are reserved.
+
+                e.g., 
+                    ServerSocket serverSocket = new ServerSocket(portNumber);
+
+        3.2 CLient Sockets
+            A client can attempt to connect to a ServerSocket only after the ServerSocket is created. The server waits for connections as follows:
+
+                // waits for connection from client
+                Socket socket = serverSocket.accept();
+
+            If client attempts to connect to the server, it is as follows:
+
+                // connect to the server using IP and Port 
+                Socket socket = new Socket("111.111.111.111", 8000);
+
+                // connect to the server using domain name and Port 
+                Socket socket = new Socket("curtis.newbie.org", 8000);
+
+        3.3 Data Transmission Through Sockets
+            Connection establishes when server accepts the request from the client, and the communication is conducted in the same way as the IO stream. 
+
+            3.3.1 To Get I/O Streams
+
+                InputStream in = socket.getInputStream();
+                OutputStream out = socket.getOutputStream();
+
+            3.3.2 Read and Write Data
+                InputStream and OutputStream are used to read and write bytes. To handle the data such as int, double, String and so on, use wrappers such as DataInputStream, DataOutputStream and so on. 
