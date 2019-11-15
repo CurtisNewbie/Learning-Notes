@@ -350,4 +350,48 @@ Chapter 30: Multithreading And Parallel Programming
                 RecursiveTask:
                     +compute(): V
 
+    13. Avoiding Deadlock
+        To avoid deadlock, uses a technique called Resource Ordering or Lock Ordering. Following is an example of when deadlocks may occur:
+
+            // For Thread 1
+            synchronized(object1){
+
+                synchronized(object2){
+                    //...
+                }
+                //...
+            }
+
+            // For Thread 2
+            synchronized(object2){
+
+                synchronized(object1){
+                    //...
+                }
+                //...
+            }
+
+        In this example, the two threads are not following the same order to acquire and release locks. E.g., thread1 may have acquired lock of object1 and thread2 may have acquired lock of object2, meanwhile thread1 is waiting for thread2 to release the lock of object2, vice versa. This can be solved by maintaining the same order.
+
+            // For Thread 1
+            synchronized(object1){
+
+                synchronized(object2){
+                    //...
+                }
+                //...
+            }
+
+            // For Thread 2
+            synchronized(object1){
+
+                synchronized(object2){
+                    //...
+                }
+                //...
+            }
+
+        
+
+
                     
