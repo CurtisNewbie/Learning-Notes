@@ -57,3 +57,20 @@ Chapter 31 Networking:
 
             3.3.2 Read and Write Data
                 InputStream and OutputStream are used to read and write bytes. To handle the data such as int, double, String and so on, use wrappers such as DataInputStream, DataOutputStream and so on. 
+
+    4. The InetAddress class
+        The server program can use the InetAddress to obtain information about the client such as IP address and host name. The InetAddress models an IP address. 
+
+            InetAddress inetAdd = socket.getInetAddress();
+        
+    5. Serving Multiple Clients
+        To establish connections ot multiple clients, uses multithreading and each client is handlied by one thread.
+
+            while(true){
+                Socket socket = serverSocket.accept();
+                // start a new thread for this socket
+                ...
+            }   
+
+    6. Sending and Receiving Objects
+        Objects can be sent using ObjectOutputStream and ObjectInputStream. However, objects musb be serialisable (implements Serializable interface). 
