@@ -12,6 +12,8 @@
     2.7 https://www.git-tower.com/learn/git/faq/solve-merge-conflicts
     2.8 https://www.freecodecamp.org/news/an-introduction-to-git-merge-and-rebase-what-they-are-and-how-to-use-them-131b863785f/
     2.9 https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning
+	2.10 https://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time
+	2.11 https://stackoverflow.com/questions/520650/make-an-existing-git-branch-track-a-remote-branch
     
 
 3. Youtube Videos:
