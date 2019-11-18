@@ -1127,6 +1127,22 @@ WHERE [NOT] EXISTS (SELECT
                     FROM
                     ...);
 
+/* CASE Function. It creates one or more CASES each has specified condition, if condition matches, returns a specified value (string). The CASE function returns an individual column. Alias are not supported in CASE Function, and ELSE is optional. */
+SELECT
+    customerNumber,
+    (quantityOrdered * priceEach) AS sales,
+    (CASE
+        WHEN SUM(quantityOrdered * priceEach) < 10000 THEN 'Silver'
+        WHEN SUM(quantityOrdered * priceEach) BETWEEN 10000 AND 100000 THEN 'Gold'
+        WHEN SUM(quantityOrdered * priceEach) > 100000 THEN 'Platinum'
+        ELSE "Pleb"
+    END) customerGroup
+FROM
+    orderdetails INNER JOIN orders USING (orderNumber)
+GROUP BY customerNumber;
+
+
+
 -------------------------------
 
 -- 21. HAVING clause 
