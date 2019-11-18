@@ -22,6 +22,7 @@ Index:
     20. Functions
     21. HAVING clause
     22. WITH ROLLUP & GROUPING
+    23. Subquery 
 */
 
 -------------------------------
@@ -1020,7 +1021,7 @@ HAVING
 
 -------------------------------
 
--- 20. Funtions 
+-- 20. Functions 
 
 ------------------------------
 
@@ -1088,6 +1089,43 @@ GROUP BY
     | NULL             |        89022.69 |                     1 |
     +------------------+-----------------+-----------------------+
 */
+
+/* AVG Function */
+SELECT 
+    AVG(salary)
+FROM
+    ...;
+
+/* IN Function and NOT IN Funciton */
+SELECT
+    fname IN ('curtis', 'yongjie')
+FROM
+    ...;
+
+SELECT
+    fname NOT IN ('curtis', 'yongjie')
+FROM
+    ...;
+
+/* EXISTS() Function and NOT EXISTS() Function. The EXISTS operator is a Boolean operator that returns either true or false. The EXISTS operator is often used to test for the existence of rows returned by the subquery. It return True or 1 if exists (including the results), else FALSE or 0.
+
+Note that you can use SELECT *, SELECT column, SELECT a_constant, or anything in the subquery. The results are the same because MySQL ignores the select list appeared in the SELECT clause.*/
+SELECT 
+    EXISTS (SELECT 
+                * 
+            FROM 
+                table1 
+            WHERE  
+                fname = 'curtis');
+
+SELECT
+    *
+FROM
+    table1
+WHERE [NOT] EXISTS (SELECT
+                    *
+                    FROM
+                    ...);
 
 -------------------------------
 
@@ -1229,7 +1267,85 @@ GROUP BY
     +-------------------------+-------------+
 */
 
+-------------------------------
 
+-- 23. Subquery 
 
+------------------------------
 
+/* Syntax example of using subquery with IN and NOT IN  */
+SELECT 
+    *
+FROM 
+    employees
+WHERE 
+    officeCode IN (
+            SELECT
+                officeCode
+            FROM
+                offices
+            WHERE
+                country = 'UK');
+
+/* Syntax example of using subquery in WHERE */
+SELECT
+     * 
+FROM 
+    payments 
+WHERE 
+    amount = (
+                SELECT 
+                    MAX(amount) 
+                FROM 
+                    payments);
+                    
+/* Syntax example of using subquery in WHERE with comparison operators */
+SELECT
+     * 
+FROM 
+    payments 
+WHERE 
+    amount > (
+                SELECT 
+                    AVG(amount) 
+                FROM 
+                    payments);
+
+/* Syntax example of using subquery in FROM */
+SELECT 
+    orderNumber, -- this will be distinct already
+    items
+FROM
+    (SELECT 
+        orderNumber, COUNT(orderNumber) AS items
+    FROM
+        orderdetails
+    GROUP BY orderNumber) AS lineitems
+WHERE items = 10;
+
+/* Subquery with EXISTS and NOT EXISTS, EXISTS return ture so long as the row returned by the correlated subquery exist and it identifies a row that matches the results returned by the subquery. Subquery must somehow correlated to the table being selected (* in SELECT clause) */
+SELECT 
+    *
+FROM 
+    table1
+WHERE
+    EXISTS( .. );
+
+/* customers table is correlated with orders table, and orders table is correlated with orderdetails table. As orderNumber is from orders, EXISTS can identifies the rows of the orderNumber returned by the subquery. If there are not result sets returned by the subquery, EXISTS() returned false or 0, else it returns a temporary table.*/ 
+SELECT 
+    customerNumber, 
+    customerName
+FROM
+    customers
+WHERE
+    EXISTS( SELECT 
+            orderNumber, SUM(priceEach * quantityOrdered)
+        FROM
+            orderdetails
+                INNER JOIN
+            orders USING (orderNumber)
+        WHERE
+            customerNumber = customers.customerNumber
+        GROUP BY orderNumber
+        HAVING SUM(priceEach * quantityOrdered) > 60000);
 
