@@ -178,7 +178,7 @@ Patch is a text file that records the changes of the files in a repository. It i
 
 ---------------------------------------
 
-The main branch is called "Master"
+The main branch is called "master"
 
     git branch <branchName>
 // create a new branch
