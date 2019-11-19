@@ -23,6 +23,7 @@ Index:
     21. HAVING clause
     22. WITH ROLLUP & GROUPING
     23. Subquery 
+    24. EXISTS
 */
 
 -------------------------------
@@ -1107,26 +1108,6 @@ SELECT
 FROM
     ...;
 
-/* EXISTS() Function and NOT EXISTS() Function. The EXISTS operator is a Boolean operator that returns either true or false. The EXISTS operator is often used to test for the existence of rows returned by the subquery. It return True or 1 if exists (including the results), else FALSE or 0.
-
-Note that you can use SELECT *, SELECT column, SELECT a_constant, or anything in the subquery. The results are the same because MySQL ignores the select list appeared in the SELECT clause.*/
-SELECT 
-    EXISTS (SELECT 
-                * 
-            FROM 
-                table1 
-            WHERE  
-                fname = 'curtis');
-
-SELECT
-    *
-FROM
-    table1
-WHERE [NOT] EXISTS (SELECT
-                    *
-                    FROM
-                    ...);
-
 /* CASE Function. It creates one or more CASES each has specified condition, if condition matches, returns a specified value (string). The CASE function returns an individual column. Alias are not supported in CASE Function, and ELSE is optional. */
 SELECT
     customerNumber,
@@ -1367,3 +1348,165 @@ WHERE
         GROUP BY orderNumber
         HAVING SUM(priceEach * quantityOrdered) > 60000);
 
+-------------------------------
+
+-- 24. EXISTS 
+
+------------------------------
+
+/* EXISTS() Function and NOT EXISTS() Function. The EXISTS operator is a Boolean operator that returns either true or false. The EXISTS operator is often used to test for the existence of rows returned by the subquery. It return True or 1 if exists (including the results), else FALSE or 0.
+
+Note that you can use SELECT *, SELECT column, SELECT a_constant, or anything in the subquery. The results are the same because MySQL ignores the select list appeared in the SELECT clause.*/
+SELECT 
+    EXISTS (SELECT 
+                * 
+            FROM 
+                table1 
+            WHERE  
+                fname = 'curtis');
+
+SELECT
+    *
+FROM
+    table1
+WHERE [NOT] EXISTS (SELECT
+                    *
+                    FROM
+                    ...);
+
+-- Example of EXISTS() function.
+-- Select cusotmer who has at least one order.
+SELECT *
+FROM
+    customers
+WHERE EXISTS
+        (SELECT
+            *
+        FROM
+            customers
+        INNER JOIN 
+            orders USING(customerNumber)); 
+-- Select customers who don't have order, JOIN in subquery shouldn't be used, or else no rows are found.
+SELECT 
+    *
+FROM
+    customers
+WHERE 
+    NOT EXISTS
+        (SELECT
+            *
+        FROM
+            orders
+        WHERE orders.customerNumber = customers.customerNumber); 
+
+/*
+    UPDATE EXISTS
+*/
+-- Say we want to find employees who work at the office in san francisco
+SELECT *
+FROM employees
+WHERE 
+    EXISTS(
+        SELECT
+            *
+        FROM
+            employees
+        INNER JOIN offices USING (officeCode)
+        WHERE city = 'San Francisco');
+-- Then we want to update the rows in this table returned from subquery or EXISTS statement
+UPDATE
+    employees
+SET
+    employees.extension = CONCAT(extension, '1');
+WHERE 
+    EXISTS(
+        SELECT
+            *
+        FROM
+            employees
+        INNER JOIN offices USING (officeCode)
+        WHERE city = 'San Francisco');
+
+/*
+    INSERT EXISTS
+*/
+-- Suppose we want to find customers who don't have any sales orders, and we want to archive these rows to a new table. We first copy the structure of the customers table.
+CREATE TABLE customer_archive
+LIKE customers;
+-- We then find customers who don't have any sales orders.
+SELECT 
+    *
+FROM
+    customers
+WHERE NOT EXISTS
+        (SELECT
+            *
+        FROM
+            orders
+        WHERE customers.customerNumber = orders.customerNumber);
+-- We insert these data to the archive table
+INSERT INTO customer_archive
+SELECT 
+    *
+FROM
+    customers
+WHERE NOT EXISTS
+        (SELECT
+            *
+        FROM
+            orders
+        WHERE customers.customerNumber = orders.customerNumber);
+
+/*
+    DELETE EXISTS
+*/
+-- Suppose that we want delete the customers exist in the customers_archive from the customers table. We first find these customsers.
+SELECT 
+    *
+FROM
+    customers
+WHERE EXISTS
+        (SELECT 
+            *
+        FROM
+            customer_archive
+        WHERE
+            customer_archive.customerNumber = customers.customerNumber);
+-- Then we delete them from customers table, exception occurs when this operation violates constraints.
+DELETE FROM customers;
+WHERE EXISTS
+        (SELECT 
+            *
+        FROM
+            customer_archive
+        WHERE
+            customer_archive.customerNumber = customers.customerNumber);
+
+/*
+    EXISTS vs. IN operator
+*/
+-- To find customer who has placed at least one order, IN can be used as well
+SELECT 
+    customerNumber, 
+    customerName
+FROM
+    customers
+WHERE customerNumber IN
+    (SELECT
+        customerNumber
+    FROM
+        orders);
+-- While using EXISTS operator
+SELECT 
+    customerNumber, 
+    customerName
+FROM
+    customers
+WHERE 
+    EXISTS
+        (SELECT
+            customerNumber -- this doesn't matter, as it is ignored
+        FROM
+            orders
+        WHERE customers.customerNumber = orders.customerNumber);
+/* From the performance perspective, the EXISTS way out-performs the IN way of finding the results if the table returned by the subquery is large. As with IN operator, the whole subquery is processed first. However, with EXISTS operator, it return the each matched results immediately as long as it exists, it will not keep going finding the next match for this same row. Nonetheless, if the subquery is a very small table, IN may be faster. Generally, use EXISTS if the subquery table is big.*/  
