@@ -1347,7 +1347,7 @@ FROM
 WHERE
     EXISTS( .. );
 
-/* customers table is correlated with orders table, and orders table is correlated with orderdetails table. As orderNumber is from orders, EXISTS can identifies the rows of the orderNumber returned by the subquery. If there are not result sets returned by the subquery, EXISTS() returned false or 0, else it returns a temporary table.*/ 
+/* customers table is correlated with orders table, and orders table is correlated with orderdetails table. If there are no result sets returned by the subquery, EXISTS() returned false or 0, else it returns a temporary table for the outter query to SELECT (e.g., customerNumber and customerName) if it exists in the subquery table*/ 
 SELECT 
     customerNumber, 
     customerName
