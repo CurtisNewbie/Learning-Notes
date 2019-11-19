@@ -1141,7 +1141,9 @@ FROM
     orderdetails INNER JOIN orders USING (orderNumber)
 GROUP BY customerNumber;
 
-
+/* CREATE TABLE ... LIKE Functions. It creates a table with a given name, and copy all definitions of fields and properties from the table sepcified after LIKE clause. It doesn't copy actual data, only the structrue of the table.*/
+CREATE TABLE table1
+LIKE table2;
 
 -------------------------------
 
