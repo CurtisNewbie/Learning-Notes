@@ -24,6 +24,7 @@ Index:
     22. WITH ROLLUP & GROUPING
     23. Subquery 
     24. EXISTS
+    25. Derived Table
 */
 
 -------------------------------
@@ -1510,3 +1511,67 @@ WHERE
             orders
         WHERE customers.customerNumber = orders.customerNumber);
 /* From the performance perspective, the EXISTS way out-performs the IN way of finding the results if the table returned by the subquery is large. As with IN operator, the whole subquery is processed first. However, with EXISTS operator, it return the each matched results immediately as long as it exists, it will not keep going finding the next match for this same row. Nonetheless, if the subquery is a very small table, IN may be faster. Generally, use EXISTS if the subquery table is big.*/  
+
+-------------------------------
+
+-- 25. Derived Table 
+
+------------------------------
+
+/* A derived table is a virtual table returned from a SELECT statement. It is simliar to but is different from a Temporary Table. The term Derived Table and the term subquery are often used interchangeably. A derived table must have an alias, so that it can be referenced later. */
+
+-- First we create a derived table, that groups the orders based on the product code and calculate the sum of sales of orders for each productCode.
+SELECT 
+    productCode,
+    SUM(quantityOrdered * priceEach) Sales
+FROM
+    orderdetails INNER JOIN orders USING(orderNumber)
+WHERE YEAR(orderDate) = 2003
+Group BY
+    productCode
+ORDER BY
+    SUM(quantityOrdered * priceEach) DESC
+LIMIT 5;
+/* Result Set:
++-------------+-----------+
+| productCode | Sales     |
++-------------+-----------+
+| S18_3232    | 103480.30 |
+| S10_1949    |  67985.34 |
+| S12_1108    |  59852.24 |
+| S12_3891    |  57403.47 |
+| S12_1099    |  56462.25 |
++-------------+-----------+
+*/
+-- Then we can use this subquery or derived table to JOIN another table for more information.
+    SELECT
+        products.productName,
+        Sales
+    FROM 
+        (SELECT 
+            productCode,
+            SUM(quantityOrdered * priceEach) Sales
+        FROM
+            orderdetails INNER JOIN orders USING(orderNumber)
+        WHERE YEAR(orderDate) = 2003
+        Group BY
+            productCode
+        ORDER BY
+            SUM(quantityOrdered * priceEach) DESC
+        LIMIT 5) AS topFiveSaleProducts
+    INNER JOIN products USING (productCode);
+/*
++-----------------------------+-----------+
+| productName                 | Sales     |
++-----------------------------+-----------+
+| 1992 Ferrari 360 Spider red | 103480.30 |
+| 1952 Alpine Renault 1300    |  67985.34 |
+| 2001 Ferrari Enzo           |  59852.24 |
+| 1969 Ford Falcon            |  57403.47 |
+| 1968 Ford Mustang           |  56462.25 |
++-----------------------------+-----------+
+*/
+
+
+
+
