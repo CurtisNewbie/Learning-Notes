@@ -25,6 +25,7 @@ Index:
     23. Subquery 
     24. EXISTS
     25. Derived Table
+    26. UNION Operator
 */
 
 -------------------------------
@@ -1570,6 +1571,57 @@ LIMIT 5;
 | 1969 Ford Falcon            |  57403.47 |
 | 1968 Ford Mustang           |  56462.25 |
 +-----------------------------+-----------+
+*/
+
+-------------------------------
+
+-- 26. UNION Operator 
+
+------------------------------
+
+/*
+
+UNION operator is used to combine two or more result sets of queires into one single result set. 
+It is just like merging the results together into same columns vertically. This is different from 
+JOIN in that the JOIN combine result sets horizontally.
+
+    1. The number and the order of columns that appear in all SELECT statement must be the same. 
+        (e.g., one column UNION with one column, and so on, so that they become one column)
+    2. The data types of columns must be the same or compatible 
+        (e.g., INT type combined with INT type)
+
+Duplicates rows are removed if ALL is not specified explicitly, however, even without DISTINCT 
+specified, duplicates are still removed. 
+
+E.g., Suppose that you want to combine the names of all people (including customers and employees),
+this becomes useful, you simply use UNION, that combines the name in these tables.
+
+*/
+SELECT col 
+FROM tab1
+UNION [DISTINCT | ALL]
+SELECT col
+FROM tab2
+UNION [DISTINCT | ALL]
+....
+-- For example
+SELECT
+    id -- INT 
+FROM
+    t1
+UNION
+SELECT
+    id -- INT
+FROM t2; 
+/* Result Set:
++----+
+| id |
++----+
+|  1 |
+|  2 |
+|  3 |
+|  4 |
++----+
 */
 
 
