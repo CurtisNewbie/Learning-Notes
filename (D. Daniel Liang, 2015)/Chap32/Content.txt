@@ -1,0 +1,223 @@
+Chapter 32 Java Database Programming:
+
+    1. Basic Concepts of Constraints in RDBMS:
+        Domain Constraints
+            The permissible values for an attribute (data types, length, range NULL or NOT NULL etc).
+    
+        Primary Key Constraints
+            Superkeys
+                - "an attribute or a set of attributes that UNIQUELY identifies the relation." (p.1177)
+
+            Keys
+                - A key is minimal superkey, which means that any subset of a key (e.g., a key consists of two attributes, and any one of this key cannot be used to uniquely identify the relation) 
+                
+            Candidate keys 
+                - These minimal superkeys or keys are also called candidate keys, while the primary key for each relation is a candidate key choosen by the database designers.  
+    
+        Foreign Key Constraints
+            Keys used to define relationships between relations, and which must follow the Referential Integrity in RDBMS.
+
+    2. Create A User Account:
+        // craete a user called 'curtis' with a password of 'password'
+        CREATE USER 'curtis'@'localhost' identified by 'password';
+    
+        // grant a list of privileges on a specific database 
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE VIEW, DROP, EXECUTE, REFERENCES ON databaseName.* TO 'curtis'@'localhost';
+
+        // grant a list of privilieges on all databases 
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE VIEW, DROP, EXECUTE, REFERENCES ON *.* TO 'curtis'@'localhost';
+
+        // grant a list of privilieges on all databases via any ip address 
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE VIEW, DROP, EXECUTE, REFERENCES ON *.* TO 'curtis'@'%';
+
+        // grant a list of privilieges on all databases via one specific ip address 
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE VIEW, DROP, EXECUTE, REFERENCES ON *.* TO 'curtis'@'ipAddress';
+
+        // grant all privilieges (rather than specifying them explicitly)
+        GRANT ALL PRIVILEGES ON *.* TO 'curtis'@'ipAddress';
+        
+    3. Create A Database:
+        // create a database called javabook
+        CREATE DATABASE Javabook;
+
+        // use database
+        USE Javabook;
+
+        // use pre-constructed scripts (use full path without quotes)
+        source [pathToScript].sql; 
+
+    4. Drop A Table:
+        // drop table Course
+        DROP TABLE Course;
+
+        // If the table is referenced by other tables, the tables that reference to this table must be dropped first.
+    
+    5. Simple Insert, Update, and Delete
+        // insert new rows in a table
+        INSERT INTO Course (courseId, subjectId, courseNumber, title, numOfCredits)
+        VALUES 
+            ('1234', 'CS', '4321', 'Programming', 3),
+            ('1235', 'CS', '4322', 'Database', 3);
+        
+        // update columns in a table based on specified conditions
+        UPDATE Course
+        SET numOfCredits = 4, subjectId = 'CSI'
+        WHERE courseId = '1234' OR courseId = '1235';
+
+        // delete rows based on specified conditions
+        DELETE FROM Course
+        WHERE courseId = '1235';
+
+        // delete all rows
+        DELETE FROM Course;
+
+    ... More about the basic stuff in the book
+
+    6. JDBC
+        JDBC is a unified way to access and manipulate relational databases, which is a set of java interfaces and classes used to work with different RDBMSs.
+        
+        6.1 Four Key Interfaces
+            There are four key interfaces in JDBC API:
+                Driver <interface> - loads dirver
+                Connection <interface> - connects to RDBMS
+                Statement <interface> - creates and executes SQL statements
+                ResultSet <interface> - process returned results
+
+            These interfaces are implemented by the driver vendors, so when different RDBMS is used, different drivers or implementation are needed.
+
+        6.2 Steps to work with JDBC
+
+            1. Load drivers
+
+                // optional with latest version (not the one in the book)
+                Class.forName("com.mysql.cj.jdbc.Driver");
+
+            2. Establish connections
+
+                /*
+                db URL patterns:
+                    Access - "jdbc:odbc:dataSource"
+                    MySQL - "jdbc:mysql://hostname/dbname"
+                    Oracle - "jdbc:oracle:thin:@hostname:port#:oracleDBSID"
+                */
+                Connection conn = DriverManager.getConnection(dbUrl, username, password);
+
+            3. Create statements
+
+                Statement statement = conn.createStatement();
+
+            4. Execute statements
+
+                // for DDL statements
+                statement.executeUpdate("CREATE TABLE example (exaId char(5), exaName varchar(15))");
+
+                // for query statements
+                ResultSet result = statement.executeQuery("SELECT * FROM example");
+
+            5. Process ResultSet if returned
+
+                while(result.next()){
+
+                    // char is mapped to getString(), and index starts from 1
+                    System.out.println("exaId:" + result.getString(1) + " exaName:" + result.getString(2));
+                }
+
+    7. PreparedStatement
+        PreparedStatement is used to create parameterized statements, which is a subtype of PreparedStatement.
+
+            Statement <- PreparedStatement
+
+        PreparedStatement is used to execute precompiled SQL statement (with or without parameters), thus which is very efficient for repeated executions. '?' is used as a placeholder in the query, and setter methods are used to set value of each parameter.
+
+            e.g.,
+
+            "
+                // ? is a placeholder for the parameters
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO student (firstName, lastName)" + "VALUES (?,?)");
+
+                // set parameters
+                preparedStatement.setString(1, "Curtis");
+                preparedStatement.setString(2, "Newbie");
+            "
+        
+    7. CallableStatement
+        CallableStatement<interface> is used to execute SQL-stored procedures or functions. 
+        
+        A procedure may have IN, OUT or IN OUT parameters. IN parameter receives a value that is passed to the procedure to complete the operation. OUT parameter is the value returned after the procedure is completed. IN OUT is the combination of them.
+
+            E.g., following example use setter methods to set IN parameters and registerOutParameter()
+            methods to register the OUT parameters.
+
+            "
+                // construct CallableStatement for procedures
+                String query = "{CALL somePrecedure(?, ?, ?)}";
+                CallableStatement callableStatment = connection.prepareCall(query);
+                
+                // for IN parameters
+                callableStatement.setString(1, "abc");
+                callableStatement.setLong(2, 32123);
+
+                // for OUT parameters
+                callableStatement.registerOutParameter(3, java.sql.Types.INTEGER);
+            "
+
+            We can also use getter method to get values from OUT parameters as follows:
+            
+            "
+                int outValue = callableStatement.getInt(3);
+            "
+
+    8. MetaData
+
+        DatabaseMetaData<interface> is used for obtaining database metadata, and the ResultSetMetaData<interface> is used for obtaining metadata on specific ResultSet.  
+
+        8.1 Database MetaData
+
+            e.g.,
+
+            "
+                DatabaseMetaData dbMetaData = connection.getMetaData();
+
+                String userName = dbMetaData.getUserName();
+                String dbProductName = dbMetaData.getDatabaseProductName();
+                String dbProductVer = dbMetaData.getDatabaseProductVersion();
+                String dbDriverName = dbMetaData.getDriverName();
+                String dbDriverVersion = dbMetaData.getDriverVersion();
+                .....
+            "
+
+        8.2 Table MetaData
+            Information of a table can be retrieved in forms of ResultSet.
+
+            e.g.,
+
+            "   
+                ResultSet tableMeta = dbMetaData.getTables(null,null, null, new String[] {"Tables"});
+                while(tableMeta.next()){
+                    System.out.println(tableMeta.getString("Table_Name") + " ");
+                }
+            "  
+        
+        8.3 ResultSet MetaData
+            Metadata of a ResultSet can be retrieved by using the .getMetaData() method.
+
+            e.g., 
+            "
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM student");
+                ResultSetMetaData setMeta = resultSet.getMetaData();
+
+                int i = 0;
+                while(++i <= setMeta.getColumnCount()){
+                    // retrieve column name
+                    System.out.println(setMeta.getColumnName(i));
+                }
+            "
+
+        
+
+
+        
+
+        
+
+    
