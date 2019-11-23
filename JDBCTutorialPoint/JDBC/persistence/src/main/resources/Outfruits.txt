@@ -1,0 +1,3 @@
+apple 100
+pineapple 200
+orange 300
