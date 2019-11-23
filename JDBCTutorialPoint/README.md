@@ -1,4 +1,4 @@
-# JAVA_DB Tutorial Points
+# Java Tutorial Point
 
 https://www.javatpoint.com/java-jdbc
 
@@ -9,16 +9,16 @@ https://www.javatpoint.com/java-jdbc
 <ul>
   <li>Java Database Connectivity (JDBC) - MySQL 
      <ol>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/persistence/src/main/java/jdbc/JDBCConnection.java">Basic JDBC [DriverManager-> Connection-> Statement/PreparedStatement-> ResultSet]</a></li>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/persistence/src/main/java/jdbc/FileStorageInDB.java">File Storing and Retrieving using I/O Stream (CharacterStream) and Clob</a></li>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/persistence/src/main/java/jdbc/ImageStorageInDB.java">Image/Blob Storing and retriving</a></li>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/persistence/src/main/java/jdbc/MetaDataExample.java">MetaData for database and ResultSet</a></li>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/persistence/src/main/java/jdbc/StoredProcedure.java">Callable interface for StoredProcedure and StoredFunction</a></li>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/persistence/src/main/java/jdbc/BatchProcessingExample.java">BatchProcessing in Statement and PreparedStatement</a></li>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/persistence/src/main/java/jdbc/JdbcRowSetExample.java">JDBC RowSet interface</a></li> 
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/MYSQL%20Queries.sql">MYSQL queries for database, privilege, and tables</a></li>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/StoredFunction.sql">MYSQL stored function queries</a></li>
-       <li><a href="https://github.com/CurtisNewbie/JAVA_DB/blob/master/Java_DB/StoredProcedure.sql">MYSQL stored procedures queries</a></li>  
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/persistence/src/main/java/jdbc/JDBCConnection.java">Basic JDBC [DriverManager-> Connection-> Statement/PreparedStatement-> ResultSet]</a></li>
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/persistence/src/main/java/jdbc/FileStorageInDB.java">File Storing and Retrieving using I/O Stream (CharacterStream) and Clob</a></li>
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/persistence/src/main/java/jdbc/ImageStorageInDB.java">Image/Blob Storing and retriving</a></li>
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/persistence/src/main/java/jdbc/MetaDataExample.java">MetaData for database and ResultSet</a></li>
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/persistence/src/main/java/jdbc/StoredProcedure.java">Callable interface for StoredProcedure and StoredFunction</a></li>
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/persistence/src/main/java/jdbc/BatchProcessingExample.java">BatchProcessing in Statement and PreparedStatement</a></li>
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/persistence/src/main/java/jdbc/JdbcRowSetExample.java">JDBC RowSet interface</a></li> 
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/MYSQL%20Queries.sql">MYSQL queries for database, privilege, and tables</a></li>
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/StoredFunction.sql">MYSQL stored function queries</a></li>
+       <li><a href="https://github.com/CurtisNewbie/Learning-Notes/blob/master/JDBCTutorialPoint/JDBC/StoredProcedure.sql">MYSQL stored procedures queries</a></li>  
     </ol>
   </li>
 </ul>
