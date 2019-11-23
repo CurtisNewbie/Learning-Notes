@@ -2,7 +2,7 @@
 
 https://www.javatpoint.com/java-jdbc
 
-[Created on: 27th July 2019]
+[Notes written on: 27th July 2019]
 
 <h1>What this directory covers:</h1>
 
