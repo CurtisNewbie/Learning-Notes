@@ -1,0 +1,10 @@
+/* Stored Function */
+DELIMITER //
+CREATE FUNCTION calSum(a INT, b INT ) RETURNS INT
+
+DETERMINISTIC
+
+BEGIN 
+	RETURN a+b;
+END //
+DELIMITER;
