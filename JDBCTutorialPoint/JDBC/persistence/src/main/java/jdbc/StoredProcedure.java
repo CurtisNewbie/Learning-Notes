@@ -55,23 +55,23 @@ public class StoredProcedure {
 
     public static void main(String[] args) {
 
-	try {
-	    /*
-	     * example of using CallableStatement interface to work with stored procedure to
-	     * insert new Customer
-	     */
-	    insertCustomer();
+        try {
+            /*
+             * example of using CallableStatement interface to work with stored procedure to
+             * insert new Customer
+             */
+            insertCustomer();
 
-	    /*
-	     * example of using CallableStatement interface to work with stored function to
-	     * calculate the sum.
-	     */
-	    selectCalSumFunc();
+            /*
+             * example of using CallableStatement interface to work with stored function to
+             * calculate the sum.
+             */
+            selectCalSumFunc();
 
-	} catch (ClassNotFoundException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
@@ -85,21 +85,21 @@ public class StoredProcedure {
      */
     public static void insertCustomer() throws ClassNotFoundException {
 
-	Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-	try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
 
-	    // call the stored procedure named "insertCutomer" takes two parameters.
-	    CallableStatement stmt = conn.prepareCall("CALL insertCustomer(?,?)");
-	    stmt.setString(1, "Laptop");
-	    stmt.setString(2, "The Number Two");
-	    stmt.execute();
+            // call the stored procedure named "insertCutomer" takes two parameters.
+            CallableStatement stmt = conn.prepareCall("CALL insertCustomer(?,?)");
+            stmt.setString(1, "Laptop");
+            stmt.setString(2, "The Number Two");
+            stmt.execute();
 
-	    System.out.println("Stored Procedure Executed.");
+            System.out.println("Stored Procedure Executed.");
 
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -110,23 +110,23 @@ public class StoredProcedure {
      * @throws ClassNotFoundException
      */
     public static void selectCalSumFunc() throws ClassNotFoundException {
-	Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-	try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
 
-	    // calculate the sum of two var
-	    CallableStatement stmt = conn.prepareCall("SELECT calSum(?,?)");
+            // calculate the sum of two var
+            CallableStatement stmt = conn.prepareCall("SELECT calSum(?,?)");
 
-	    stmt.setInt(1, 10);
-	    stmt.setInt(2, 10);
-	    
-	    ResultSet set = stmt.executeQuery();
-	    if (set.next())
-		System.out.println("10 + 10 = " + set.getInt(1));
+            stmt.setInt(1, 10);
+            stmt.setInt(2, 10);
 
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+            ResultSet set = stmt.executeQuery();
+            if (set.next())
+                System.out.println("10 + 10 = " + set.getInt(1));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -88,35 +88,35 @@ public class JDBCConnection {
     public static final String DB_URL = "jdbc" + ":" + DBMS + "://" + LOCALHOST + ":" + port + "/" + DB;
 
     public static void main(String[] args) {
-	// load the driver class
-	try {
+        // load the driver class
+        try {
 
-	    // example of getting resultSet by executing simple query.
-	    getCustomers();
+            // example of getting resultSet by executing simple query.
+            getCustomers();
 
-	    System.out.println("-----------------------------");
+            System.out.println("-----------------------------");
 
-	    // example of using PreparedStatement to find an instance
-	    findCurtis();
+            // example of using PreparedStatement to find an instance
+            findCurtis();
 
-	    System.out.println("-----------------------------");
+            System.out.println("-----------------------------");
 
-	    // example of using PreparedStatement to update attribute.
-	    updateName();
+            // example of using PreparedStatement to update attribute.
+            updateName();
 
-	    System.out.println("-----------------------------");
+            System.out.println("-----------------------------");
 
-	    // example of using PreparedStatement to insert rows.
-	    insertNewCustomer();
+            // example of using PreparedStatement to insert rows.
+            insertNewCustomer();
 
-	    System.out.println("-----------------------------");
+            System.out.println("-----------------------------");
 
-	    // Example of removing an record in the database using preparedStatment
-	    removeCustomer();
+            // Example of removing an record in the database using preparedStatment
+            removeCustomer();
 
-	} catch (ClassNotFoundException e) {
-	    System.out.println("MYSQL JDBC Driver not found");
-	}
+        } catch (ClassNotFoundException e) {
+            System.out.println("MYSQL JDBC Driver not found");
+        }
     }
 
     /**
@@ -126,28 +126,28 @@ public class JDBCConnection {
      */
     public static void getCustomers() throws ClassNotFoundException {
 
-	// 1. register driver class (optional)
-	Class.forName("com.mysql.cj.jdbc.Driver");
+        // 1. register driver class (optional)
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-	// 2. get connection
-	try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
+        // 2. get connection
+        try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
 
-	    // 3. create statement
-	    Statement stmt = conn.createStatement();
+            // 3. create statement
+            Statement stmt = conn.createStatement();
 
-	    String query = "SELECT * from customer";
+            String query = "SELECT * from customer";
 
-	    // 4. Execute query
-	    ResultSet set = stmt.executeQuery(query);
+            // 4. Execute query
+            ResultSet set = stmt.executeQuery(query);
 
-	    System.out.println("[firstName:] " + "[lastName:] " + "[custId:]");
-	    while (set.next()) {
-		System.out.println(set.getString(1) + " " + set.getString(2) + " " + set.getInt(3));
-	    }
-	} catch (SQLException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+            System.out.println("[firstName:] " + "[lastName:] " + "[custId:]");
+            while (set.next()) {
+                System.out.println(set.getString(1) + " " + set.getString(2) + " " + set.getInt(3));
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
@@ -158,25 +158,25 @@ public class JDBCConnection {
      */
     public static void findCurtis() throws ClassNotFoundException {
 
-	// 1. register driver class
-	Class.forName("com.mysql.cj.jdbc.Driver");
+        // 1. register driver class
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-	// 2. Get connection
-	try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
+        // 2. Get connection
+        try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
 
-	    // 3. create preparedStatement
-	    PreparedStatement preStmt = conn.prepareStatement("SELECT * FROM CUSTOMER WHERE firstName=?");
+            // 3. create preparedStatement
+            PreparedStatement preStmt = conn.prepareStatement("SELECT * FROM CUSTOMER WHERE firstName=?");
 
-	    preStmt.setString(1, "Curtis");
+            preStmt.setString(1, "Curtis");
 
-	    ResultSet set = preStmt.executeQuery();
-	    while (set.next()) {
-		System.out.println(set.getString(1) + " " + set.getString(2) + " " + set.getInt(3));
-	    }
+            ResultSet set = preStmt.executeQuery();
+            while (set.next()) {
+                System.out.println(set.getString(1) + " " + set.getString(2) + " " + set.getInt(3));
+            }
 
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -187,23 +187,23 @@ public class JDBCConnection {
      */
     public static void updateName() throws ClassNotFoundException {
 
-	Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-	try {
-	    Connection conn = DriverManager.getConnection(DB_URL, NAME, PW);
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, NAME, PW);
 
-	    PreparedStatement preStmt = conn.prepareStatement("UPDATE CUSTOMER SET lastName=? WHERE custId=?");
-	    preStmt.setString(1, "Sharon");
-	    preStmt.setInt(2, 4);
+            PreparedStatement preStmt = conn.prepareStatement("UPDATE CUSTOMER SET lastName=? WHERE custId=?");
+            preStmt.setString(1, "Sharon");
+            preStmt.setInt(2, 4);
 
-	    preStmt.executeUpdate();
+            preStmt.executeUpdate();
 
-	    System.out.println("custId:4 name updated");
+            System.out.println("custId:4 name updated");
 
-	} catch (SQLException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
@@ -214,25 +214,25 @@ public class JDBCConnection {
      */
     public static void insertNewCustomer() throws ClassNotFoundException {
 
-	Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-	// connection
-	try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
+        // connection
+        try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
 
-	    // preparedStatement
-	    PreparedStatement preStmt = conn
-		    .prepareStatement("INSERT INTO customer (lastName, firstName) VALUES (?,?)");
-	    preStmt.setString(1, "Screw");
-	    preStmt.setString(2, "Driver");
+            // preparedStatement
+            PreparedStatement preStmt = conn
+                    .prepareStatement("INSERT INTO customer (lastName, firstName) VALUES (?,?)");
+            preStmt.setString(1, "Screw");
+            preStmt.setString(2, "Driver");
 
-	    preStmt.executeUpdate();
+            preStmt.executeUpdate();
 
-	    System.out.println("New Customer (Screw Driver) Inserted");
+            System.out.println("New Customer (Screw Driver) Inserted");
 
-	} catch (SQLException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -242,22 +242,22 @@ public class JDBCConnection {
      */
     public static void removeCustomer() throws ClassNotFoundException {
 
-	Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-	try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, NAME, PW)) {
 
-	    PreparedStatement preStmt = conn.prepareStatement("DELETE FROM customer WHERE lastName=? AND firstName=?");
-	    preStmt.setString(1, "Screw");
-	    preStmt.setString(2, "Driver");
+            PreparedStatement preStmt = conn.prepareStatement("DELETE FROM customer WHERE lastName=? AND firstName=?");
+            preStmt.setString(1, "Screw");
+            preStmt.setString(2, "Driver");
 
-	    preStmt.executeUpdate();
-	    
-	    System.out.println("Customer (Screw Driver) DELETED");
+            preStmt.executeUpdate();
 
-	} catch (SQLException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+            System.out.println("Customer (Screw Driver) DELETED");
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
