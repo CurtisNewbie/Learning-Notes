@@ -1,4 +1,5 @@
-
+CREATE DATABASE javabook;
+USE javabook;
 
 -- Create table Course
 CREATE TABLE Course(
@@ -34,3 +35,5 @@ CREATE TABLE Enrollment(
     FOREIGN KEY (courseId) REFERENCES Course (courseId)
 );
 
+CREATE USER 'demouser'@'localhost' IDENTIFIED BY 'demopw';
+GRANT ALL PRIVILEGES ON javabook.* TO 'demouser'@'localhost';
