@@ -94,7 +94,7 @@ deployed webapps. Further <b>Maven</b> can be used in conjunction with Tomcat
 To use Maven with Tomcat, this plugin needs to be installed:
 
     <!-- https://mvnrepository.com/artifact/org.apache.tomcat.maven/tomcat7-maven-plugin -->
-    <dependency>
+    <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
@@ -103,7 +103,7 @@ To use Maven with Tomcat, this plugin needs to be installed:
             <server>IdOfServer</server>
             <path>/myappurl</path>
         </configuration>
-    </dependency>
+    </plugin>
 
 The <i>url</i> tag is a uniform one that doesn't need to be changed unless the
 remote deployment is needed. <i>server</i> tag refers to the id of the server,
