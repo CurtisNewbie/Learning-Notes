@@ -117,6 +117,11 @@ webapp, i.e., where you want to deploy it in the webapps directory in Tomcat.
         <password>managerpassword</password>
     </servers>
 
+To deploy/undeploy the war package through maven:
+
+    mvn tomcat7:deploy
+    mvn tomcat7:undeploy
+
 About maven deployment setup, see:
 
     http://tomcat.apache.org/maven-plugin-2.2/
