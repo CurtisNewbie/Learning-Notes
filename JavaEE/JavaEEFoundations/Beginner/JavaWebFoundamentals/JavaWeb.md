@@ -283,3 +283,132 @@ or
     "https://localhost:8080/servletmapping/asdfasdf.demo"
 
 will be mapped to this servlet, executed by the class "MappingDemo". It is worth noting that tag,<b><i>servlet-name</i></b> is used in web.xml, rather than in the base url.
+
+<h2>HTTP Request and Response Processing</h2>
+
+<h3>HTTP Request</h3>
+
+HTTP Requests such as <b>GET</b>, <b>POST</b> are processed by the helper methods in
+class HttpServlet. The class <b>HttpServletRequest</b> is a wrapper of an HTTP request.
+
+    For example, in doGet(HttpServletRequest req, HttpServletResponse resp){
+
+        // We can get HTTP Headers, here we are extracting HOST from headers
+        String strHost = req.getHeader("HOST");
+
+        // Read Content type of the request body
+        String contentType = req.getContentType();
+
+        // Read parameters
+        String param_id = req.getParameter("uid");
+
+        // Read request body
+        BufferedReader reader = req.getReader();
+        ...
+    }
+
+Note that <b>HTTP Headers</b> consist of three parts, the <b>Request Headers</b>, <b>General Headers</b>, and <b>Entity Headers</b>. They are shown as follows. The <i>"POST / HTTP/1.1"</i> refers to a POST action.
+
+After this line, the first part is the Request Headers that specify the user-agent,
+accept-type, accept-language and so on. The second part is the for the general purpose that apply to the message as a whole. The third part is the Entity Header, that apply to the body of the request, such as the Content-Length.
+
+    POST / HTTP/1.1
+
+    HOST: localhost:8000
+    User-Agent:Mozilla/5.0 ...
+    Accept: text/html,application/....
+    Accept-Language: en-US...
+    Accept-Encoding: gzip, ...
+
+    Connection: keep-alive
+    Upgrade-Insecure-Requests:1
+
+    Content-Type: multipart/form-data...
+    Content-Length: 345
+
+More on HTTP Messages: https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages
+
+Further, in the above example of HttpServletRequest, parameters in a HTTP request can be
+extracted. <b>Parameters</b> are variables given and specified in the Http URL after the ?
+question mark, or if the request has a body, parameters can be from the body (such as
+from a form).
+
+    "http://someserver/someapp/someservlet?uid=bob"
+
+For example, here, we can extract the paramter "uid" from the request as follows:
+
+    // id will be "bob"
+    String id = reqest.getParameter("uid");
+
+<h3>HTTP Response</h3>
+
+<b>HttpServletResponse</b> is a warpper of the potential HTTP response.
+
+    For example, in doGet(HttpServletRequest req, HttpServletResponse resp){
+
+        try{
+            // say if not logged on, we can send redirect response, ask user
+            // to "/logon" servlet
+            if(notLoggedOn()){
+                resp.sendRedirect("/logon");
+                return;
+            }
+
+            // we can set content type and header of the response
+            resp.setContentType("text/xml");
+            resp.setHeader("X-Custom-Header", new Date());
+
+            // write message to response
+            PrintWriter out = resp.getWriter();
+            out.write("<message>some message</message>");
+
+        }catch(Exception e){
+            // if we catch exception, we can send error via response back to the client
+            resp.sendError(response.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+<h3>Demo HttpRequestAndResponse</h3>
+
+In <b>doGet()</b> method, we do a simple request and response handling, that it gets "name" parameter from the request, and we print out a message and respond to the
+client. The URL can be as follow.
+
+    "http://localhost:8080/reqrep/react?name=curtis"
+
+Wherein, <i>"reqrep"</i> is the name of the webapp, <i>"/react"</i> is the url-pattern
+mapped to a servlet, and <i>"?name=curtis"</i> is a parameter in this request. If not
+parameter provided or this URL doesn't formatted correctly (e.g., without ?), the method
+<b>getParameter("name")</b> will simply return null just like no parameter provided.
+
+In <b>doPost()</b> method, we do the similar operation as in doGet() method, except that doPost() method is meant to push data to the server. So, when we receive a <b>POST</b> request, we may need to do some processing as above using the given parametesr. In this demo, doPost() method extract parameters from the <i>form</i> tag, and redirect to another servlet.
+
+The parameters are taken as follows:
+
+     <form action="react" method="POST">
+        <p>
+            Name: <input type="text" name="name" />
+        </p>
+        <p>
+            <input type="submit" value="Enter Your Name" />
+        </p>
+    </form>
+
+    In servlet:
+
+        protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+
+        // get parameter name (case-sensitive) from the form
+        String name = req.getParameter("name");
+
+        if (name != null) {
+
+            // redirect it to the login.jsp
+            resp.sendRedirect("login.jsp");
+        }
+    }
+
+<h3>Change Content Type</h3>
+
+We can change the content-type of the response to such as xml as follows:
+
+    resp.setContentType("text/xml");
