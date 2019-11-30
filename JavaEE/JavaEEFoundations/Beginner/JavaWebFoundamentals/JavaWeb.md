@@ -7,7 +7,7 @@ Main Contents:
     - Filters for compressing data
     - Event handlers
 
-<h3>Java Web Programming</h3>
+<h2>Java Web Programming</h2>
 
 Java Web application is typically built on top of:
 
@@ -127,3 +127,159 @@ About maven deployment setup, see:
     http://tomcat.apache.org/maven-plugin-2.2/
     https://www.baeldung.com/tomcat-deploy-war
     https://mvnrepository.com/artifact/org.apache.tomcat.maven/tomcat7-maven-plugin/2.2
+
+<h2>Servlets</h2>
+
+<h3>Servlet Interface</h3>
+
+Every servlet implements the <b>Servlet Interface</b>, which contains methods describing <b>Servlet Lifecycle</b>.
+
+    public void init(ServletConfig);
+    public void service(ServletRequest req, ServletResponse resp);
+    public void destroy();
+    public ServletConfig getServletConfig();
+    public String getServletInfo();
+
+As shown above, there are three main stages in the servlet lifecyle, 1) initialisation of servlet, 2) provision of services and 3) destruction of servlet.
+
+<b>ServletRequest</b> object
+
+    contains details of the incomming request and parameters, can be used by any type of service such as http, ftp and so on.
+
+<b>ServletResponse</b> object
+
+    generate outgoing response to the clients, can be used by any type of service such as http, ftp and so on.
+
+<b>ServletConfig</b> object
+
+    get servlet configuration information such as database connection string, name of servlet and so on.
+
+<h3>Abstract Class GenericServlet</h3>
+
+When we implement a servlet, we tend not to implement the Servlet interface directly, there is a helper class <b>GenericServlet</b> that helps implementation. However, this class is not protocol-agnostic, i.e., it doesn't provide protocol specific implementation.
+
+<h3>HttpServlet</h3>
+
+    GenericServlet <- HttpServlet
+
+HttpServlet class is a protocol-specific class for HTTP protocol, it's a subclass of GenericServlet. See examples below.
+
+    public void service(HttpServletRequest req, HttpServletResponse resp){...}
+    public void doGet(HttpServletRequest req, HttpServletResponse resp){...}
+    public void doPost(HttpServletRequest req, HttpServletResponse resp){...}
+    public void doPut(HttpServletRequest req, HttpServletResponse resp){...}
+
+These methods are corresponding to the request and methods specified in HTTP, such as Get and Post. In service() method, we use getMethod() to check what the request is, and then we repond to such request by calling the correct methods, such as doGet(), doPost() or doPut().
+
+    public void service(HttpServletRequest req, HttpServletResponse resp){
+
+        String method = req.getMethod();
+        if(method.equals("GET"))
+            doGet(req, resp);
+        else if(method.equals("POST))
+            doPost(req, resp);
+        else
+            ...
+    }
+
+<h3>To Implement a Servlet</h3>
+
+To implement a servlet for http protocol, we extends from the HttpServlet and overides its methods for the servlet lifecyle and the helper methods (e.g., doGet() and doPost()). However, without <b>Servlet Mapping</b>, we cannot access to this servlet. We need to add an annotation <b><i>"@WebServlet("/home")"</i></b>, so that we can access this servlet through the url "https://server/home".
+
+    @WebServlet("/home")
+    public class FirstServlet extends HttpServlet{
+        ....
+    }
+
+or
+
+    // mapped to multiple url patterns
+    @WebServlet(urlPatterns = {"/home", "/family"})
+    public class FirstServlet extends HttpServlet{
+        ....
+    }
+
+<h3>Working with Maven</h3>
+
+Use Archetype:
+
+    -DarchetypeArtifactId=maven-archetype-webapp
+
+Javax dependency is needed:
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>4.0.1</version>
+        <scope>provided</scope>
+    </dependency>
+
+If this archetype installed, the following will be automatically specified:
+
+    <packaging>war</packaging>
+
+To package this project/webapp to .war file, we execute command:
+
+    mvn package
+
+or
+
+    war:war
+
+<h3>Example - FirstServlet</h3>
+
+In the example, FirstServlet project, the packaged .war file will be named exactly as the artifactId
+specified in pom.xml file. (e.g., "firstservlet.war"). We then deploy this .war file using the
+"manager" webapp in tomcat. The URL base for this servlet will be as follows:
+
+    "https://localhost:8080/firstservlet/home"
+
+<b>"/firstservlet"</b> is the name of the webapp, or the artifactId.<br>
+<b>"/home"</b> is the base url of this servlet, which is specified using
+<i><b>"@WebServlet("/home")"</b></i> annotaion.
+
+<h2>Request Routing</h2>
+
+Server routes request to servlet using configuration information, which is held in <b>web.xml</b>.
+One servlet instance handles all requests to the associated url-pattern, not just one single base url, see below.
+
+    "GET /someapp/someservlet HTTP/1.1" ->> web.xml(mapped by container) ->> associated Servlet
+
+In <b>WEB-INF/web.xml</b>:
+
+    <web-app>
+        <!-- specify a servlet and its associated class, or i.e., give the servlet a name -->
+        <servlet>
+            <servlet-name>DemoServlet</servlet-name>
+            <servlet-class>com.curtisnewbie.MappingDemo</servlet-class>
+        </servlet>
+
+        <!-- specify the url pattern that mapped to this servlet -->
+            <servlet-mapping>
+            <servlet-name>DemoServlet</servlet-name>
+            <url-pattern>*.demo</url-pattern>
+        </servlet-mapping>
+
+        <servlet-mapping>
+            <servlet-name>DemoServlet</servlet-name>
+            <url-pattern>/demo</url-pattern>
+        </servlet-mapping>
+    </web-app>
+
+As shown in previous "firstservlet" example, the base url can be mapped to a servlet by the
+annotation "@WebServlet", it can also be mapped based on the configuration in web.xml. As in above
+example, the class <i>MappingDemo</i> is given a name called <i>DemoServlet</i>, and this
+servlet is mapped to url patterns
+
+    "*.demo" and "/demo"
+
+I.e., any url request like:
+
+    "https://localhost:8080/servletmapping/demo"
+
+or
+
+    "https://localhost:8080/servletmapping/asdfasdf.demo"
+
+will be mapped to this servlet, executed by the class "MappingDemo". It is worth noting that tag,<b><i>servlet-name</i></b> is used in web.xml, rather than in the base url.
