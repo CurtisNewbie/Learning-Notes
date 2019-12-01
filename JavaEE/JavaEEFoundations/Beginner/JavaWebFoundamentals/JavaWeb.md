@@ -184,7 +184,7 @@ These methods are corresponding to the request and methods specified in HTTP, su
 
 <h3>To Implement a Servlet</h3>
 
-To implement a servlet for http protocol, we extends from the HttpServlet and overides its methods for the servlet lifecyle and the helper methods (e.g., doGet() and doPost()). However, without <b>Servlet Mapping</b>, we cannot access to this servlet. We need to add an annotation <b><i>"@WebServlet("/home")"</i></b>, so that we can access this servlet through the url "https://server/home".
+To implement a servlet for http protocol, we extends from the HttpServlet and overides thoses methods (that are for the servlet lifecyle) and its helper methods (e.g., doGet() and doPost()). However, without <b>Servlet Mapping</b>, we cannot access to this servlet. We need to add an annotation <b><i>"@WebServlet("/home")"</i></b>, so that we can access this servlet through the url "https://server/home".
 
     @WebServlet("/home")
     public class FirstServlet extends HttpServlet{
@@ -235,7 +235,7 @@ specified in pom.xml file. (e.g., "firstservlet.war"). We then deploy this .war 
 
     "https://localhost:8080/firstservlet/home"
 
-<b>"/firstservlet"</b> is the name of the webapp, or the artifactId.<br>
+<b>"/firstservlet"</b> is the name of the webapp.<br>
 <b>"/home"</b> is the base url of this servlet, which is specified using
 <i><b>"@WebServlet("/home")"</b></i> annotaion.
 
@@ -256,7 +256,7 @@ In <b>WEB-INF/web.xml</b>:
         </servlet>
 
         <!-- specify the url pattern that mapped to this servlet -->
-            <servlet-mapping>
+        <servlet-mapping>
             <servlet-name>DemoServlet</servlet-name>
             <url-pattern>*.demo</url-pattern>
         </servlet-mapping>
