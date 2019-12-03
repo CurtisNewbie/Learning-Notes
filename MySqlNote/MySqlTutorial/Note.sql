@@ -26,6 +26,11 @@ Index:
     24. EXISTS
     25. Derived Table
     26. UNION Operator
+    27. INSERT
+    28. INSERT INTO SELECT
+    29. INSERT, ON DUPLICATE KEY UPDATE
+    30. INSERT IGNORE
+    31. UPDATE
 */
 
 -------------------------------
@@ -1623,6 +1628,182 @@ FROM t2;
 |  4 |
 +----+
 */
+
+-------------------------------
+
+-- 27. INSERT 
+
+------------------------------
+
+/* Syntax for inserting data into tables */
+INSERT INTO tableName (col1, col2, ...)
+VALUES (val1, val2, ....)
+
+/* Insert multiple rows or tuples */
+INSERT INTO tableName (col1, col2, ...)
+VALUES 
+    (val1, val2, ....),
+    (val1, val2, ....),
+    (val1, val2, ....);
+
+/* If an attribute in a column is given a default value,
+we can refer to the DEFAULT value when we insert new tuple */
+CREATE TABLE IF NOT EXISTS task(
+    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    start_date DATE,
+    due_date DATE,
+    priority TINYINT NOT NULL DEFAULT 3,
+    description TEXT
+);
+-- This will give a priority of 3, as which is the default value.
+INSERT INTO task(title, priority) VALUES ('I used default priority!', DEFAULT);
+
+/* 
+Insert Date
+
+    The literal format of a date is 'YYYY-MM-DD' 
+    We can also use CURRENT_DATE() function to insert DATE values.
+*/
+INSERT INTO task(title, start_date, due_date) 
+VALUES 
+    ("Insert DATE!", "2019-11-03", "2019-11-04"),
+    ("Current Date", CURRENT_DATE(), CURRENT_DATE());
+
+/* 
+    Global Variables for INSERT operation 
+
+    'max_allowed_packet' defines how many rows can be inserted in a single 
+    INSERT statment. We can use "SHOW [GLOBAL | SESSION] VARIABLES [LIKE | WHERE = expr]" 
+    function to check the value of this variable. Then we use SET statment to change the value.
+
+    Note that it doesn't affect INSERT INTO SELECT statement, which can insert as many as wanted.
+*/
+SHOW VARIABLES LIKE 'max_allowed_packet';
+SET [GLOBAL | SESSION] max_allowed_packet=123124123123;
+
+-------------------------------
+
+-- 28. INSERT INTO SELECT  
+
+------------------------------
+
+/*
+
+    INSERT INTO SELECT allows you using the result of a SELECT statement as the data
+    source for the INSERT statement, or i.e., copying data that match the requirements
+    and INSERT these data into a table.
+
+*/
+INSERT INTO table1 (col...)
+SELECT
+    col
+FROM
+    table2
+WHERE
+    ...;
+    
+/*
+    For example, we want to copy some of the rows in task, wherein their priority is 
+    3. We can first create a table of same structure, then use INSERT INTO SELECT to
+    copy those rows that match condition.
+*/
+CREATE TABLE taskArchived LIKE task;
+INSERT INTO taskArchived SELECT * FROM task WHERE priority = 3;
+
+-------------------------------
+
+-- 29. INSERT, ON DUPLICATE KEY UPDATE
+
+------------------------------
+
+/*
+
+    With INSERT statement, when there are duplicates in the UNIQUE attributes(or columns) 
+    or primary keys, error issued as it violates the integrity (e.g., Entity Integrity) 
+    and rules.
+
+    With ON DUPLICATE KEY UPDATE, we can update the duplicates instead of issuing an error.
+
+*/
+INSERT INTO 
+    table1 (col1)
+VALUES 
+    (val1)
+ON DUPLICATE KEY UPDATE
+    col1 = val1;
+-- After the statuement ON DUPLICATE KEY UPDATE, we speicify what values should be updated 
+-- or over-written. 
+ 
+-------------------------------
+
+-- 30. INSERT IGNORE
+
+------------------------------
+    
+/*
+
+    Similar to INSERT, ON DUPLICATE KEY UPDATE, the INSERT IGNORE simply ignores errors 
+    caused by the insertion of a row. In case where multiple rows are inserted, it only
+    ignores or abandon the insertion operation for those rows that cause errors, not all
+    of them. 
+
+    However, we can use SHOW WARNINGS to check the errors after the operation being finished.
+
+*/
+INSERT IGNORE INTO table1(col1)
+VALUES 
+    (val1),
+    (val2),
+    (val3);
+SHOW WARNINGS;
+
+-------------------------------
+
+-- 31. UPDATE
+
+------------------------------
+
+/* 
+
+    Syntax of UPDATE statement. 
+
+    Note that there are two flags: 
+        - LOW_PRIORITY
+        - IGNORE
+    
+    LOW_PRIORITY means that the current UPDATE statement is of low priority,
+    and can be delayed until there is no connection reading data from the table.
+
+    IGNORE means that the query should continue updating the rows if there are
+    errors occurred while updating some of the rows.
+    
+*/
+UPDATE [LOW_PRIORITY] [IGNORE] table_name
+SET
+    col1 = expr1,
+    col2 = expr2
+WHERE
+    ...;
+
+/* Using UPDATE with subquery, note that the subquery should only return 
+one value in this example. */
+UPDATE table1
+SET
+    col1 = (SELECT
+                .....
+            FROM
+                ...
+            WHERE
+                ...
+            LIMIT 1;
+            )
+WHERE
+    ...;
+    
+
+
+
 
 
 
