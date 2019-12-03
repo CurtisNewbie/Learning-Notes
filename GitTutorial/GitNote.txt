@@ -51,6 +51,10 @@ Index:
     e.g., " git log --grep=[Mm][Yy][Ss][Qq][Ll] "
 // show commit logs that match the regex pattern
 
+    git log -- /subdirectory
+    e.g., " git log -- /MySqlTutorial "
+// only show the log of the subdirectory.  
+
     git show
     git show <commitSHA1>
 // show commit details, e.g., what is added and removed
