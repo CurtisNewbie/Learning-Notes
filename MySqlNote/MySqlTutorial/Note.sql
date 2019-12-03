@@ -31,6 +31,12 @@ Index:
     29. INSERT, ON DUPLICATE KEY UPDATE
     30. INSERT IGNORE
     31. UPDATE
+    32. UPDATE JOIN
+    33. DELETE
+    34. TRUNCATE TABLE
+    35. DELETE JOIN 
+    36. Referential Action and Referential Integrity (Will be expanded) 
+    37. REPLACE (for inserting rows or updating values)   
 */
 
 -------------------------------
@@ -1800,11 +1806,224 @@ SET
             )
 WHERE
     ...;
+
+-------------------------------
+
+-- 32. UPDATE JOIN
+
+------------------------------
+
+/*
+
+    UPDATE JOIN, is often used to perform cross-table update. UPDATE can be used 
+    with INNER JOIN and LEFT JOIN. For example, we want to update table1, based on
+    the result in table2. 
+
+    The Syntax is as follows. Note that table is updated when it is specified 
+    after UPDATE statement.
+
+    JOIN clause must appear right after the UPDATE statement.
+*/
+UPDATE table1, table2,
+[INNER JOIN | LEFT JOIN] table1 ON table1.col1 = table2.col1
+SET table1.col2 = table2.col2, 
+    table2.col3 = expr
+WHERE condition;
+-- You can also use traditional join method (WHERE statement) to perform cross-table update
+UPDATE table1, table2,
+WHERE table1.col1 = table2.col1
+SET table1.col2 = table2.col2, 
+    table2.col3 = expr
+WHERE condition;
+
+/* For example, we update salary of employees based on their performance, where 
+performance is the primary key in merits, and the percentage (in merits) indicates 
+how we should adjust their salaries.*/
+UPDATE employees
+    INNER JOIN merits USING (performance)
+SET 
+    salary = salary * (1 + merits.percentage);
+/* However, there may be case where employees do not have associated merit level, such as
+new employees. So, we don't use INNER JOIN like above. Here, we identify the employees whose
+performance column has a NULL value, and we increase their values by 1%. */
+UPDATE employees
+    LEFT JOIN merits USING (performance)
+SET 
+    salary = salary * (1 + 0.01)
+WHERE
+    merits.performance IS NULL;
+
+-------------------------------
+
+-- 33. DELETE
+
+------------------------------
+
+/* Syntax of DELETE statement */
+DELETE FROM table1
+WHERE condition;
+
+/* Note that if WHERE clause is omitted, all rows are deleted. See 34.TRUNCATE TABLE */
+DELETE FROM table1;
+
+/* We can specify the number or rows being deleted by using LIMIT. Always use it with ORDER BY */
+DELETE FROM table1
+ORDER BY col1, ...
+LIMIT 5; -- delete first 5 rows.
+
+-------------------------------
+
+-- 34. TRUNCATE TABLE
+
+------------------------------
+
+/*
+
+    TRUNCATE TABLE is same as DELETE FROM table;, except that it has a better performance.
+    It is used to delete all rows from a table when you don't want to or need to know
+    how many rows are dropped.
+
+*/
+TRUNCATE TABLE table1;
+
+-------------------------------
+
+-- 35. DELETE JOIN 
+
+------------------------------
+
+/*
+
+    DELETE JOIN is similar to UPDATE JOIN. It allows you to DELETE data from multiple tables
+    Same to UPDATE JOIN, table are only modified (whose rows are deleted) when it is specified
+    after DELETE statement.
+
+*/
+DELETE table1, table2
+FROM table1
+INNER JOIN table2 ON table1.key = table2.key
+WHERE condition;
+-- if we remove table1 after DELETE statement, only rows in table2 are deleted. 
+DELETE table2
+FROM table1
+INNER JOIN table2 ON table1.key = table2.key
+WHERE condition;
+
+/* 
+LEFT JOIN can be used with DELETE as well, it's basically the same as in UPDATE LEFT JOIN.
+We want to have some dedicated operation on left joined tables, where the rows can be NULL
+or NOT NULL.
+*/
+DELETE customers 
+FROM customers
+        LEFT JOIN
+    orders ON customers.customerNumber = orders.customerNumber 
+WHERE
+    orderNumber IS NULL;
+
+-------------------------------
+
+-- 36. Referential Action and Referential Integrity (Will be expanded)
+
+------------------------------
+
+/*
+
+    In MySQL, there are five Referential Actions for maintaining the Referential Integrity.
+    A foreign key must reference to an existing primary key, and when the primary key being
+    deleted, some actions (referential actions) must be taken to maintain this integrity as 
+    well as (ACID).
+
+    These five referential actions or options are:
+        - RESTRICT
+        - CASCADE (ON DELETE CASCADE, ON UPDATE CASCADE)
+        - SET NULL
+        - NO ACTION
+        - SET DEFAULT
+
+    RESTRICT : it rejects the delete or update operation at all.
+    CASCADE : it updates or deletes the foreign key in the child table based on the values 
+        in the parent table (the one being referenced). Two CASCADE actions can be used 
+        together in a constraint: 1) ON DELETE CASCADE and 2) ON UPDATE CASCADE.
+    SET NULL : it sets the foreign keys in the child table to be null.
+    NO ACTION : same as RESTRICT
+    SET DEFAULT : it set the foreign keys in the child table to be the default values.
+        1) ON DELETE SET DEFAULT and 2) ON UPDATE SET DEFAULT.
+*/
+
+-------------------------------
+
+-- 37. REPLACE (for inserting rows or updating values)
+
+------------------------------
+
+/* 
+    REPLACE (not the one for STRING) can be used to insert data or update data in table. When 
+    no duplicate-key error occurs, it acts just like INSERT INTO and UPDATE .. SET. 
     
+    When duplicate keys are found, it REPLACE the whole row with the given values. For 
+    the columns that are not given values, they are set to be NULL. 
+    
+    Note that, REPLACE INTO...VALUES and 
+    REPLACE INTO...SET... are literally the same, both look at the PRIMARY KEY or UNIQUE keys.
+*/
 
+/* Syntax of REPLACE INTO ... VALUES ... for inserting rows */
+REPLACE INTO table1(col1)
+VALUES(val);
 
+/* 
+    For example:
+        Table cities, has three columns, where id is the PRIMARY KEY.
+        If we use REPLACE INTO to replace the row that has the duplicat key,
+        we replace the whole row with the values we gave it.
 
+    1) We insert a row with a primary key of 1 
+    2) Then we use REPLACE
 
+    The whole row with the id of 1 will be replaced, and its name will be NULL, since 
+    we did not give it this value.
+*/
+INSERT INTO cities(id, name, population) VALUES(1, 'New York',8008278); 
+REPLACE INTO cities(id, population) VALUES(1, 1234);
+/* Result Set:
++----+-------------+------------+
+| id | name        | population |
++----+-------------+------------+
+|  1 | NULL        |       1234 |
++----+-------------+------------+
+*/
+
+/* Syntax of REPLACE INTO ... SET ... for updating rows */
+REPLACE INTO table1
+SET
+    col1 = val1,
+    col2 = val2;
+
+/*
+    For example:
+        This is literally the same as one above. REPLACE INTO ... SET ... doesn't
+        have WHERE condition. We explicitly specify the id = 1, so it replaces the 
+        whole row (which has an id of 1).
+*/
+REPLACE INTO cities
+SET 
+    id = 1,
+    name = 'Whats up',
+    population = 1768980;
+/* Result Set:
++----+-------------+------------+
+| id | name        | population |
++----+-------------+------------+
+|  1 | Whats up    |    1768980 |
++----+-------------+------------+
+*/
+
+/* We can also use the data from another table to insert data into a table */
+REPLACE INTO table1(col1)
+SELECT col1
+FROM table2
+WHERE condition;
 
 
 
