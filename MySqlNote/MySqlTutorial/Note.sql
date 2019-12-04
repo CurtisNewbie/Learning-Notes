@@ -37,6 +37,17 @@ Index:
     35. DELETE JOIN 
     36. Referential Action and Referential Integrity (Will be expanded) 
     37. REPLACE (for inserting rows or updating values)   
+    38. Managing Databases
+    39. CREATE TABALE
+    40. Data Types
+    41. ALTER TABLE
+    42. DROP TABLE
+    43. NOT NULL CONSTRAINTS
+    44. PRIMARY KEY CONSTRAINTS
+    45. FOREIGN KEY CONSTRAINTS
+    46. UNIQUE CONSTRAINTS
+    47. CHECK CONSTRAINTS
+    48. Load CSV File
 */
 
 -------------------------------
@@ -2024,6 +2035,339 @@ REPLACE INTO table1(col1)
 SELECT col1
 FROM table2
 WHERE condition;
+
+-------------------------------
+
+-- 38. Managing Databases
+
+------------------------------
+
+/* Select database */
+USE databaseName;
+
+/* Check database being used currently */
+SELECT database():
+
+/* Show all databases that you have access to*/
+SHOW DATABASES;
+
+/* 
+    Create database 
+
+    Char set and collation are optional. If only charset is specified, the default
+    collation for the char set is used. A collation is a set of rules that defines 
+    how to compare and sort character strings.
+*/
+CREATE DATABASE [IF NOT EXISTS] databaseName;
+[CHARACTER SET charset_name]
+[COLLATE collation_name]
+
+-- to view the availabel charset in MySQL, use:
+SHOW CHARACTER SET;
+
+/* We can review the database that is just created. */
+SHOW CREATE DATABASE createddb;
+
+/* Drop database */
+DROP DATABASE [IF EXISTS] databaseName;
+
+-------------------------------
+
+-- 39. CREATE TABALE
+
+------------------------------
+
+/* Syntax of CREATE TABLE */
+CREATE TABLE [IF NOT EXISTS] tableName (
+    col1,
+    col2,
+    ...
+    constraints
+);
+
+/* Syntax for each column or attribute */
+columnName dataType(length) [NOT NULL] [DEFAULT value] [AUTO_INCREMENT] constraintType;
+
+/* 
+    AUTO_INCREMENT must be used for indexed columns (e.g., PRIMARY KEY or UNIQUE index),
+    by using AUTO_INCREMENT, we create a sequence.
+
+    A sequence or AUTO_INCREMENT column has following attributes:
+        1. Starting from 1.
+        2. It cannot be NULL.
+        3. We can get the last generated sequence number by calling LAST_INSERT_ID();
+        4. When using INSERT a new row, if a value is specified for the sequence column, 
+            MySQL will attemp to insert this value, however, if duplicates found, it
+            will insert the next sequence number instead.
+        5. If we use UPDATE to update values in the sequence column, if duplicates found
+            an error will be thrown instead.
+        6. When using INSERT and UPDATE, if the specified value is greater than the next
+            sequence number, the next sequence number will be used instead. For example, 
+            the last sequence number for id is 3, and we give it a 10 for the new row, 
+            a value of 4 for the id will be used instead.
+
+*/
+CREATE TABLE employees(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ...
+);
+
+-------------------------------
+
+-- 40. Data Types
+
+------------------------------
+
+/*
+    Integer:
+        TINYINT (int -128 to 127)
+        SMALLINT (int -32768 to 32767)
+        MEDIUMINT (int -8388608 to 8388607)
+        INT (-2147483648 to 2147483647)
+        BIGINT (....)
+
+    Floating Point Number:
+        FLOAT (32-bit base-2 format (binary32), or single-precision, or 24 bits precision)
+        DOUBLE (64-bit base-2 format (binary64), or double-precision, or 52 bits precision)
+        DECIMAL (DOUBLE stored as string)
+
+    Binary:
+        BIT (one single bit)
+
+    Boolean:
+        MySQL doesn't have built-in Boolean type, it uses TINYINT(1) to simulate Boolean.
+        When we specify a datatype BOOLEAN, we are implicitly using TINYINT(1), where 1
+        refers to true and 0 refers to false;
+
+        BOOLEAN 
+
+    String: [BLOB stands for Binary Large Object]
+        CHAR (0-255)
+        VARCHAR (0-255)
+        VARBINARY (0-255, variable length, i.e., its length stored as part of the data)
+        BINARY (0-255, fixed length, padded with pad values, e.g., "\0")
+        TINYTEXT (0-255)
+        TINYBLOB (0-255)
+        TEXT (0-65535)
+        BLOB (0-65535)
+        MEDIUMTEXT (0-16777215)
+        MEDIUMBLOB (0-16777215)
+        LONGTEXT (0-4294967295)
+        LONGBLOB (0-4294967295)
+        ENUM (a list of indexed (starting from 1) elements)
+        SET (maximum of 64 distinct members)
+
+    Date and Time:
+        DATE (YYYY-MM-DD)
+        TIME (HH:MM:SS)
+        DATETIME (YYYY-MM-DD HH:MM:SS)
+        TIMESTAMP (YYYY-MM-DD HH:MM:SS)
+        YEAR (YYYY or YY)
+
+    Other Type:
+        JSON
+
+-------------------------------
+
+-- 41. ALTER TABLE
+
+------------------------------
+
+/* ALTER TABLE to add column */
+ALTER TABLE tableName
+ADD columnName datatype constraintType [FIRST | AFTER columnName];
+-- "[FIRST | AFTER columnName]" is used to specify the position of this column
+
+/* ALTER TABLE to add multiple columns */
+ALTER TABLE tableName
+ADD col1 datatype constraintType [FIRST | AFTER columnName],
+ADD col2 datatype constraintType [FIRST | AFTER columnName];
+
+/* ALTER TABLE to modify a column. Previous column definition is overwritten */
+ALTER TABLE tableName
+MODIFY columnName datatype constraintType [FIRST | AFTER columnName];
+
+/* ALTER TABLE to rename a column including its definition. Previous column 
+definition is overwritten */
+ALTER TABLE tableName
+CHANGE COLUMN oldColName newColName datatype constraintType [FIRST | AFTER columnName];
+
+/* ALTER TABLE to drop a column */
+ALTER TABLE tableName
+DROP COLUMN columnName;
+
+/* ALTER TABLE to rename the table */
+ALTER TABLE tableName
+RENAME TO newTableName;
+
+-- Or we can use RENAME TABLE directly:
+RENAME TABLE oldTableName TO newTableName;
+
+-------------------------------
+
+-- 42. DROP TABLE
+
+------------------------------
+
+/* DROP a table */
+DROP TABLE tableName;
+
+/* DROP Multiple tables */
+DROP TABLE table1, table2;
+
+/* DROP a table if it exists */
+DROP TABLE IF EXISTS tableName;
+
+/* DROP tables using regex */
+DROP TABLE LIKE '%regex';
+
+-------------------------------
+
+-- 43. NOT NULL CONSTRAINTS
+
+------------------------------
+
+/* 
+    "It’s a good practice to have the NOT NULL constraint in every column 
+    of a table unless you have a good reason not to do so."
+*/
+CREATE TABLE table1(
+    title VARCHAR(255) NOT NULL
+);
+
+/* We can use IFNULL() ISNULL() functions to work with NULL vale */
+-- verify whether the argument/expression is null
+SELECT *
+FROM table1
+WHERE ISNULL(title);
+
+-- if the first argument is null, return second argument
+SELECT IFNULL(title, 'Title is null') 
+FROM table1;
+
+-------------------------------
+
+-- 44. PRIMARY KEY CONSTRAINTS
+
+------------------------------
+
+/* 
+    "Because MySQL works faster with integers, the data type of the primary 
+    key column should be the integer e.g., INT, BIGINT."
+*/
+CREATE TABLE table1(
+    id datatype Primary key,
+);
+-- or we can
+CREATE TABLE table1(
+    id datatype,
+    col1 datatype constraintType,
+    PRIMARY KEY(id)
+);
+
+/* We can ADD PRIMARY KEY constraint to the existing column */
+ALTER TABLE table1Name ADD PRIMARY KEY(colName);
+
+-------------------------------
+
+-- 45. FOREIGN KEY CONSTRAINTS
+
+------------------------------
+
+/* To add a FOREIGN KEY, it is quite similar to ORACLE DBMS */
+CONSTRAINT constraintName FOREIGN KEY foreignKeyName (col1, col2, ...) REFERENCES parentTable (col1, col2, ...) [referentialActions];
+
+/* To drop the FOREIGN KEY */
+ALTER TABLE tableName
+DROP FOREIGN KEY constraintName;
+
+-------------------------------
+
+-- 46. UNIQUE CONSTRAINTS
+
+------------------------------
+
+CREATE TABLE table1(
+    ...,
+    col1 datatype UNIQUE,
+    ....
+);
+
+-- or, we can 
+CREATE TABLE table1(
+    ...,
+    col1 ...,
+    col2 ...,
+    col3 ...,
+    UNIQUE(col1, col2)
+);
+
+-- or, we can manually specify a name for this UNIQUE constraint
+CREATE TABLE table1(
+    ...,
+    col1 ...,
+    col2 ...,
+    col3 ...,
+    CONSTRAINT unique_constraint_name UNIQUE(col1, col2)
+);
+
+/* View UNIQUE constraints */
+SHOW INDEX FROM tableName;
+
+/* To drop a UNIQUE constraint */
+DROP INDEX unique_constraint_name ON tableName;
+
+-- or, we use ALTER TABLE
+ALTER TABLE tableName DROP INDEX unique_constraint_name;
+
+/* Add new UNIQUE constraint to existing table */
+ALTER TABLE tableName
+ADD CONSTRAINT unique_constraint_name UNIQUE (column1);
+
+-------------------------------
+
+-- 47. CHECK CONSTRAINTS
+
+------------------------------
+
+/* Add a CHECK constraints */
+CREATE TABLE table1(
+    ...,
+    col1 datatype NOT NULL CHECK (expression),
+    ....
+);
+
+-- or we can
+CREATE TABLE table1(
+    ...,
+    ...,
+    CONSTRAINT constraint_name CHECK (expression)
+);
+
+-------------------------------
+
+-- 48. Load CSV File
+
+------------------------------
+
+/* 
+    Use LOAD DATA INFILE statement to import CSV file 
+
+    1. Prepare the table
+    2. import .csv file    
+*/
+LOAD DATA INFILE 'path/to/csv/file'
+INTO TABLE table_name
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS; -- the name of the columns
+
+
+
+
+
+
 
 
 
