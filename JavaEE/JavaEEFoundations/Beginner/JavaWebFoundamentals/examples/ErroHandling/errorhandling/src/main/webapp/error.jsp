@@ -1,0 +1,24 @@
+<%@page isErrorPage="true"%>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Error Page</title>
+</head>
+
+<body>
+
+	<h2>Error</h2>
+
+	<!-- we use methods to get exception information-->
+
+	Exception Message:<%=exception.getMessage()%><br>
+
+	Whole Exception:<%=exception.toString()%>
+
+</body>
+
+</html>
