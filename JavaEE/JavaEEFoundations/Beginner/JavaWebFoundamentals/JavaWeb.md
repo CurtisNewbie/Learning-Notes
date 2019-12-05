@@ -7,7 +7,7 @@ Main Contents:
     - Filters for compressing data
     - Event handlers
 
-<h2>Java Web Programming</h2>
+<h2>1.Java Web Programming</h2>
 
 Java Web application is typically built on top of:
 
@@ -33,8 +33,7 @@ About how to install Tomcat, see following sources:
     https://linuxize.com/post/how-to-install-tomcat-9-on-ubuntu-18-04/
     https://tecadmin.net/install-tomcat-9-on-ubuntu/
 
-In the directory of the Tomcat server, there is a folder named <b><i>"webapps"</i></b>
-which contains (or hosts) the web applications.
+In the directory of the Tomcat server, there is a folder named <b><i>"webapps"</i></b> which contains (or hosts) the web applications.
 
 <h3>What Is A Web Application</h3>
 
@@ -50,9 +49,7 @@ A web application is <b>a unit of deployment</b> that:
 
 <h3>Structure of A Webapp</h3>
 
-A webapp is usually packaged as a .war file or Web Archive file for
-deployment. Wherein there are a number of folders, such as the folder for
-resources (e.g., images), the WEB-INF folder, the META-INF folder and so on.
+A webapp is usually packaged as a .war file or Web Archive file for deployment. Wherein there are a number of folders, such as the folder for resources (e.g., images), the WEB-INF folder, the META-INF folder and so on.
 
 <b>META-INF</b> folder contains
 
@@ -71,10 +68,7 @@ Most importantly, <b>WEB-INF</b> folder contains:
 
 <h3>Manager Webapp on Tomcat</h3>
 
-In Tomcat, there is a default webapp called "manager" that allows you to
-manage the server using a GUI interface. However, to use it, configuration
-such as roles and user credentials need to be setup in <b>"\$CATALINA_HOME/
-conf/tomcat-users.xml"</b>.
+In Tomcat, there is a default webapp called "manager" that allows you to manage the server using a GUI interface. However, to use it, configuration such as roles and user credentials need to be setup in <b>"\$CATALINA_HOME/ conf/tomcat-users.xml"</b>.
 
     <role rolename="manager-gui"/>
     <user username="someuser" password="somepassword" roles="manager-gui"/>
@@ -86,10 +80,7 @@ About manager webapp, see:
 
     <https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html>
 
-Manager webapp is useful in that it allows the admin to undertake certain
-managing operations on the server, such as upload, reload, or stop the
-deployed webapps. Further <b>Maven</b> can be used in conjunction with Tomcat
-(or more specifically Manager webapp) to facilitate the webapp deployment.
+Manager webapp is useful in that it allows the admin to undertake certain managing operations on the server, such as upload, reload, or stop the deployed webapps. Further <b>Maven</b> can be used in conjunction with Tomcat (or more specifically Manager webapp) to facilitate the webapp deployment.
 
 To use Maven with Tomcat, this plugin needs to be installed:
 
@@ -105,11 +96,7 @@ To use Maven with Tomcat, this plugin needs to be installed:
         </configuration>
     </plugin>
 
-The <i>url</i> tag is a uniform one that doesn't need to be changed unless the
-remote deployment is needed. <i>server</i> tag refers to the id of the server,
-which is speicified in maven's setting in <b>"\$MAVEN_HOME/conf/settings.xml"
-</b>, see below. The <i>path</i> tag is used to specify the URL Base of the
-webapp, i.e., where you want to deploy it in the webapps directory in Tomcat.
+The <i>url</i> tag is a uniform one that doesn't need to be changed unless the remote deployment is needed. <i>server</i> tag refers to the id of the server, which is speicified in maven's setting in <b>"\$MAVEN_HOME/conf/settings.xml" </b>, see below. The <i>path</i> tag is used to specify the URL Base of the webapp, i.e., where you want to deploy it in the webapps directory in Tomcat.
 
     <servers>
         <id>serverID</id>
@@ -128,7 +115,7 @@ About maven deployment setup, see:
     https://www.baeldung.com/tomcat-deploy-war
     https://mvnrepository.com/artifact/org.apache.tomcat.maven/tomcat7-maven-plugin/2.2
 
-<h2>Servlets</h2>
+<h2>2.Servlets</h2>
 
 <h3>Servlet Interface</h3>
 
@@ -144,15 +131,15 @@ As shown above, there are three main stages in the servlet lifecyle, 1) initiali
 
 <b>ServletRequest</b> object
 
-    contains details of the incomming request and parameters, can be used by any type of service such as http, ftp and so on.
+contains details of the incomming request and parameters, can be used by any type of service such as http, ftp and so on.
 
 <b>ServletResponse</b> object
 
-    generate outgoing response to the clients, can be used by any type of service such as http, ftp and so on.
+generate outgoing response to the clients, can be used by any type of service such as http, ftp and so on.
 
 <b>ServletConfig</b> object
 
-    get servlet configuration information such as database connection string, name of servlet and so on.
+get servlet configuration information such as database connection string, name of servlet and so on.
 
 <h3>Abstract Class GenericServlet</h3>
 
@@ -169,7 +156,7 @@ HttpServlet class is a protocol-specific class for HTTP protocol, it's a subclas
     public void doPost(HttpServletRequest req, HttpServletResponse resp){...}
     public void doPut(HttpServletRequest req, HttpServletResponse resp){...}
 
-These methods are corresponding to the request and methods specified in HTTP, such as Get and Post. In service() method, we use getMethod() to check what the request is, and then we repond to such request by calling the correct methods, such as doGet(), doPost() or doPut().
+These methods are corresponding to the request and methods specified in HTTP, such as Get and Post. In service() method, we use getMethod() to check what the request is, and then we respond to such request by calling the correct methods, such as doGet(), doPost() or doPut().
 
     public void service(HttpServletRequest req, HttpServletResponse resp){
 
@@ -229,9 +216,7 @@ or
 
 <h3>Example - FirstServlet</h3>
 
-In the example, FirstServlet project, the packaged .war file will be named exactly as the artifactId
-specified in pom.xml file. (e.g., "firstservlet.war"). We then deploy this .war file using the
-"manager" webapp in tomcat. The URL base for this servlet will be as follows:
+In the example, FirstServlet project, the packaged .war file will be named exactly as the artifactId specified in pom.xml file. (e.g., "firstservlet.war"). We then deploy this .war file using the "manager" webapp in tomcat. The URL base for this servlet will be as follows:
 
     "https://localhost:8080/firstservlet/home"
 
@@ -241,8 +226,7 @@ specified in pom.xml file. (e.g., "firstservlet.war"). We then deploy this .war 
 
 <h2>Request Routing</h2>
 
-Server routes request to servlet using configuration information, which is held in <b>web.xml</b>.
-One servlet instance handles all requests to the associated url-pattern, not just one single base url, see below.
+Server routes request to servlet using configuration information, which is held in <b>web.xml</b>. One servlet instance handles all requests to the associated url-pattern, not just one single base url, see below.
 
     "GET /someapp/someservlet HTTP/1.1" ->> web.xml(mapped by container) ->> associated Servlet
 
@@ -267,10 +251,7 @@ In <b>WEB-INF/web.xml</b>:
         </servlet-mapping>
     </web-app>
 
-As shown in previous "firstservlet" example, the base url can be mapped to a servlet by the
-annotation "@WebServlet", it can also be mapped based on the configuration in web.xml. As in above
-example, the class <i>MappingDemo</i> is given a name called <i>DemoServlet</i>, and this
-servlet is mapped to url patterns
+As shown in previous "firstservlet" example, the base url can be mapped to a servlet by the annotation "@WebServlet", it can also be mapped based on the configuration in web.xml. As in above example, the class <i>MappingDemo</i> is given a name called <i>DemoServlet</i>, and this servlet is mapped to url patterns
 
     "*.demo" and "/demo"
 
@@ -282,7 +263,7 @@ or
 
     "https://localhost:8080/servletmapping/asdfasdf.demo"
 
-will be mapped to this servlet, executed by the class "MappingDemo". It is worth noting that tag,<b><i>servlet-name</i></b> is used in web.xml, rather than in the base url.
+will be mapped to this servlet, executed by the class "MappingDemo". It is worth noting that tag, <b><i>servlet-name</i></b> is used in web.xml as an identifier.
 
 <h2>HTTP Request and Response Processing</h2>
 
@@ -309,8 +290,7 @@ class HttpServlet. The class <b>HttpServletRequest</b> is a wrapper of an HTTP r
 
 Note that <b>HTTP Headers</b> consist of three parts, the <b>Request Headers</b>, <b>General Headers</b>, and <b>Entity Headers</b>. They are shown as follows. The <i>"POST / HTTP/1.1"</i> refers to a POST action.
 
-After this line, the first part is the Request Headers that specify the user-agent,
-accept-type, accept-language and so on. The second part is the for the general purpose that apply to the message as a whole. The third part is the Entity Header, that apply to the body of the request, such as the Content-Length.
+After this line, the first part is the Request Headers that specify the user-agent, accept-type, accept-language and so on. The second part is the for the general purpose that apply to the message as a whole. The third part is the Entity Header, that apply to the body of the request, such as the Content-Length.
 
     POST / HTTP/1.1
 
@@ -328,10 +308,7 @@ accept-type, accept-language and so on. The second part is the for the general p
 
 More on HTTP Messages: https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages
 
-Further, in the above example of HttpServletRequest, parameters in a HTTP request can be
-extracted. <b>Parameters</b> are variables given and specified in the Http URL after the ?
-question mark, or if the request has a body, parameters can be from the body (such as
-from a form).
+Further, in the above example of HttpServletRequest, parameters in a HTTP request can be extracted. <b>Parameters</b> are variables given and specified in the Http URL after the ? question mark, or if the request has a body, parameters can be from the body (such as from a form).
 
     "http://someserver/someapp/someservlet?uid=bob"
 
@@ -370,15 +347,11 @@ For example, here, we can extract the paramter "uid" from the request as follows
 
 <h3>Demo HttpRequestAndResponse</h3>
 
-In <b>doGet()</b> method, we do a simple request and response handling, that it gets "name" parameter from the request, and we print out a message and respond to the
-client. The URL can be as follow.
+In <b>doGet()</b> method, we do a simple request and response handling, that it gets "name" parameter from the request, and we print out a message and respond to the client. The URL can be as follow.
 
     "http://localhost:8080/reqrep/react?name=curtis"
 
-Wherein, <i>"reqrep"</i> is the name of the webapp, <i>"/react"</i> is the url-pattern
-mapped to a servlet, and <i>"?name=curtis"</i> is a parameter in this request. If not
-parameter provided or this URL doesn't formatted correctly (e.g., without ?), the method
-<b>getParameter("name")</b> will simply return null just like no parameter provided.
+Wherein, <i>"reqrep"</i> is the name of the webapp, <i>"/react"</i> is the url-pattern mapped to a servlet, and <i>"name=curtis"</i> is a parameter in this request. If not parameter provided or this URL doesn't formatted correctly (e.g., without ?), the method <b>getParameter("name")</b> will simply return null just like no parameter provided.
 
 In <b>doPost()</b> method, we do the similar operation as in doGet() method, except that doPost() method is meant to push data to the server. So, when we receive a <b>POST</b> request, we may need to do some processing as above using the given parametesr. In this demo, doPost() method extract parameters from the <i>form</i> tag, and redirect to another servlet.
 
