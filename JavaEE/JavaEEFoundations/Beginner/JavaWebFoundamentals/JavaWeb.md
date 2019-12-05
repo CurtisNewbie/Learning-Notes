@@ -39,12 +39,14 @@ In the directory of the Tomcat server, there is a folder named <b><i>"webapps"</
 
 A web application is <b>a unit of deployment</b> that:
 
-<ul>    
+<ul>
+
     <li>contains content and configuration</li>
     <li>listens to the request of or is responsible for a <b>Base URL</b></li>
         such as: https://<b>someserver</b>/<b>webapp</b>/somepages
     <li>may contain static content(e.g., HTML, resources)</li>
     <li>may contain dynamically generated content (e.g., servlets, server pages) </li>
+
 </ul>
 
 <h3>Structure of A Webapp</h3>
@@ -385,3 +387,100 @@ The parameters are taken as follows:
 We can change the content-type of the response to such as xml as follows:
 
     resp.setContentType("text/xml");
+
+<h2>3.JavaServer Pages</h2>
+
+A <b>.jsp</b> file or <b>Java Server Page</b> file is compiled into a servlet when it is deployed. The JSP file looks quite similar to a HTML, and when it's compiled, the HTML like static content is written out to the client.
+
+The compiled files are stored in:
+
+    $CATALINA_HOME/work/Catalina/localhost/...
+
+<h3>Directive - Include Directive</h3>
+
+In a simple JSP file, most of the tags are HTML elements, such as header, secion, body and so on. If we want to reuse some of the element in different webpages, we can use <b>directives</b>. For example, in a simple jsp file we have:
+
+    <header class="navigation header">
+        <nav>
+            .......
+        </nav>
+    </header>
+
+And then we want to reuse this header, we can create a new jsp file, say <i>"\_beautiHeader.jsp"</i>, and cut and paste all the above HTML code in to this <i>"\_beautiHeader.jsp"</i> file. When we want to reuse it, we use <b>Include Directive</b> as bellow:
+
+    <%@include file="_beautiHeader.jsp"%>
+
+This element, or this part of the content will then be embeded into the currnet jsp file during the <b>translation time</b> or the <b>compilation time</b> of this page. There will also be resources that are dynamically included, but these resources are included during the lifecyle of a servlet rather than being statically compiled.
+
+<h3>Directive - Page Directive</h3>
+
+As JSP is compiled by server (e.g., Tomcat) acting like a servlet, we can use <b>Page Directive</b> modify the behaviours of this JSP during the servlet lifecycle. Such as follow:
+
+    <!-- change base class  -->
+    <%@page extend="com.curtisnewbie.pkg.SomeClass"%>
+
+    <!-- change buffer size of the generated text/html output-->
+    <%@page buffer="8kb"%>
+
+    <!-- change autoFlush behaviour, it's true by def. When it's false, it throws
+    exception when buffer is full -->
+    <%@page autoFlush="true"%>
+
+    <!-- set content type, it's text/html by def. It can be such as xml, json, etc. -->
+    <%@page contentType="" %>
+
+    <!-- set errorPage, when exception thrown, we can specify an error page manually. -->
+    <%@page errorPage="somePage.xml" %>
+    <%@page errorPage="somePage.html" %>
+    <%@page errorPage="somePage.jsp" %>
+
+    <!-- Once we want to use a JSP as an error page rather than a xml page, we need to set this -->
+    <%@page isErrorPage="true" %>
+
+<h3>Example of Setting Error Page - ErrorHandling</h3>
+
+As mentioned above, we can use <b>page directive</b>to specify how error page is assigned and create JSP as error page. However, this example aims to show how we can manually manage error, such way to handle exceptions is very unusual in normal situations.
+
+Error pages are shown when exceptions are thrown, we may choose to handle them or display a error page, such as <i>404 for not found web pages</i>.
+
+First of all, we create a JSP (error.jsp), and we set it to be an <b>Error Page</b> by using page directive (<b><%@page isErrorPage="true"%></b>), then we can use various methods such as <%=exception.getMessage()%> to gain information of the exception passed to this JSP.
+
+    <%@page isErrorPage="true"%>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Error Page</title>
+    </head>
+    <body>
+
+        <h2>Error</h2>
+
+        <!-- we use methods to get exception information-->
+        Exception Message:<%=exception.getMessage()%><br>
+        Whole Exception:<%=exception.toString()%>
+
+    </body>
+    </html>
+
+Then, in <b>WEB-INF/web.xml</b> file, we need to specify the error-page that we want to show for the specified error-code. Here, we direct the 500 error-code to the error.jsp.
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.jsp</location>
+    </error-page>
+
+<h2>MVC Architecture</h2>
+
+    Model - the data we'd like to display (Java Bean, POJO)
+    View - where the data are displayed, e.g., JSP, HTML, XML, JSON
+    Controller - bringing model and view together (servlet and listener)
+
+The interactions or flow in MVC style application:
+
+    1. Client -> send request to -> servlet
+    2. Servlet (acts as controller) -> create a Java Bean (Model and data)
+    3. Servlet -> pass the bean to the JSP (so that data are displayed), the bean may be stored for current session, so that only the current user can access to it.
