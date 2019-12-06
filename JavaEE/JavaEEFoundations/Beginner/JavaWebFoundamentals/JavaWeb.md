@@ -484,3 +484,125 @@ The interactions or flow in MVC style application:
     1. Client -> send request to -> servlet
     2. Servlet (acts as controller) -> create a Java Bean (Model and data)
     3. Servlet -> pass the bean to the JSP (so that data are displayed), the bean may be stored for current session, so that only the current user can access to it.
+
+<h2>Explanation of Demo - "SimpleMVCWebApp"</h3>
+
+First of all, the <i>"com.curtisnewbie.app.Account"</i> is a <b>Java Bean</b> or <b>POJO</b>
+It consists of basic Getter methods and Setter methods.
+
+Second, this webapp contains two Jsp files, one is the <i>index.jsp</i> that is located directly under webapp/ folder, which is exposed to the public. This also means that we can access it as follows:
+
+    http://localhost:8080/simplemvcwebapp/
+
+    or
+
+    http://localhost:8080/simplemvcwebapp/index.jsp
+
+Another JSP file is the <i>account.jsp</i>, that is located under WEB-INF/jsp/. This is hidden from the public, and it can only be access when the server dispatch it to the clients.
+
+In <i>index.jsp</i>, we use POST method to pass the parameters to the server as follows:
+
+    <form action="login" method="POST">
+        <p>Name: <input type="text" name="name" id="nameInput"></p>
+        <p>Password: <input type="password" name="password" id="passwordInput"></p>
+        <p><input type="submit" value="Login"></p>
+    </form>
+
+This POST method is handled by the Login.java, the "login" url is mapped to Login.java as follows:
+
+    <servlet>
+        <servlet-name>login</servlet-name>
+        <servlet-class>com.curtisnewbie.app.Login</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+This POST request is handled as follows:
+
+    if (name == null || name.isEmpty() || pw == null || pw.isEmpty()) {
+        // for illegal login credentials, redirect it to index.jsp
+        resp.sendRedirect("index.jsp");
+        return;
+    }
+
+We use sendRedirect() method to redirect the client to the index.jsp, if they didn't provide name and password. Then, if the credentials are given, we create a Java Bean and load some data in it. (This bean is for demo only, so the password is in plaintext).
+
+    switch (name) {
+        case SampleData.name1:
+            if (pw.equals(SampleData.pw1)) {
+                // create bean
+                account = new Account();
+                account.setName(SampleData.name1);
+                account.setDeposit(SampleData.deposit1);
+            }
+            break;
+
+        case SampleData.name2:
+            if (pw.equals(SampleData.pw2)) {
+                // create bean
+                account = new Account();
+                account.setName(SampleData.name2);
+                account.setDeposit(SampleData.deposit2);
+            }
+            break;
+        }
+    }
+
+If the credentials are correct, we create a RequestDispatcher to commit further processing operations (using <b>include</b> method, the request and response objects are passed to other jsp for further processing, then they are returned back to this JSP, that's why it's called further processing) or to forward back to the client or other JSP (using <b>forward</b> method, no more processing is needed in this servlet).
+
+    RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/account.jsp");
+
+    // load bean to request scope
+    req.setAttribute("account", account);
+
+    // forward request and response
+    dispatcher.forward(req, resp);
+
+Notice that we load the bean to servlet using httpServletRequest.setAttribute() method, this allows the JSP to access to this bean and dynamically generate data. This is within the <b>request scope</b>, that this is only accessible in this request. There are also session scope and global scope.
+
+If we want to make it in the <b>global scope</b>, it will be accessed globally. We can also pass the bean like this.
+
+    getServletContext().setAttribute("globalBean", bean);
+
+If we want to make it in the <b>session scope</b>, which means it will be accessiable within the session, including other servlets in this session, it will be like this:
+
+    req.getSession().setAttribute("sessionBean", bean);
+
+Further, when the scope (e.g., session or request) is finished, the beans within the scope are then destroyed.
+
+When we forward this request and response to the account.jsp, we expect that the account.jsp will extract the information from the bean. In account.jsp, we first <b>import the Account.java using the page directive</b>, so that we can extract data from the bean:
+
+    <%@page import="com.curtisnewbie.app.Account" %>
+
+Then we <b>get the bean from the request</b> as follows:
+
+    <%
+        Account account = (Account)request.getAttribute("account");
+    %>
+
+Within <b><%</b> and <b>%></b>, java code can be executed as usual. Then we can use the directive to gain the output (which is basically the same as "out.write(account.getName()")
+
+     <title>Mate: <%=account.getName() %></title>
+
+     ...
+
+     <section>
+        <h1>Account Info</h1>
+        <p>You name is: <%=account.getName() %></p>
+        <p>Your acount has: <%=account.getDeposit() %></p>
+    </section>
+
+This is how simple MVC works, the Account bean acts as the <b>Model</b>, the Login.java servlet acts as <b>Controller</b>, and the index.jsp and account.jsp act as the <b>View</b>.
+
+<h2>Summary of JSP</h2>
+
+JSPs are a mixture of
+
+<ul>
+    <li>Text</li>
+    <li>Script</li>
+    <li>Directives</li>
+</ul>
