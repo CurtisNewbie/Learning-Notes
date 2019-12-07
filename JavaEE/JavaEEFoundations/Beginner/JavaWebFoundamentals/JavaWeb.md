@@ -473,7 +473,7 @@ Then, in <b>WEB-INF/web.xml</b> file, we need to specify the error-page that we 
         <location>/error.jsp</location>
     </error-page>
 
-<h2>MVC Architecture</h2>
+<h2>4. MVC Architecture</h2>
 
     Model - the data we'd like to display (Java Bean, POJO)
     View - where the data are displayed, e.g., JSP, HTML, XML, JSON
@@ -605,4 +605,154 @@ JSPs are a mixture of
     <li>Text</li>
     <li>Script</li>
     <li>Directives</li>
+</ul>
+
+<h2>5. Expression Language</h2>
+
+As shown in above notes, we can execute java code in JSP file wihtin <b><%</b> and <b>%></b>, and we can also output some data using simple directive such as <b><%= %></b>. However, this relies on Java as the scripting language, and it becomes difficult to develop the dynamic pages. JSPs are the views that should not be used to execute business logics. Such that, JSP2.0 introduced the Expression Language, which is easy to use that doesn't need too much knowledge of Java.
+
+<h3>Using the Expression Language</h3>
+
+The syntax of EL is as follows:
+
+    ${  expression   }
+
+And we can used it anywhere in the page to output the value of the expression, such as
+
+    <title>Name: ${user.name}</title>
+
+With the EL, the Java Bean is also heavily used, here in this example, user is the name of the bean, and the name is the attribute of the user object. With EL, we don't need to get the user bean from the request object, and we don't call the getter method to get the attribute values.
+
+    <!-- No Need for this!!! -->
+    <%
+        User user = (User)request.getAttribute("user");
+    %>
+
+    <!-- No Need for Getter and this directive!!! -->
+    <title>Name: <%= user.getName() %></title>
+
+The bean that is placed in the scope in servlet will be looked for by the JSP automatically. The JSP file finds the bean with the name of the bean (e.g., user) in the request scope, session scope and global scope.
+
+<h3>Using the Java Beans</h3>
+
+To use the Java Beans with EL, the syntax is slightly changed. We don't need to use the getter methods to get the attributes of the Java Beans, the syntax is as follows:
+
+    // dot syntax
+    ${ someBean.attributeName }
+
+    or
+
+    // [ ] syntax
+    ${ someBean["attributeName"]}
+
+Both syntaxs can be used. It should be noticed that the Java Beans can be nested, which means that the attribute of a Java Bean can itself be a Bean as well, so we can do something like this to extract data from a nested structure:
+
+    ${ someBean.anotherBean.moreBean.stringValue }
+
+    or
+
+    ${ someBean["anotherBean"]["moreBean"]["stringValue"] }
+
+EL provides access to a set of implicit objects:
+
+    Except pageContext, all of them are Maps:
+
+    pageContext         pageScope
+    requestScope        sessionScope
+    applicationScope    param
+    paramValues         header
+    headerValues        cookie
+    initParam
+
+And we can access to these implicit objects in the JSP files directly:
+
+    Host header is ${ header.host }
+
+We can also use EL to access the elements stored in <b>data structures</b>, such as <b>List</b>, <b>Maps</b>, <b>Array</b> etc. For example:
+
+We first create a bean class called <i>Titles</i>, which contains an Array as its attribute.
+
+    public class Titles {
+        private String[] names;
+
+        public Titles(){
+
+        }
+
+        public void setNames(String[] n){
+            this.names = n;
+        }
+
+        public String[] getNames(){
+            return this.names;
+        }
+    }
+
+We then create a bean of this class and load it to the <b>request scope</b>:
+
+    Titles titles = new Titles();
+    titles.setNames(new String[]{"apple", "banana", "cat"});
+    req.setAttribute("titles", titles);
+
+Then in JSP, we can access to this bean and its attribute using EL:
+
+    First Title: ${ titles.names[0] }
+    Second Title: ${ titles.names[1] }
+    Third Title: ${ titles.names[2] }
+
+For Map data structure, we use the following syntax, but it quite similar:
+
+    ${ mapObj[keyvalue] }
+
+    <!-- if the keyvalue is number -->
+    ${ mapObj[1234123] }
+
+    <!-- if the keyvalue is string -->
+    ${ mapObj["apple"] }
+
+<b>The practical usage of EL and Java Beans will be creating various nested JavaBeans for such as settings (e.g., class name for css to change styles), variables (e.g., names in the navigation panel), data (e.g., name of user and so on) so that the webpages can be reused and very dynamic.</b>
+
+<h3>EL and Operators</h3>
+
+Even though, EL is used for basic operations, it can use operators, such as:
+
+    Arithmetic: +, - (binary), \*, / and div, % and mod, - (unary).
+
+    String concatenation: +=.
+
+    Logical: and, &&, or, ||, not, !.
+
+    Relational: ==, eq, !=, ne, <, lt, >, gt, <=, ge, >=, le. Comparisons can be made against other values or against Boolean, string, integer, or floating-point literals.
+
+    Empty: The empty operator is a prefix operation that can be used to determine whether a value is null or empty.
+
+    Conditional: A ? B : C. Evaluate B or C, depending on the result of the evaluation of A.
+
+    Lambda expression: ->, the arrow token.
+
+    Assignment: =.
+
+These are typically used in conjunction with Tags as follows:
+
+    //we first set the name of a bean, when we create this bean
+    Person person = new Person();
+    person.setName("curtis");
+    req.setAttribute("person", person);
+    ...
+
+    <!-- we then use EL and operators to verify if the neame is "curtis". This expression will
+    simply return true. -->
+    <h2> ${ person.name == "curtis" }</h2>
+
+<h3>Summary of EL</h3>
+
+Expression Language:
+
+<ul>
+    <li>is not a full language</li>
+    <li>can access to propertices </li>
+    <li>use '.' or '[ ]' syntax</li>
+    <li>can access to built-in implicit/intrinsics objects</li>
+    <li>can use a set of operators</li>
+    <li>can access Collection objects</li>
 </ul>
