@@ -29,6 +29,9 @@
 .settings/
 *.project
 
+# idea
+.idea/
+
 # maven
 target/
 
