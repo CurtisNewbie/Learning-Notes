@@ -802,7 +802,7 @@ This bean is placed into <b>Request Scope</b>, we can access it in login.jsp usi
 
     <p>Your Host: ${ header.host }</p>
 
-<h3>Standard Tag Library</h3>
+<h2>Standard Tag Library</h2>
 
 Java has a <b>Standard Tag Library</b> called <b>JSTL</b> that consists of a set of tags. Even though, we are able to run Java code in JSP, we still need Tags to:
 
