@@ -756,3 +756,48 @@ Expression Language:
     <li>can use a set of operators</li>
     <li>can access Collection objects</li>
 </ul>
+
+<h2>Explaination of Demo - "ELDemo"</h2>
+
+Two JSP files, one is <i>index.jsp</i> for getting information from the client using <b>POST</b> method. Another is <i>login.jsp</i> for displaying the information that we have previously extracted using <b>Expression Language</b>.
+
+In index.jsp, we get POST request with simple form:
+
+    <form action="login" method="POST">
+        <p>Name: <input type=" text" name="name"></p>
+        <p>
+            Three Favourite Veggie: <br>
+            <input type="text" name="veg1"><br>
+            <input type="text" name="veg2"><br>
+            <input type="text" name="veg3"><br>
+        </p>
+        <p>
+            <input type="submit" id="submit" value="Submit">
+        </p>
+    </form>
+
+We then process this request in Login.java servlet:
+
+    // construct a bean
+    User user = new User();
+    user.setName(name);
+    user.setVeggie(veggie);
+
+    // dispatch bean to login.jsp
+    RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/login.jsp");
+    req.setAttribute("user", user);
+    dispatcher.forward(req, resp);
+
+This bean is placed into <b>Request Scope</b>, we can access it in login.jsp using EL:
+
+    <p>You are: ${ user.name }</p>
+    <p>Your three favourite veggie:</p>
+    <ul>
+        <li>${ user.veggie[0] }</li>
+        <li>${ user.veggie[1] }</li>
+        <li>${ user.veggie[2] }</li>
+    </ul>
+
+    1 + 1 = ${ 1 + 1}
+
+    <p>Your Host: ${ header.host }</p>
