@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--https://stackoverflow.com/questions/30080810/el-expressions-not-evaluated-in-jsp-->
+<web-app
+  vxmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  version="4.0">
+  <display-name>Archetype Created Web Application</display-name>
+</web-app>
