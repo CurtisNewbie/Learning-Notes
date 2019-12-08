@@ -801,3 +801,79 @@ This bean is placed into <b>Request Scope</b>, we can access it in login.jsp usi
     1 + 1 = ${ 1 + 1}
 
     <p>Your Host: ${ header.host }</p>
+
+<h3>Standard Tag Library</h3>
+
+Java has a <b>Standard Tag Library</b> called <b>JSTL</b> that consists of a set of tags. Even though, we are able to run Java code in JSP, we still need Tags to:
+
+    Provide encapsulation of UI Logic
+
+These tags can be used to replace script on a page, that helps encapsulates these unnecessary script and code. In JSTL, these tags are standardised, and can be used by non-Java programmers for developing JSPs.
+
+<b>Each individual tag is a Java Class.</b> The <b>Tag Metadata</b> of the Tags are held in <b>Tag Library Descriptor(TLD) File</b>, the TLD file may look similar to this:
+
+    <taglib>
+        <tlib-version> </tlib-version>
+        <jsp-version> </jsp-version>
+        <short-name> </short-name>
+        <url> </url>
+
+        <tag>
+            <name> </name>
+            <tag-class> </tag-class>
+        </tag>
+    </taglib>
+
+First of all, we need to <b>import the appropriate JSTL tag library in the JSPs</b> in order to use them, it will be as follows:
+
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+To use this library, we also need to setup maven for this dependency:
+
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+The prefix c and the uri refer that we are using core tag library, with the core tag lib we can do conditional operation or iterate elements (e.g., from a list)
+
+    <%-- Conditional tag --%>
+    <c:if test="\${empty account.name}">
+        Error:Name is empty or null!!! <br>
+    </c:if>
+
+    <%-- iteration tag --%>
+    <ul>
+        <c:forEach items="${account.randomStrings}" var="arr">
+            <li>${arr}</li>
+        </c:forEach>
+    </ul>
+
+The <b>c:if tag</b> checks the condition within the <b>test</b> argument, here, we are checking whether <i>account.name</i> is empty (null or of zero len). The <b>test</b> is a defined format that must be specified.
+
+The <b>c:forEach</b> iterates the Iterable in argument <b>items</b>, the <i>account.randomStrings</i> passed to this tag is a String Array, so it can be iterated. We define the reference of each element through the <b>var</b> parameter, so that we can print out each element. See <b>tag.jsp, Account.java and TagDemo.java in ElDemo for demo.</b>
+
+We can also use <b>c:import tag</b> to include/import another JSP file as part of the current JSP, e.g.,:
+
+    <body>
+        <c:import url="_someheader.jsp"/>
+
+        <!-- some other contents.... -->
+    </body>
+
+<b>c:url tag</b> is simlar to <b>a href="" tag</b>, both of them are used for navigation purpose. Sometimes, we want to navigate within our server or webapp as follows:
+
+    <c:url value="/sigin.jsp"/>
+    <a href="/signin.jsp">Sign In (Root URL)</a>
+    <a href="/sigin.jsp">Sign In (Webapp Relative URL)</a>
+
+With <b>"/"</b>, the url is refering to the root url as follows:
+
+    "http://localhost:8080/someserver/signin.jsp"
+
+Without <b>"/"</b>, the url is relative to the webapp as follows:
+
+    "http://localhost:8080/someserver/webapp/signin.jsp"
+
+However, with <b>c:url tag</b>, the created URL will always be webapp relative.
