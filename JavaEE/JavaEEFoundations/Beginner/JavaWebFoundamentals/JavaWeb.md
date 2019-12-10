@@ -1065,3 +1065,249 @@ When creating Listeners for events, we need to mark them as Listeners so that th
     <listener>
         <listener-class>path/to/java/file</listener-class>
     </listener>
+
+<h2>Filters</h2>
+
+<h3>What is a Filter</h3>
+
+<b>Filter</b> can access to all requests, and do some extra processing on that those requests. It may or may not modify the requests and responses, that's why it's called Filter. Filters are executed before/after the request is executed, including the dispatcher's operation (<b>include and forward methods</b>). We can use Filters to provide:
+
+    - Session Management
+    - Logging
+    - Security and
+    - XML Transforms.
+
+Filters can be executed as part of a <b>Chain</b>, i.e., there may be a number of Filters that comprise a Chain.
+
+<h3>How Filters Work</h3>
+
+Here is the example demonstrating how Filters (or chain of Filters) may work:
+
+        request/response (maybe) manipulated at each filter, requests may be rejected for such as security or authorisation reason.
+
+
+    ----->|    requests       |                         |
+          |    ---------->    |                         |
+          |                   |                         |
+          |                   |       --------------->  |
+          |                   |                         |
+          |                   |       <---------------  |
+          |   response        |                         |
+    <-----|    <----------    |                         |
+          |                   |                         |
+    Filter1              Filter2                End Point
+    (security)           (extra processing)
+
+Note that the filters are called <b>synchronously</b>, so the chain is executed on one single thread.
+
+<h3>To Write Filters</h3>
+
+To create Filter class, we need to implement <b>Filter interface</b> and override its methods. The Filter acts quite similar to a Servlet in that it can process the request and forward response back to the client (e.g., rejecting the request before it gets to the end point).
+
+Filter contains three important methods:
+
+    init(){...}
+    doFilter(){...}
+    destroy(){...}
+
+The <b>init() method</b> is only called once when the filter is loaded. The <b>doFilter() method</b> is called to do the processing and to dispatch the request to a different resource or return the caller without further chaining the request down to the next filter or end point. The <b>destroy() method</b> is only called once to destroy the filter.
+
+<b>doFilter() method is like this:</b>
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+    }
+
+<b>Filter</b> similar to Servlet, may have:
+
+    - the associated URL pattern
+    - the associated name resources
+    - the associated servlet
+
+Filter can be configured web.xml file or annotated on the Java class, we only need to choose one way to configure it.
+
+In <b>web.xml</b> file:
+
+    <!--  Define filter name -->
+    <filter>
+        <filter-name>simpleFilter</filter-name>
+        <filter-class>com.curtisnewbie.SimpleFilter</filter-class>
+        <!-- We can give it initial parameters -->
+        <init-param>
+            <param-name>DBName</param-name>
+            <param-value>MySql</param-value>
+        </init-param>
+    </filter>
+
+    <!-- Map the filter to a url pattern or servlet -->
+    <filter-mapping>
+        <filter-name>simpleFilter</filter-name>
+        <url-pattern>*</url-pattern>
+        <!-- <servlet-name></servlet-name> -->
+    </filter-mapping>
+
+With <b>annotaion</b>:
+
+    @WebFilter(urlPatterns="/someUrl")
+    public class SomeFilter implements Filter {
+        ...
+    }
+
+<h3> Demo "FilterDemo"</h3>
+
+In Demo <b>"FilterDemo"</b>, the way to implement the Filter is shown.
+
+<b>init() method</b> is called when the filter is loaded. In <b>init()</b> method, we can instantiate some settings or variables by getting the information or parameters we need from the <b>FilterConfig</b> object as follows:
+
+    // called once when this filter is loaded
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // we can get various information/config using this method
+        if (filterConfig != null) {
+            // store it as instance variable for later use
+            config = filterConfig;
+
+            // use FilterConfig to get various useful information
+            ServletContext context = filterConfig.getServletContext();
+            filterName = filterConfig.getFilterName();
+            String iniParamOfDB = filterConfig.getInitParameter("DBName");
+        }
+    }
+
+In <b>doFilter()</b> method, we will undertake some operations, such as verifying authorisation or pre-processing of data, etc., then we will need to pass the request and response to the next Filter or end point. In order to pass the request and response further down to the next filter or to the end point (the resource), we do the following operation:
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+        // do some pre-processing
+        .......
+
+        // chain the filter
+        chain.doFilter(request, response);
+    }
+
+According to the following source:
+
+    "Servlet Filters are an implementation of the Chain of responsibility design pattern.
+
+    All filters are chained (in the order of their definition in web.xml). The chain.doFilter() is proceeding to the next element in the chain. The last element of the chain is the target resource/servlet."
+
+    src: https://stackoverflow.com/questions/2057607/what-is-dofilter-doing-in-dofilter-method-in-filters-of-java
+
+So, this method is essentially chaining the request to the next filter or the resources.
+
+In <b>destroy()</b> method, the filter is being destroyed, this is a default method. It by default takes no action, but we can use it to know when the filter is destroyed, etc.
+
+    @Override
+    public void destroy() {
+        logger.info("Destroyed: FilterName:" + filterName);
+    }
+
+Most importantly, we need to configurat the filter class using either annotation or web.xml:
+
+    <!--  Define filter name -->
+    <filter>
+        <filter-name>LogFilter</filter-name>
+        <filter-class>com.curtisnewbie.LogFilter</filter-class>
+        <!-- We can give it initial parameters -->
+        <init-param>
+            <param-name>DBName</param-name>
+            <param-value>MySql</param-value>
+        </init-param>
+    </filter>
+
+    <!-- Map the filter to a url pattern or servlet -->
+    <filter-mapping>
+        <filter-name>LogFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+<h3>Log4j2</h3>
+
+As shown in demo <b>"FilterDemo"</b>, the <i>"LogFilter.java"</i> acts as filter that logs the request of resources. This demo uses the <b>Log4j2</b>. The maven dependency is as follows:
+
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.12.1</version>
+    </dependency>
+
+To use Log4j, we need to configure where and how the information is logged, there are various way to provide configuration. Here, we create file <b>"main/resources/log4j2.xml"</b>, and configure it as follows. The log information is output to a file named <b>"application.log"</b>.
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!--configuration file for log4j2-->
+    <Configuration status="debug" name="LoggingConfig">
+        <Appenders>
+            <File name="File" fileName="/home/yongjie/tomcat9/apache-tomcat-9.0.29/logs/application.log">
+                <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            </File>
+        </Appenders>
+        <Loggers>
+            <Root level="info">
+                <AppenderRef ref="File"/>
+            </Root>
+        </Loggers>
+    </Configuration>
+
+In the filter class, we first create the static instance of Logger:
+
+    static Logger logger = LogManager.getLogger(LogFilter.class);
+
+Log4j2 has 7 levels of information defining the severity of information, and each provides different levels of details:
+
+    - OFF
+    - FATAL
+    - ERROR
+    - WARN
+    - INFO
+    - DEBUG
+    - TRACE
+
+    Src: https://en.wikipedia.org/wiki/Log4j
+
+In demo, we log <b>INFO</b> level of info as follows:
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        // use log4j2 to log this information. Info is a specific level of information (there are 7 levels)
+        logger.info("request made to '" + ((HttpServletRequest) request).getRequestURI() + "'");
+        // chain the filter
+        chain.doFilter(request, response);
+    }
+
+After making request to the webapp, in the <b>"application.log"</b>:
+
+    21:39:08.967 [RMI TCP Connection(2)-127.0.0.1] INFO  com.curtisnewbie.LogFilter - Filter initialised: FilterName:LogFilter, DBName:MySql
+
+    21:39:09.493 [http-nio-8080-exec-1] INFO com.curtisnewbie.LogFilter - request made to '/filterdemo_war/'
+
+    21:39:10.374 [http-nio-8080-exec-3] INFO com.curtisnewbie.LogFilter - request made to '/filterdemo_war/'
+
+<h2>Wrapping Request and Response</h2>
+
+<h3>Passing Logger to The Wrapper Class</h3>
+
+We can use Wrapper class to wrap the <b>Servlet Request</b>. We can wrap a request in the Filter so that we can still have access to it after sending it further down the chain, we can log information of this request by adding a logging operation in this class, and pass this object further down the chain, so every time a method is called, the logger records this information.
+
+The Wrapper is as follows:
+
+    public class LogHttpRequestWrapper extends HttpServletRequestWrapper {
+
+        private Logger logger;
+
+        public LogHttpRequestWrapper(HttpServletRequest request, Logger logger) {
+            super(request);
+            this.logger = logger;
+        }
+
+        @Override
+        public String getHeader(String name) {
+            logger.info("getHeader() being called");
+            return super.getHeader(name);
+        }
+    }
+
+<b>This wrapper is instantiated wrapping the request object in the doFilter() method. We pass the logger into this wrapper when we wrap a request, the logger then can be used to log information we need, even after passing this object down the chain.</b>
+
+For example, here, we overide the <i>getHeader() method</i> and add the logging operation in it, so that every time the method is called, information is logged. When the <b>getHeader() method</b> is called, the logger log information as below:
+
+    22:12:19.360 [http-nio-8080-exec-4] INFO com.curtisnewbie.LogFilter - getHeader() being called
