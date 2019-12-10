@@ -1,0 +1,26 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Archetype Created Web Application</display-name>
+
+    <!--  Define filter name -->
+    <filter>
+        <filter-name>LogFilter</filter-name>
+        <filter-class>com.curtisnewbie.LogFilter</filter-class>
+        <!-- We can give it initial parameters -->
+        <init-param>
+            <param-name>DBName</param-name>
+            <param-value>MySql</param-value>
+        </init-param>
+    </filter>
+
+    <!-- Map the filter to a url pattern or servlet -->
+    <filter-mapping>
+        <filter-name>LogFilter</filter-name>
+        <url-pattern>*</url-pattern>
+        <!-- <servlet-name></servlet-name> -->
+    </filter-mapping>
+
+</web-app>
