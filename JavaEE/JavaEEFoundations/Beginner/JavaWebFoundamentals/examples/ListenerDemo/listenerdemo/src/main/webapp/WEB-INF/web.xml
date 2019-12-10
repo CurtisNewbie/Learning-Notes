@@ -1,0 +1,36 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="listenerdemo" version="3.0">
+
+    <context-param>
+        <param-name>ContextName</param-name>
+        <param-value>Demos of Listener</param-value>
+    </context-param>
+
+    <display-name>Archetype Created Web Application</display-name>
+
+    <listener>
+        <listener-class>com.curtisnewbie.AppListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.curtisnewbie.SessListener</listener-class>
+    </listener>
+    
+    <listener>
+        <listener-class>com.curtisnewbie.ReqListener</listener-class>
+    </listener>
+
+    <!--1 minutes -->
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+
+</web-app>
