@@ -877,3 +877,191 @@ Without <b>"/"</b>, the url is relative to the webapp as follows:
     "http://localhost:8080/someserver/webapp/signin.jsp"
 
 However, with <b>c:url tag</b>, the created URL will always be webapp relative.
+
+<h2>Writing Tag Libraries (skipped)</h2>
+
+This section of content is skipped as JSTL and JSP is getting less relavant. It shouldn't be hard to pick up this old technology. I might just go for JAX-RS first.
+
+<h2>Event Listeners</h2>
+
+We use tag <b>@WebListener</b> to mark that a class as a listener. <b><i>Events</i> are fired at users at appropriate times, Events are methods called made by container.</b>
+
+For example:
+
+    - Application Events are fired at webapp start/end.
+    - Session Events are fired at Session start/end.
+    - Request Events are fired at Request start/end.
+    - Attribute Events are fired when attribute added/removed.
+
+<b>Listeners are created to listen for these events.</b>
+
+<h3>To create a Listener</h3>
+
+We need to implement appropriate interfaces, such as:
+
+    - ServletContextListener
+    - ServletContextAttributeListener
+    - HttpSessionActivationListener
+    - HttpSessionAttributeListener
+    - ServletRequestListener
+    - ServletRequestAttributeListener
+
+And we <b>pass appropriate "Event" object to the associated Listener</b>
+
+<h3>Register Listener</h3>
+
+We register Listener in the <b>web.xml</b> file as follosw:
+
+    <listener>
+        <listener-class>
+            com.curtisnewbie.SomeListener
+        </listener-class>
+    </listener>
+
+Note that the methods in or these Listeners are executed by the container in the order of listing for activation, i.e., these Listeners are activated based on the order of listing in the web.xml file.
+
+Further, these methods in or these Listeners are deactivated in the reverse order of listing in this web.xml file. I.e., the order of both activation and deactivation is based on the order of listing.
+
+<h3>Application Listener</h3>
+
+Application Listener is for <b>ServletContextEvents</b> that fired:
+
+    at application start
+
+    and
+
+    at application end.
+
+So, we need to implements the <b>interface ServletContextListener</b> as follows (See ListenerDemo maven project):
+
+    public class AppListener implements ServletContextListener {
+
+        // called just before servlet context being destroyed
+        @Override
+        public void contextDestroyed(ServletContextEvent sce) {
+
+        }
+
+        // called just after servlet context being initialised
+        @Override
+        public void contextInitialized(ServletContextEvent sce) {
+
+        }
+    }
+
+However, these two methods are <b>default methods</b> in the interface, so we only need to implement the methods that we need. After creating the Listener classes, we need to register these Listeners, so that the containers know which listeners should be activated and deactivated. It will be in <b>web.xml</b> file.
+
+    <listener>
+        <listener-class>com.curtisnewbie.AppListener</listener-class>
+    </listener>
+
+When we access to this server, e.g., send a request, the appropriate methods will be called. Here is the demo of <b>ListenerDemo</b> project:
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        sce.getServletContext().log("[" + new Date().toString() + "] Context Initialised");
+
+        // we can also get initial context parameters from the context
+        context.log("ContextName: " + context.getInitParameter("ContextName"));
+    }
+
+We override this method to log some message when the servlet context/webapp is initialised. When we access to any webpage in this server, the server log shows:
+
+    10-Dec-2019 15:03:09.523 INFO [RMI TCP Connection(4)-127.0.0.1] org.apache.catalina.core.ApplicationContext.log [Tue Dec 10 15:03:09 GMT 2019] Context Initialised
+
+    10-Dec-2019 15:03:09.523 INFO [RMI TCP Connection(4)-127.0.0.1] org.apache.catalina.core.ApplicationContext.log ContextName: Demos of Listener
+
+<h3>Session Listener</h3>
+
+Session Event is fired:
+
+    after session start
+
+    and
+
+    after session ended.
+
+So, for the event that is fired when session ended, no more session information can be accessed.
+
+For HTTP specifically, the session event is <b>HttpSessionEvent</b>, and we need to implement <b>HttpSessionListener</b> or other interfaces associated, such as <b>HttpSessionAttributeListener</b> for attribute event in the http session.
+
+In Demo <b>"ListenerDemo"</b>, we implements the HttpSessionListener, and overrides its methods as follows:
+
+    // fired when a session is created
+    @Override
+    public void sessionCreated(HttpSessionEvent se) {
+        HttpSession session = se.getSession();
+        String id = session.getId();
+        Date createDate = new Date(session.getCreationTime());
+        ServletContext servletContext = session.getServletContext();
+        servletContext.log("Session Created:[id:" + id + " Date of Creation:" + createDate.toString());
+    }
+
+     // fired when a session is destroyed
+    @Override
+    public void sessionDestroyed(HttpSessionEvent se) {
+        HttpSession session = se.getSession();
+        ServletContext servletContext = session.getServletContext();
+        servletContext.log("Session Destroyed: Date:" + new Date().toString());
+    }
+
+When container creates/destroies a session, in the Server log:
+
+    10-Dec-2019 15:35:47.606 INFO [http-nio-8080-exec-1] org.apache.catalina.core.ApplicationContext.log Session Created:[id:8DEAE562794982BBFD74C3C9964B81B2 Date of Creation:Tue Dec 10 15:35:47 GMT 2019
+
+    10-Dec-2019 16:01:10.260 INFO [Catalina-utility-2] org.apache.catalina.core.ApplicationContext.log Session Destroyed: Date:Tue Dec 10 16:01:10 GMT 2019
+
+Note that the session is destroyed by a background timer thread.
+
+<h3>Request Listener</h3>
+
+Request Event is fired:
+
+    before request comes into scope (before it enters the first filter)
+
+    and
+
+    before request goes out of scope (after it's left the last the last filter)
+
+The ServletRequestEvent gives access to:
+
+    ServletContext and ServletRequest
+
+In Demo <b>"ListenerDemo"</b>, we implements interface <b>ServletRequestListener</b> as follows:
+
+    // called when it's destroyed
+    @Override
+    public void requestDestroyed(ServletRequestEvent sre) {
+        sre.getServletContext().log("Request Destryoed.");
+    }
+
+    // called when it's initialised
+    @Override
+    public void requestInitialized(ServletRequestEvent sre) {
+        sre.getServletContext().log("Request Initialised.");
+    }
+
+After a simple GET request, in the server log:
+
+        10-Dec-2019 15:47:36.095 INFO [http-nio-8080-exec-3] org.apache.catalina.core.ApplicationContext.log Request Initialised.
+
+        10-Dec-2019 15:47:36.098 INFO [http-nio-8080-exec-3] org.apache.catalina.core.ApplicationContext.log Request Destryoed.
+
+Note that, different from session, the request is destroyed when response is forwarded back to the client. However, session typicall last 20-30 mins. We can also adjust the <b>Session Timeout configuration in web.xml</b>
+
+    <!--10 minutes -->
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
+
+<h3>Annotation and web.xml for Listeners</h3>
+
+When creating Listeners for events, we need to mark them as Listeners so that the container will use them. There are two ways to do this, and only way should be selected for consistency:
+
+    // Using Annotation in the Java class
+    @WebListener
+
+    // Using XML tags in web.xml
+    <listener>
+        <listener-class>path/to/java/file</listener-class>
+    </listener>
