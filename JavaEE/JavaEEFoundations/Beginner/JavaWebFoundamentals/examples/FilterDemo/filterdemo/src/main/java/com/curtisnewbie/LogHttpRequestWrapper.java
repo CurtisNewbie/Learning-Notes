@@ -20,6 +20,7 @@ public class LogHttpRequestWrapper extends HttpServletRequestWrapper {
      * Constructs a request object wrapping the given request.
      *
      * @param request the {@link HttpServletRequest} to be wrapped.
+     * @param logger Log4j logger for LogFilter.class
      * @throws IllegalArgumentException if the request is null
      */
     public LogHttpRequestWrapper(HttpServletRequest request, Logger logger) {
