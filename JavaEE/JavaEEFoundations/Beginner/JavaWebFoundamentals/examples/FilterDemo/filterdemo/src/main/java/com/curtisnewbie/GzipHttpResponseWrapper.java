@@ -33,7 +33,7 @@ public class GzipHttpResponseWrapper extends HttpServletResponseWrapper {
     /**
      * Close all output streams
      */
-    public void finishResponse() throws IOException {
+    public void closeResponse() throws IOException {
         if (gzipOut != null) {
             gzipOut.close();
         }
@@ -71,6 +71,6 @@ public class GzipHttpResponseWrapper extends HttpServletResponseWrapper {
      * Create Gzip ServeltOutputStream
      */
     private ServletOutputStream createGzipOutputStream() throws IOException {
-        return new GzipServletOutputStream(originalResponse);
+        return new GzipServletOutputStream(originalResponse.getOutputStream());
     }
 }

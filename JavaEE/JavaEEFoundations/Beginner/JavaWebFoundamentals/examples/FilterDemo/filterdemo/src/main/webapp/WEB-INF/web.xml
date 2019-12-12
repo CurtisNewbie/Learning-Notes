@@ -1,9 +1,20 @@
-<!DOCTYPE web-app PUBLIC
-        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-        "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
+
+<web-app vxmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
     <display-name>Archetype Created Web Application</display-name>
+
+    <servlet>
+        <servlet-name>Home</servlet-name>
+        <servlet-class>com.curtisnewbie.HomeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Home</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
 
     <!--  Define filter name -->
     <filter>
@@ -20,10 +31,11 @@
         <filter-name>CompressFilter</filter-name>
         <filter-class>com.curtisnewbie.CompressFilter</filter-class>
     </filter>
-    
+
     <filter-mapping>
         <filter-name>CompressFilter</filter-name>
         <url-pattern>*.gzip</url-pattern>
+<!--         <servlet-name>Home</servlet-name>-->
     </filter-mapping>
 
     <!-- Map the filter to a url pattern or servlet -->

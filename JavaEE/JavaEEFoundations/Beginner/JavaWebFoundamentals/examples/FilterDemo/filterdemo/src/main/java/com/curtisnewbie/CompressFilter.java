@@ -1,7 +1,6 @@
 package com.curtisnewbie;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,20 +29,24 @@ public class CompressFilter implements Filter {
                         "GZIP Compression Enabled on RequestID:" + ((HttpServletRequest) request).getRequestURI() +
                                 new Date().toString());
                 // compress output stream by using a response wrapper
-                GzipHttpResponseWrapper compressWrapper =
+                GzipHttpResponseWrapper compressResponseWrapper =
                         new GzipHttpResponseWrapper((HttpServletResponse) response);
 
                 // pass wrapper down the chain
-                chain.doFilter(request, compressWrapper);
+                chain.doFilter(request, compressResponseWrapper);
+
+                // set content type so that client know the response content is compressed.
+                compressResponseWrapper.addHeader("Content-Encoding", "gzip");
 
                 // after the request is processed (or the chain is finished), close stream and writer
-                compressWrapper.finishResponse();
+                compressResponseWrapper.closeResponse();
                 return;
             }
         }
-
+        logger.info(
+                "GZIP Compression cannot be enabled on RequestID:" + ((HttpServletRequest) request).getRequestURI() +
+                        new Date().toString());
         // if not http servlet response or not accepting compression, pass original request and response objects
         chain.doFilter(request, response);
-
     }
 }
