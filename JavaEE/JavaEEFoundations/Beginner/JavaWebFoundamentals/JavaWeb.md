@@ -1284,7 +1284,7 @@ After making request to the webapp, in the <b>"application.log"</b>:
 
 <h2>Wrapping Request and Response</h2>
 
-<h3>Passing Logger to The Wrapper Class</h3>
+<h3>Wrapping Request - Passing Logger to The Wrapper Class</h3>
 
 We can use Wrapper class to wrap the <b>Servlet Request</b>. We can wrap a request in the Filter so that we can still have access to it after sending it further down the chain, we can log information of this request by adding a logging operation in this class, and pass this object further down the chain, so every time a method is called, the logger records this information.
 
@@ -1311,3 +1311,130 @@ The Wrapper is as follows:
 For example, here, we overide the <i>getHeader() method</i> and add the logging operation in it, so that every time the method is called, information is logged. When the <b>getHeader() method</b> is called, the logger log information as below:
 
     22:12:19.360 [http-nio-8080-exec-4] INFO com.curtisnewbie.LogFilter - getHeader() being called
+
+<h3>Wrapping Response - Compressing Response Data</h3>
+
+We can also create a Wrapper to wrap the <b>Servlet Response</b>. As mentioned above, the filters, request and response can be considered as a chain. The filters can intercepts requests and do some pre-processing before the requests and responses reach the end point. The filters can also be used to wrap responses, so that post-processing is undertaken.
+
+In demo <b>FilterDemo</b>, a Filter (<b>CompressFilter</b>) is created that create a response wrapper and pass the wrapper down the chain. It is as follows:
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+
+        if (request instanceof HttpServletRequest) {
+            String acceptGzip = ((HttpServletRequest) request).getHeader("accept-encoding");
+
+            if (acceptGzip != null && acceptGzip.indexOf("gzip") != -1) {
+
+                // compress output stream by using a response wrapper
+                GzipHttpResponseWrapper compressResponseWrapper =
+                        new GzipHttpResponseWrapper((HttpServletResponse) response);
+
+                // pass wrapper down the chain
+                chain.doFilter(request, compressResponseWrapper);
+
+                // set content type so that client know the response content is compressed.
+                compressResponseWrapper.addHeader("Content-Encoding", "gzip");
+
+                // after the request is processed (or the chain is finished), close stream and writer
+                compressResponseWrapper.closeResponse();
+                return;
+            }
+        }
+
+        // if not http servlet response or not accepting compression, pass original request and response objects
+        chain.doFilter(request, response);
+    }
+
+In <b>doFilter() method</b>, we first instantiate a wrapper class of normal <b>HttpServletResponse</b> object, then we pass this wrapper object down the chain by calling <b>chain.doFilter() method</b>, when the chain is finished (response being forwarded back to the client), we <b>close the response (i.e., close the internal Output Stream)</b>. The closeResponse() method is just a normal method used to close the streams. <b>If the client do not accept encoding or using gzip, we simply pass the original response object without using any wrapper.</b>
+
+In the wrapper class (<b>GzipHttpResponseWrapper</b>) which is an subclass of <b>HttpServletResponse</b>, we override the HttpServletResponse's methods (such as getWriter() and getOutputStream() methods), so that the following writers or output streams that are used in the methods such as doGet() or doPost() in servlets are wrapped GzipOutputStream. For example:
+
+    private ServletOutputStream gzipOut = null;
+    private PrintWriter gzipWriter = null;
+
+     @Override
+    public PrintWriter getWriter() throws IOException {
+        if (gzipOut == null) {
+            gzipOut = createGzipOutputStream();
+        }
+
+        if (gzipWriter == null) {
+            gzipWriter = new PrintWriter(gzipOut);
+        }
+        return gzipWriter;
+    }
+
+    @Override
+    public ServletOutputStream getOutputStream() throws IOException {
+        if (gzipOut == null) {
+            gzipOut = createGzipOutputStream();
+        }
+        return gzipOut;
+    }
+
+    @Override
+    public void flushBuffer() throws IOException {
+        gzipOut.flush();
+    }
+
+    /**
+     * Create Gzip ServeltOutputStream
+     */
+    private ServletOutputStream createGzipOutputStream() throws IOException {
+        return new GzipServletOutputStream(originalResponse.getOutputStream());
+    }
+
+The one above is the wrapper for <b>HttpServletResponse</b>. However, we also need a wrapper for the <b>ServletOutputStream</b> because the jdk built-in class <b>"java.util.zip.GZIPOutputStream"</b> is not a ServletOutputStream, it is simply a subclass of OutputStream for compression. We need to create a custom claas that extends <b>ServletOutputStream</b>, and use the GZIPOutputStream object internally as follows:
+
+    public class GzipServletOutputStream extends ServletOutputStream {
+
+        private GZIPOutputStream gzipOut;
+
+        public GzipServletOutputStream(OutputStream outputStream) throws IOException {
+            super();
+            this.gzipOut = new GZIPOutputStream(outputStream);
+        }
+
+        ...
+
+        @Override
+        public void write(int i) throws IOException {
+            gzipOut.write(i);
+        }
+
+        @Override
+        public void write(byte[] b) throws IOException {
+            gzipOut.write(b);
+        }
+    }
+
+For the configuration part in <b>web.xml</b> (can also be using annotaions):
+
+    <filter>
+        <filter-name>CompressFilter</filter-name>
+        <filter-class>com.curtisnewbie.CompressFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CompressFilter</filter-name>
+        <url-pattern>*.gzip</url-pattern>
+    </filter-mapping>
+
+It means we uses this "compression" filter for any url with a suffix of ".gzip". We can see the difference between normal response and compressed response in the browser. However, the content-length is not claimed in the response header (compressed one), and it can be unreliable for compressed response.
+
+    // For normal response without gzip encoding:
+
+        Connection: keep-alive
+        Content-Type: text/html;charset=utf-8
+        Date: Thu, 12 Dec 2019 14:02:22 GMT
+        Keep-Alive: timeout=20
+
+    // For response with gzip encoding:
+
+        Connection: keep-alive
+        Content-Encoding: gzip
+        Content-Length: 239
+        Content-Type: text/html;charset=utf-8
+        Date: Thu, 12 Dec 2019 14:02:30 GMT
+        Keep-Alive: timeout=20
