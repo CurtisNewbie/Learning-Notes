@@ -1438,3 +1438,50 @@ It means we uses this "compression" filter for any url with a suffix of ".gzip".
         Content-Type: text/html;charset=utf-8
         Date: Thu, 12 Dec 2019 14:02:30 GMT
         Keep-Alive: timeout=20
+
+<h3>Summary Of Filters</h3>
+
+After Servlet 2.4, we can use Filter for dispatcher methods not just the incoming requests from the clients.
+
+    <filter-mapping>
+        <filter-name>someFilter</filter-name>
+        <servlet-name>servletName</servlet-name>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+We can also use annotations to configure the filters similart to that for servlet, such as:
+
+    @WebFilter
+    - name
+    - urlPatterns
+    - dispatcherType
+    - servletNames
+    - asyncSupported
+    - ...
+
+    @WebInitParam
+    ...
+
+For example:
+
+    @WebFilter("/someUrl")
+    public class ExampleFilter implements Filter {...}
+
+    @WebFilter(urlPatterns = "*.gzip")
+    public class ExampleFilter implements Filter {...}
+
+    @WebFilter(servletName = {"LoggingServlet", "AuthorisationServlet"})
+    public class ExampleFilter implements Filter {...}
+
+    @WebFilter(
+        urlPatterns = "*.gzip"
+        initParams = @WebInitParam(name="fileTypes", value="txt"))
+    public class ExampleFilter implements Filter {...}
+
+    @WebFilter(
+        urlPatterns = "*.gzip"
+        dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
+    public class ExampleFilter implements Filter {...}
