@@ -1485,3 +1485,73 @@ For example:
         urlPatterns = "*.gzip"
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
     public class ExampleFilter implements Filter {...}
+
+<h2>Asynchronous Programming</h2>
+
+Both Servlets and Filters can be asynchronous. Asynchronous programming is used for:
+
+    - Slow Backend Resources (e.g., for clients to download files)
+    - Resuse of Threads (i.e., offload and resuse the threads for communicating with
+        clients, and create threads for heavy processing in the background)
+    - Server Push (long pulling services, e.g., for ajax request)
+
+<h3>How Async Servlet Works?</h3>
+
+We generally follows this order:
+
+    1. Mark servlet/filter as asynchronous
+    2. Start the async context to handle requests (push requests
+        to different threads for managing requests)
+    3. Use async context to return the response back to the clients when the work is done
+
+<h4>1.Mark servlet/filter as asynchronous</h4>
+
+We use annotations or configure in web.xml to show that it's asynchronous:
+
+    // for annotation
+    @WebServlet(urlPatterns="/home", asyncSupported = true)
+    public class HomeServlet extends HttpServlet{
+
+    }
+
+    <!-- for web.xml -->
+    <servlet>
+        <servlet-name>servletName</servlet-name>
+        <servlet-class>servletClass</servlet-class>
+        <async-supported>true</async-supported>>
+    </servlet>
+
+<h4>2.Get Async Context</h4>
+
+We can get the <b>AsyncContext object</b> as follows:
+
+    // for example in doGet method
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
+
+        final AsyncContext asynCtx = req.startAsync();
+
+    }
+
+<h4>3. Start and Complete Async Work</h4>
+
+Similar to Thread, we call <b>.start() method</b> and pass a <b>Runnable object</b> in it to start the async work. The container will handle these threads.
+
+    asynCtx.start(() ->{
+
+        try{
+           // do some thing
+           asynCtx.getResponse().getWriter().write(.....)
+        }catch(IOException e){
+            // log excpetion msg at an error level (log4j2)
+            logger.info(Level.ERROR, e.toString);
+        }
+
+        // and then we mark it as completed
+        asynCtx.complete();
+    });
+
+If we don't want to handle this request within the servlet, we can simply dispatch to another servlet:
+
+    final AsyncContext asynCtx = req.startAsync();
+    asynCtx.dispatch("/otherUrl");
