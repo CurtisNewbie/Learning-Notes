@@ -16,6 +16,16 @@
         </init-param>
     </filter>
 
+    <filter>
+        <filter-name>CompressFilter</filter-name>
+        <filter-class>com.curtisnewbie.CompressFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>CompressFilter</filter-name>
+        <url-pattern>*.gzip</url-pattern>
+    </filter-mapping>
+
     <!-- Map the filter to a url pattern or servlet -->
     <filter-mapping>
         <filter-name>LogFilter</filter-name>
