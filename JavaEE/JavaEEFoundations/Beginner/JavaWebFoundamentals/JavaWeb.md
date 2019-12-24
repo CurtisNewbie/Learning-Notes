@@ -1555,3 +1555,63 @@ If we don't want to handle this request within the servlet, we can simply dispat
 
     final AsyncContext asynCtx = req.startAsync();
     asynCtx.dispatch("/otherUrl");
+
+<h3>Demo of Simple Async Servlet</h3>
+
+See <i>"AsyncDemo/asyncdemo/src/main/webapp/java/com/curtisnewbie/SimpleAsyncServlet.java"</i>
+
+We first use annotation to mark it asynchronous.
+
+    @WebServlet(urlPatterns = "/simple/async", asyncSupported = true)
+
+In doGet() method, we get the async context representing this whole async operation
+
+    final AsyncContext asyncContext = req.startAsync();
+
+We then set timeout on this context
+
+    asyncContext.setTimeout(3000);
+
+We can also add listeners to it to listen the status of this async operation (e.g., using logger)
+
+    asyncContext.addListener(new AsyncListener() {
+        @Override
+        public void onComplete(AsyncEvent event) throws IOException {
+            // when asynchronous operation complete or dispatched
+        }
+
+        @Override
+        public void onError(AsyncEvent event) throws IOException {
+            // when asynchronous operation has error/exceptions
+        }
+
+        @Override
+        public void onTimeout(AsyncEvent event) throws IOException {
+            // when asynchronous operation timeout
+        }
+
+        @Override
+        public void onStartAsync(AsyncEvent event) throws IOException {
+            // when asynchronous operation starts
+        }
+    });
+
+Most importantly, we need to specify what the async operation actually is and ask the container to allocate a thread for this operation, by calling the <b>.start()</b> method and pass a <b>Runnable</b> object to it.
+
+    asyncContext.start(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // do something asynchronously
+                    ...
+
+                } catch (Exception e) {
+                    log(e.toString());
+                }
+                asyncContext.complete();
+            }
+        });
+
+Note that when we complete the asynchronous operation, we must call <b>complete()</b> or <b>dispatch()</b> methods to tell the container that we are done, complete() is essentailly the same as the dispatch(), except that dispath() closes the async operation and sends the response and request to another servlet like normal.
+
+Everytime a new request comes in, the server will handle the request in one thread (to set timeout and register listeners), and then dispatch it to another thread managed by the container.
