@@ -1,0 +1,16 @@
+<!-- book-detail component template -->
+<h2>Book-Detail</h2>
+
+<div>
+    <b>Title: </b> <input type="text" value="{{book.title}}" readonly><br>
+    <b>Description: </b> <input type="text" value="{{book.description}}" readonly><br>
+    <b>Unit Cost: </b> <input type="text" value="£{{book.unitCost}}" readonly><br>
+    <b>ISBN: </b> <input type="text" value="{{book.isbn}}" readonly><br>
+    <b>Number Of Pages: </b> <input type="text" value="{{book.numOfPages}}" readonly><br>
+    <b>Language: </b> <input type="text" value="{{book.language}}" readonly><br>
+    <!-- call RESTful api -->
+    <form (ngSubmit)="delete()">
+        <!-- invoke delete() method -->
+        <input type="submit" value="Delete">
+    </form>
+</div>

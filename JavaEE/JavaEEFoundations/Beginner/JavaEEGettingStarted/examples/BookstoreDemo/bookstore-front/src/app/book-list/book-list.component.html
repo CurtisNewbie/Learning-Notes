@@ -1,0 +1,13 @@
+<!-- book-list component template -->
+<h1>Book-List</h1>
+
+<ul>
+    <!-- for each using *ngFor -->
+    <li *ngFor="let book of books">
+        <img src="{{book.imageURL}}" width=100 height=100 />
+        <div>
+            <b>Title:</b><a [routerLink]="['/book-detail', book.id]">{{book.title}}</a><br>
+            <b>Description:</b> {{book.description}}<br>
+        </div>
+    </li>
+</ul>
