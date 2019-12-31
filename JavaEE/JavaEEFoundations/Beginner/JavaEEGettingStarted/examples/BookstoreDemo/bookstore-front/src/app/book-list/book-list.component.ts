@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
-import { BookService } from "app/service/book.service";
+import { Component, OnInit } from '@angular/core';
+import { BookService } from 'app/service/book.service';
 
 @Component({
-  selector: "app-book-list",
-  templateUrl: "./book-list.component.html",
+  selector: 'app-book-list',
+  templateUrl: './book-list.component.html',
   styles: []
 })
 export class BookListComponent implements OnInit {
@@ -11,16 +11,16 @@ export class BookListComponent implements OnInit {
   private numOfBooks: number;
   private books = [
     {
-      id: "1",
-      title: "Java Programming",
-      description: "Book about java programming",
-      imageURL: ""
+      id: '1',
+      title: 'Java Programming',
+      description: 'Book about java programming',
+      imageURL: ''
     },
     {
-      id: "2",
-      title: "JavaEE Programming",
-      description: "Book about java EE programming",
-      imageURL: ""
+      id: '2',
+      title: 'JavaEE Programming',
+      description: 'Book about java EE programming',
+      imageURL: ''
     }
   ];
 
