@@ -2,12 +2,16 @@ package com.curtisnewbie.repository;
 
 import com.curtisnewbie.model.*;
 
+import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+
+import com.curtisnewbie.util.*;
+
 import java.util.*;
 
 
@@ -23,6 +27,14 @@ import java.util.*;
 @Transactional(Transactional.TxType.SUPPORTS)
 public class BookRepository {
 
+    // inject object of NumberGenerator to this repository, this object is provided by the container
+    @Inject
+    private NumberGenerator generator;
+
+    // inject object of TextUtil to this repository, this object is provided by the container
+    @Inject
+    private TextUtil textUtil;
+
     // get EntityManger for a persistence unit
     @PersistenceContext(unitName = "BookstorePU")
     private EntityManager em;
@@ -37,6 +49,9 @@ public class BookRepository {
     // Add NotNull constraint to book
     @Transactional(Transactional.TxType.REQUIRED)
     public Book create(@NotNull Book book) {
+        book.setTitle(textUtil.removeDupliSpaces(book.getTitle()));
+        if (book.getIsbn() == null || book.getIsbn().isEmpty())
+            book.setIsbn(generator.generateNumber());
         em.persist(book);
         return book;
     }
