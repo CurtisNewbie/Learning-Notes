@@ -1,29 +1,44 @@
 package com.curtisnewbie.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.*;
 
-/** Persistent Model*/
+/**
+ * Persistent Model
+ */
 @Entity
 public class Book {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
+    // bean validation, it cannot be null, and have a len of 1-200
+    @NotNull
+    @Size(min = 1, max = 200)
     // use annotation to define size of this varchar
     @Column(length = 200)
     private String title;
 
+    @Size(min = 1, max = 1000)
     @Column(length = 1000)
     private String description;
 
+    @NotNull @Min(1)
     @Column(name = "unit_cost")
     private Float unitCost;
 
+    @NotNull
     private String isbn;
 
     @Column(name = "publication_date")
     @Temporal(TemporalType.DATE)
+    // it has to be in the past
+    @Past
     private Date publicationDate;
 
     @Column(name = "num_of_pages")
@@ -34,7 +49,7 @@ public class Book {
 
     private Language language;
 
-    public Book(){
+    public Book() {
 
     }
 
