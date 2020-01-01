@@ -24,26 +24,24 @@ public class BookEndPoint {
     @Produces(MediaType.APPLICATION_JSON)
     /** create response in forms of Json */
     public Response getBooks() {
-        return Response.status(Response.Status.NO_CONTENT).build();
-        //        List<Book> books = bookRespository.findAll();
-//        if (books != null && books.size() > 0) {
-//            return Response.ok(books).build();
-//        } else {
-//            // return 204 HTTP response
-//            return Response.status(Response.Status.NO_CONTENT).build();
-//        }
+        List<Book> books = bookRespository.findAll();
+        if (books.size() > 0) {
+            return Response.ok(books).build();
+        } else {
+            // return 204 HTTP response
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
     }
 
     @GET
     @Path("/count")
     @Produces(MediaType.TEXT_PLAIN)
     public Response countBooks() {
-        return Response.ok(100000L).build();
-        //        long numOfBooks = bookRespository.countAll();
-//        if (numOfBooks <= 0)
-//            return Response.noContent().build();
-//        else
-//            return Response.ok(numOfBooks).build();
+        long numOfBooks = bookRespository.countAll();
+        if (numOfBooks <= 0)
+            return Response.noContent().build();
+        else
+            return Response.ok(numOfBooks).build();
     }
 
 
