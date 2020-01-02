@@ -51,5 +51,6 @@
     <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-servlet-initializer:3.1.4.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-cdi:3.1.4.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.1.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.swagger:swagger-annotations:1.5.13" level="project" />
   </component>
 </module>
