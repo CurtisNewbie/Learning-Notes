@@ -8,7 +8,7 @@ import { BookListComponent } from './book-list/book-list.component';
 import { MenuComponent } from './menu/menu.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
 import { BookFormComponent } from './book-form/book-form.component';
-import { BookService } from './service/book.service';
+import { BookService } from './services';
 
 @NgModule({
   declarations: [
