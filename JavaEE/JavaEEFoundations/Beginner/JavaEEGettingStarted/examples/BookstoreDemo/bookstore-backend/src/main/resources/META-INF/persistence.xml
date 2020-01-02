@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence">
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence">
     <persistence-unit name="BookstorePU" transaction-type="JTA">
         <description>This unit manages the CRUD operations of books</description>
         <class>com.curtisnewbie.model.Book</class>
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
-            <property name="javax.persistence.schema-generation.scripts.create-target" value="META-INF/bookstoreCreate.ddl"/>
-            <property name="javax.persistence.schema-generation.scripts.drop-target" value="META-INF/bookstoreDrop.ddl"/>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/bookstore"/>
-            <property name="javax.persistence.jdbc.user" value="bsadmin"/>
-            <property name="javax.persistence.jdbc.password" value="bookstoreadmin"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="bookstoreCreate.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="bookstoreDrop.ddl"/>
         </properties>
     </persistence-unit>
 </persistence>
