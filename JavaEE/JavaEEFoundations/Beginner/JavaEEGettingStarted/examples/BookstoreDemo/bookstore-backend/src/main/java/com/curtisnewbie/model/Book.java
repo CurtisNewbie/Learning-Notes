@@ -9,11 +9,11 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.*;
 
-@ApiModel("Book Representation")
 
 /**
  * Persistent Model
  */
+@ApiModel(description = "Book Resource Representation")
 @Entity
 public class Book {
 

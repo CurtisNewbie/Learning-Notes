@@ -2,10 +2,7 @@ package com.curtisnewbie.rest;
 
 import com.curtisnewbie.model.Book;
 import com.curtisnewbie.repository.BookRepository;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.Info;
-import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -29,6 +26,7 @@ import static io.swagger.annotations.SwaggerDefinition.Scheme.HTTPS;
 /**
  * RestApi
  */
+@Api("Book")
 @Path("/books")
 public class BookEndPoint {
 
