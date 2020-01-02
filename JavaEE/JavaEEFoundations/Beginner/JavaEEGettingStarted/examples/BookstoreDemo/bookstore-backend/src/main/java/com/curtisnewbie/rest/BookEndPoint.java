@@ -38,10 +38,20 @@ public class BookEndPoint {
     @Produces(MediaType.TEXT_PLAIN)
     public Response countBooks() {
         long numOfBooks = bookRespository.countAll();
-        if (numOfBooks <= 0)
-            return Response.noContent().build();
-        else
-            return Response.ok(numOfBooks).build();
+        return Response.ok(numOfBooks).build();
+    }
+
+    // create dummy data
+    @GET
+    @Path("/dummy")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createDummy() {
+        Book dummy = new Book();
+        dummy.setTitle("DummyTitle");
+        dummy.setUnitCost(15f);
+        dummy.setDescription("blablabla");
+        bookRespository.create(dummy);
+        return Response.ok(dummy).build();
     }
 
 
