@@ -1,11 +1,15 @@
 package com.curtisnewbie.model;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.*;
+
+@ApiModel("Book Representation")
 
 /**
  * Persistent Model

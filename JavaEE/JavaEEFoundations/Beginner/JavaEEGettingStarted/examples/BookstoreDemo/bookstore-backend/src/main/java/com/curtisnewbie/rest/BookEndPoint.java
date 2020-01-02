@@ -2,6 +2,10 @@ package com.curtisnewbie.rest;
 
 import com.curtisnewbie.model.Book;
 import com.curtisnewbie.repository.BookRepository;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.SwaggerDefinition;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -11,6 +15,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
+
+import static io.swagger.annotations.SwaggerDefinition.Scheme.HTTP;
+import static io.swagger.annotations.SwaggerDefinition.Scheme.HTTPS;
+
+@SwaggerDefinition(
+        info = @Info(title = "API", version = "0.0.1", description = "BookStore api"),
+        host = "localhost:8080",
+        basePath = "/bookstore-backend-0.0.1/api",
+        schemes = {HTTP, HTTPS}
+)
 
 /**
  * RestApi
@@ -23,6 +37,8 @@ public class BookEndPoint {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation("Get all books")
+    @ApiResponse(code = 204, message = "No books")
     /** create response in forms of Json */
     public Response getBooks() {
         List<Book> books = bookRepository.findAll();
@@ -36,6 +52,7 @@ public class BookEndPoint {
 
     @GET
     @Path("/{id}")
+    @ApiOperation("Get one book by id")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBookById(@PathParam("id") long id) {
         Book book = bookRepository.find(id);
@@ -44,6 +61,7 @@ public class BookEndPoint {
 
     @GET
     @Path("/count")
+    @ApiOperation("Get number of books")
     @Produces(MediaType.TEXT_PLAIN)
     public Response countBooks() {
         long numOfBooks = bookRepository.countAll();
@@ -53,6 +71,7 @@ public class BookEndPoint {
     // create dummy data
     @GET
     @Path("/dummy")
+    @ApiOperation(value = "Create a \"dummy\" book/data in DB", response = Book.class)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createDummy() {
         Book dummy = new Book();
@@ -65,6 +84,7 @@ public class BookEndPoint {
 
     @DELETE
     @Path("/{id}")
+    @ApiOperation("Delete a book by id")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteBook(@PathParam("id") long id) {
         bookRepository.delete(id);
@@ -72,6 +92,7 @@ public class BookEndPoint {
     }
 
     @POST
+    @ApiOperation(value = "Create the given book in DB", response = Book.class)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response createBook(Book book, @Context UriInfo uriInfo) {
