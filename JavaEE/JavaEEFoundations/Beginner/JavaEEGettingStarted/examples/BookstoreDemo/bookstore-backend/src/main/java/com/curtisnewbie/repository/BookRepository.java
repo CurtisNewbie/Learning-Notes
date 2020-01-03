@@ -17,7 +17,7 @@ import java.util.*;
 
 /**
  * <p>
- * Book is the data model, MySQL DBMS is the data layer, and a repository is the inter layer between the model and the
+ * Book is the data model, H2 DBMS is the data layer, and a repository is the inter layer between the model and the
  * DBMS. CRUD operations are performed here.
  * </p>
  * <p>@Transactional mark the methods in this repository as transactional, which supports or requires the methods to be
