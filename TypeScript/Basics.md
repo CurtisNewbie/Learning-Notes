@@ -1,4 +1,4 @@
-# Notes of TypeScript Syntax and Config
+# Notes of TypeScript Syntax and Config - JavaTpoint
 
 Src: https://www.javatpoint.com/typescript-tutorial
 
@@ -33,6 +33,8 @@ To transpile TypeScript file:
 To run JavaScript file in CLI:
 
     $ node fileToBeTranspiled.js
+
+**_ [Demo 1] _**
 
 ## 2. Built-in Data Types
 
@@ -240,3 +242,65 @@ The way Generic works is quite similar to the one in Java, using "\<T>" notation
 ### 5. Decorators
 
 Decorators are just like Annotation, which use <b>"@"</b> symbol. Tho, it is now experimental.
+
+**_ [Demo 2] _**
+
+### 6. Difference between Null and Undefined
+
+**Null** is an assignment value, while **Undefined** is not an assignment value, it means that a variable is not yet assigned a value tho it's declared.
+
+**Null** is an object, that is assigned to represent that such a variable is not pointing to any object nor having any value.
+
+While performing primitive operations, **null** is coverted to **_0_**, and **undefined** is coverted to **_NaN_**.
+
+### 7. TypeScript Variables
+
+We can declare variables using keyword **var**. In ES6, we can define variables using **let** and **const** keyword, while they differ in scope and usage. In TypeScript, it is always recommended to define variables using let keyword, as it provides type safety.
+
+    var [identifier]: [type] = value;
+
+    let [identifier]: [type] = value;
+
+Variables declared using **var** has a **Function Scope**.
+
+Variables declared using **let** has a **Block Scope**, that they are scoped to the nearest enclosing block. Thus, it can be smaller than function scope. E.g., within if statement.
+
+#### 7.1 Re-declaration and Shadowing
+
+With **var**, variables with same name can be re-declared many times, while we will only get one. This will not throw exceptions, and is actually valid, though it may cause bugs.
+
+    For example:
+        function do(a){
+            var a;
+            var a;
+
+            if(...){
+                var a;
+            }
+        }
+
+With **let**, variables with same names cannot be declared.
+
+**Shadowing** is the act of introducing a new variable with the same name in a more nested scope. One may take advantage of it and the different scopes, while it may cause confusion as well as bugs.
+
+#### 7.2 Hoisting (of Declaration)
+
+In **hoisting**, variables and function declarations are moved to the top of their enclosing scope before code execution. Only declaration is hoisted not initialisations, however, this is for **var only, not let**.
+
+    E.g.,
+
+    // this is hoisted
+    var hoistedVar;
+
+    ........
+
+    // this is not
+    hoistedVar = 123456;
+
+#### 7.3 const Declaration
+
+**const** keyword is for declaration of constant variables that cannot be changed later.
+
+    e.g.,
+
+    const APPLE = 1;
