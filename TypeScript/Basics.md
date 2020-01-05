@@ -304,3 +304,69 @@ In **hoisting**, variables and function declarations are moved to the top of the
     e.g.,
 
     const APPLE = 1;
+
+### 8. TypeScript Operators
+
+**==** checks the values of two operands.
+
+**===** checks both the type and the values.
+
+**!=** not equal in terms of value.
+
+**!==** not equal in terms of value and type.
+
+#### 8.1 Bitwise
+
+**&** bitwise and
+
+**|** bitwise or
+
+**^** bitwise xor
+
+**~** bitwise not
+
+**>>** bitwise right shift
+
+**<<** bitwise left shift
+
+**>>>** bitwise right shift with zero appended
+
+**expre ? true : false** same as in Java
+
+#### 8.2 Type Operators
+
+**in** check whether one property is in the object
+
+**delete** delete a specific property from object
+
+**typeof** return type of operand
+
+**instanceof** whether one is of a specific type
+
+### 9. Type Assertion
+
+Type assertion refers to the machanism that tells the compiler about the type of a variable. There are two ways of type assertion.
+
+1. Angular Bracket<>
+
+   e.g.,
+   let name = <string> "curtis";
+
+2. as keyword
+
+   e.g.,
+   let name = "curtis" as string;
+
+**Type Assertion For Object:**
+
+    e.g.,
+    interface Buddy {
+        name: string;
+        age: number;
+        habit: string;
+    }
+
+    let myBuddy = <Buddy>{};
+    myBuddy.name = "MyBuddy";
+    myBuddy.age = 24;
+    myBuddy.habit = "Do nothing";
