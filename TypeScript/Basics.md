@@ -49,11 +49,11 @@ TypeScript supports five built-in data types.
 
     // Use lowercase
 
-#### 2.1 Number
+### 2.1 Number
 
 As in JavaScript, all the <b>numbers</b> are stored as <b>floating-point values</b>. Thus, regardless of Integer, Binary, Floating numbers are covered by <b>Number Type</b>. (See numberDemo.ts)
 
-#### 2.2 String
+### 2.2 String
 
 <b>String</b> can be used with <b>Expressions</b>, or i.e., expressions can be embedded intp the string value referencing to other string variables.
 
@@ -67,11 +67,11 @@ The syntax of expression is as follows:
 
 <b>When using expression, neither single quote nor double quote should be used. Use `</b>
 
-#### 2.3 Boolean
+### 2.3 Boolean
 
 Boolean has two values, either <b>"true"</b> or <b>"false"</b>.
 
-#### 2.4 Void
+### 2.4 Void
 
 Void can be used as a datatype, tho it's not really useful. When it's treated as a datatype, it can only be assigned the value of <b>"undefined"</b> or <b>"null"</b>.
 
@@ -79,15 +79,15 @@ Void can be used as a datatype, tho it's not really useful. When it's treated as
     let nothing: void = null;
     nothing = undefined;
 
-#### 2.5 Null Type
+### 2.5 Null Type
 
 Null represents a variable whose value is undefined. The Null accepts the only one value, which is null.
 
-#### 2.6 Any Type
+### 2.6 Any Type
 
 Any Type is the super type of all data types. It is used to opt out of type checking in Typescript. I.e., it refers to "Any" data type.
 
-### 3. User-Defined Data Type
+## 3. User-Defined Data Type
 
 User-defined data types include:
 
@@ -98,7 +98,7 @@ User-defined data types include:
     - Interface
     - Class
 
-#### 3.1 Array
+### 3.1 Array
 
 There two ways to declare an array, one is by declaring the type of the element as in most of the language.
 
@@ -108,14 +108,14 @@ Another way is to declare a generic Array type.
 
     var genericList: Array<number> = [5, 4, 3, 2, 1];
 
-#### 3.2 Tuple
+### 3.2 Tuple
 
 Tuple types allow expressing an array with a fixed number of elements whose types are known. Types and orders matter.
 
     let tup: [string, number];
     tup = ["string", 123];
 
-#### 3.3 Interface
+### 3.3 Interface
 
 "In TypeScript, interfaces fill the role of naming these types, and are a powerful way of defining contracts within your code as well as contracts with code outside of your project."
 
@@ -159,7 +159,7 @@ An interface can have <b>optional properties with a ? mark</b> and the <b>read o
         age?: string;
     }
 
-#### 3.4 Class
+### 3.4 Class
 
 Classes contains implementation inside, which are used as a template for creating objects like other languages. This is very similar to Java, excpet that it's optional to define the return type.
 
@@ -184,7 +184,7 @@ Classes contains implementation inside, which are used as a template for creatin
     // use new keyword
     let me: Person = new Person("curtis", 24);
 
-#### 3.5 Function
+### 3.5 Function
 
 Function can be <b>named</b> or <b>anonymous</b>.
 
@@ -200,7 +200,7 @@ Function can be <b>named</b> or <b>anonymous</b>.
     };
     console.log(mulytiply(2, 5));
 
-#### 3.6 Enum
+### 3.6 Enum
 
 TypeScript supports <b>string-based</b> and <b>numeric-based</b> Enums. By default, elements' indices starts from 0. Though string and number can be mixed in Enum in TypeScript, it's just bad.
 
@@ -228,7 +228,7 @@ Without explicitly specifying string and number for the elements in Enum, their 
         PASS = "50%"
     }
 
-### 4. Generic
+## 4. Generic
 
 The way Generic works is quite similar to the one in Java, using "\<T>" notation for type checking.
 
@@ -239,13 +239,13 @@ The way Generic works is quite similar to the one in Java, using "\<T>" notation
     let str: string = get<string>("A String");
     let num: number = get<number>(123456);
 
-### 5. Decorators
+## 5. Decorators
 
 Decorators are just like Annotation, which use <b>"@"</b> symbol. Tho, it is now experimental.
 
 **_ [Demo 2] _**
 
-### 6. Difference between Null and Undefined
+## 6. Difference between Null and Undefined
 
 **Null** is an assignment value, while **Undefined** is not an assignment value, it means that a variable is not yet assigned a value tho it's declared.
 
@@ -253,7 +253,7 @@ Decorators are just like Annotation, which use <b>"@"</b> symbol. Tho, it is now
 
 While performing primitive operations, **null** is coverted to **_0_**, and **undefined** is coverted to **_NaN_**.
 
-### 7. TypeScript Variables
+## 7. TypeScript Variables
 
 We can declare variables using keyword **var**. In ES6, we can define variables using **let** and **const** keyword, while they differ in scope and usage. In TypeScript, it is always recommended to define variables using let keyword, as it provides type safety.
 
@@ -265,7 +265,7 @@ Variables declared using **var** has a **Function Scope**.
 
 Variables declared using **let** has a **Block Scope**, that they are scoped to the nearest enclosing block. Thus, it can be smaller than function scope. E.g., within if statement.
 
-#### 7.1 Re-declaration and Shadowing
+### 7.1 Re-declaration and Shadowing
 
 With **var**, variables with same name can be re-declared many times, while we will only get one. This will not throw exceptions, and is actually valid, though it may cause bugs.
 
@@ -283,7 +283,7 @@ With **let**, variables with same names cannot be declared.
 
 **Shadowing** is the act of introducing a new variable with the same name in a more nested scope. One may take advantage of it and the different scopes, while it may cause confusion as well as bugs.
 
-#### 7.2 Hoisting (of Declaration)
+### 7.2 Hoisting (of Declaration)
 
 In **hoisting**, variables and function declarations are moved to the top of their enclosing scope before code execution. Only declaration is hoisted not initialisations, however, this is for **var only, not let**.
 
@@ -297,7 +297,7 @@ In **hoisting**, variables and function declarations are moved to the top of the
     // this is not
     hoistedVar = 123456;
 
-#### 7.3 const Declaration
+### 7.3 const Declaration
 
 **const** keyword is for declaration of constant variables that cannot be changed later.
 
@@ -305,7 +305,7 @@ In **hoisting**, variables and function declarations are moved to the top of the
 
     const APPLE = 1;
 
-### 8. TypeScript Operators
+## 8. TypeScript Operators
 
 **==** checks the values of two operands.
 
@@ -315,7 +315,7 @@ In **hoisting**, variables and function declarations are moved to the top of the
 
 **!==** not equal in terms of value and type.
 
-#### 8.1 Bitwise
+### 8.1 Bitwise
 
 **&** bitwise and
 
@@ -333,7 +333,7 @@ In **hoisting**, variables and function declarations are moved to the top of the
 
 **expre ? true : false** same as in Java
 
-#### 8.2 Type Operators
+### 8.2 Type Operators
 
 **in** check whether one property is in the object
 
@@ -343,7 +343,7 @@ In **hoisting**, variables and function declarations are moved to the top of the
 
 **instanceof** whether one is of a specific type
 
-### 9. Type Assertion
+## 9. Type Assertion
 
 Type assertion refers to the machanism that tells the compiler about the type of a variable. There are two ways of type assertion.
 
