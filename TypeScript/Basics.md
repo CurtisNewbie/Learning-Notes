@@ -370,3 +370,212 @@ Type assertion refers to the machanism that tells the compiler about the type of
     myBuddy.name = "MyBuddy";
     myBuddy.age = 24;
     myBuddy.habit = "Do nothing";
+
+## 10. Array
+
+- Index-based collection, starting from 0
+- Homogenous, in that elements should have same data type
+- Elements stored in continuous memory location
+- Fixed Size
+
+To declare array:
+
+1.  Using square bracket syntax<br>
+    let arr: **string[]** = ["we", "are", "string", "elements"];
+
+2.  Using generic syntax<br>
+    let arrTwo: **Array<string>** = ["we", "are", "string", "elements"];
+
+To access elements by index:
+
+    let firstElement: string = arr[0];
+    let secondElement: string = arrTwo[1];
+
+### 10.1 Multi-Dimensional Array
+
+Syntax is simlar to Java
+
+    let twoDimenArr: string[][] = [
+        ["first", "row", "elements"],
+        ["second", "row", "elements"]
+    ];
+
+To access elements in multi-dimensional array:
+
+    // First element in second array
+    let elem: string = twoDimenArr[1][0];
+
+### 10.2 Array As An Object
+
+Array is an Object, we can create an Array by calling its constructor, while there is no difference between this and above syntax.
+
+    let sameArr: string[] = new Array("we", "are", "string", "elements");
+
+### 10.3 Array Traversal
+
+We can use **Traditional For loop**, which is the same as in java
+
+    for (let i = 0; i < numArr.length; i++) {
+        console.log(numArr[i]);
+    }
+
+We can also use **for in**, however it _"i"_ only represents the index, not the actual element.
+
+    for (let i in numArr) {
+        console.log(numArr[i]);
+    }
+
+### 10.4 Spread Operator in Array
+
+**Spread Operator "..."** can be used to initialise arrays and objects from other array or object. It is called **Object De-structuring**, which essentially means taking the elements from an object and destructuring the original structure, so that you can take such list of elements to do something else, such as creating a new array.
+
+    let array1: number[] = [1, 2, 3];
+    let array2: number[] = [4, 5, 6];
+    let mergedArr: number[] = [...array1, ...array2, 7, 8, 9];
+
+### 10.5 Other methods of Array
+
+src: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+#### 10.5.1 concat()
+
+**concat()** to merge array
+
+    let mergedArr: number[] = array1.concat(array2);
+
+#### 10.5.2 copyWithin()
+
+**copyWithin()** that copies one or more elements inside the array to other positions in the array. I.e., copy elements and overwrite elements starting from the targeted index. **This method changes the referenced array, so be careful.**
+
+    let array3: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    console.log(array3.copyWithin(0, 6, 9));
+
+The orginal array3 should be like:
+
+     0                 6  7  8
+    [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+We copy the elements starting from 6 to 9 (exclusive), and use these elements to overwrite elements start at 0:
+
+     0                 6  7  8
+    [7, 8, 9, 4, 5, 6, 7, 8, 9]
+
+So, "1, 2, 3" are overwritten by "7, 9, 0"
+
+#### 10.5.3 every()
+
+**every()** to test elements, it returns true if every elements satisfies the provided testing function, else false.
+
+    function isNotZero(element: number, index: number, array: number[]) {
+        return element > 0;
+    }
+    console.log(array3.every(isNotZero));
+
+**every()** calls a **call back function** which takes exactly three elements, here _isNotZero_ is a callback function that examines whether all elements passed into are greater than 0.
+
+#### 10.5.4 fill()
+
+**fill()** to fill an array with a value from a speficied start to end index. Noted that it is really filling an array with values, instead it's **replacing elements with specified value**.
+
+For example, code below doesn't produce an Array with five "\*" stars, even though it's specified to fill elements from 0 to 6. There are only four elements before fill().
+
+    let array4: string[] = ["1", "1", "1", "1"];
+    array4.fill("*", 0, 6);
+    // output: [ '*', '*', '*', '*' ]
+
+#### 10.5.5 indexOf()
+
+**indexOf()** to return the index of the given elements. Return **-1** if not found. It is also **optional to specifiy from which index to start** searching the element.
+
+    let array3: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    // look for 7, starting from index 2 (inclusive)
+    console.log(array3.indexOf(7, 2));
+
+#### 10.5.6 includes()
+
+**includes()** to check whether the array contains such element.
+
+    let array3: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    console.log(array3.includes(9));
+
+#### 10.5.7 join()
+
+**join()** to concatenate all elements as a string with the specified separator.
+
+    let array3: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    // 1-2-3-4-5-6-7-8-9
+    console.log(array3.join("-"));
+
+#### 10.5.8 lastIndexOf()
+
+**lastIndexOf()** find the last index of element in this array, return -1 if not found.
+
+    let array3: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    console.log(array3.lastIndexOf(5));
+
+#### 10.5.9 pop()
+
+**pop()** to remove the last element in an Array. Last element is returned.
+
+    let fruits: string[] = ["Apple", "Banana", "Orange"];
+    console.log("Poped: " + fruits.pop());
+
+#### 10.5.10 push()
+
+**push()** to push one or more elements to the end of an Array.
+
+    fruits.push("Pineapple", "SomethingElse");
+    // [ 'Apple', 'Banana', 'Pineapple', 'SomethingElse' ]
+
+#### 10.5.11 reverse()
+
+**reverse()** to reverse the order of elements.
+
+    fruits.reverse();
+
+#### 10.5.12 shift()
+
+**shift()** to remove and return the first element (on the left hand side).
+
+    console.log("Shifted: ", fruits.shift());
+    console.log(fruits);
+
+    // result:
+    [ 'SomethingElse', 'Pineapple', 'Banana', 'Apple' ]
+    Shifted: SomethingElse
+    [ 'Pineapple', 'Banana', 'Apple' ]
+
+#### 10.5.13 slice()
+
+**slice()** to slice the array, which returns a "sub"-array based on the given start and end indicies. Ending index is exclusive.
+
+    console.log(fruits.slice(0, 2));
+
+#### 10.5.14 sort()
+
+**sort()** that sorts the elements in the array.
+
+    fruits.sort();
+
+#### 10.5.15 splice()
+
+**splice()** to insert or delete elements in an Array. It takes three types of parameters. **Array.splice(start, deleteCount(optional), items(optional))**.
+
+**start: number** refers to the starting index, where to insert or delete. **deleteCount: number** how many elements after the starting index will be deleted, it can be zero and is optional. **items** are the elements that you want to insert, if deleteCount is greater than 0, it is kinda replacing certain number of elements, it is also optional.
+
+    fruits.splice(0, 0, "BeforeApple"); // insert "BeforeApple" at 0
+    fruits.splice(3, 1); // delete one element at 3
+    fruits.splice(0, 1, "First"); // remove one element at 0, and insert "First" at 0
+
+#### 10.5.16 toString()
+
+**toString()** to return a string including the elements of an Array with a delimiter of ",".
+
+    console.log(fruits.toString());
+
+#### 10.5.17 unshift()
+
+**unshift()** to append one or more elements at the beginning of an Array.
+
+    fruits.unshift("Piggy", "Doggy");
