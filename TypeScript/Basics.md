@@ -579,3 +579,24 @@ For example, code below doesn't produce an Array with five "\*" stars, even thou
 **unshift()** to append one or more elements at the beginning of an Array.
 
     fruits.unshift("Piggy", "Doggy");
+
+## 11. Tuples
+
+**Tuples** are of exact same meaning in SQL, which essentially means **a list of values where each element can be of different types and do not necessarily relate to eachother.** This is essentially an Array, where strong typing is applied when there are elements of different types.
+
+Declare a tuple and define the type of each element:
+
+    let row: [string, number];
+
+(Must) initialise this variable:
+
+    row = ["curtis", 123];
+
+It is mutable, its elements can be changed after instantiation:
+
+    row[0] = "banana";
+    row[1] = 456;
+
+We can also read its value with indicies:
+
+    console.log(row[0], row[1]);
