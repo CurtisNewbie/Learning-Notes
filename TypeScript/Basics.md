@@ -38,6 +38,10 @@ To run JavaScript file in CLI:
 
 ## 2. Built-in Data Types
 
+**_Don’t ever use the types Number, String, Boolean, Symbol, or Object These types refer to non-primitive boxed objects that are almost never used appropriately in JavaScript code._**
+
+src: https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html
+
 TypeScript supports five built-in data types.
 
     1. number
