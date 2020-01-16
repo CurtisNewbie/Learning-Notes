@@ -57,6 +57,51 @@ TypeScript supports five built-in data types.
 
 As in JavaScript, all the <b>numbers</b> are stored as <b>floating-point values</b>. Thus, regardless of Integer, Binary, Floating numbers are covered by <b>Number Type</b>. (See numberDemo.ts)
 
+Number supports several different base numbering systems using literal:
+
+- **Binary (Base-2)**, 0b100010101
+- **Octal (Base-8)**, 0o377
+- **Hexadecimal (Base-16)**, 0x32BC
+
+A number of constants specifies the range or useful value in Number:
+
+- **MAX_VALUE**
+- **MIN_VALUE**
+- **NEGATIVE_VALUE**
+- **POSITIVE_VALUE**
+- **NaN**
+
+#### 2.1.1 toExponential()
+
+Return number in exponential form in string format.
+
+    e.g.,
+    12 -> 1.2e+1
+
+#### 2.1.2 toFixed()
+
+Return number with fixed number of decimal point.
+
+#### 2.1.3 toLocaleString()
+
+Return a number in string format based on the given locale
+
+    e.g.,
+
+    let num: number = 123456;
+    console.log(b, "local string", num.toLocaleString());
+    // output:
+    // in us format:
+    // "123,456"
+
+#### 2.1.4 toPrecision()
+
+Return a number in scientific/exponential format or fixed-point format in order to meet the requirement that the number has the given precision, precision means the total number of siginificant digits (any except 0) in this number. E.g., 1200.32 has a precision of 4 excluding the zero(s), which are not significant.
+
+#### 2.1.5 toString()
+
+Return a string representation of the number.
+
 ### 2.2 String
 
 <b>String</b> can be used with <b>Expressions</b>, or i.e., expressions can be embedded intp the string value referencing to other string variables.
