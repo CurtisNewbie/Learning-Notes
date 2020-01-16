@@ -745,3 +745,66 @@ Instead of using it for declaration, we can use union in function parameters:
             console.log(arr[i]);
         }
     }
+
+# 13. Decision Making
+
+Same as in Java.
+
+    if(false){
+
+    } else if(false){
+
+    } else {
+
+    }
+
+---
+
+    switch(value){
+        case expr1:
+        break;
+
+        case expr2:
+        break;
+
+        default:
+        break;
+    }
+
+---
+
+    while(true){
+        //do something
+    }
+
+---
+
+    do{
+
+    }while(true)
+
+---
+
+    for(exper; exper; exper){
+        //...*
+    }
+
+---
+
+Above are the same as in Java. JavaScript/TS has **for..of** loop.
+
+    for(let i of arr){
+        console.log(i);
+    }
+
+_i_ here is an variable within this for...of loop, and i is each element in this array. This is basically, a **for each loop** in java.
+
+---
+
+**for...of** loop is iterating the **element** within the collection, while **for...in** is iterating the **index**.
+
+    for(let i in arr){
+        console.log(arr[i]);
+    }
+
+---
