@@ -71,6 +71,84 @@ The syntax of expression is as follows:
 
 <b>When using expression, neither single quote nor double quote should be used. Use `</b>
 
+#### 2.2.1 trim()
+
+**trim()** trim spaces. However, trim() method **doesn't affect original string value**. It only returns a new string value where the extra spaces on both sides are trimed.
+
+    strWithSpaces.trim();
+
+#### 2.2.2 trimLeft()
+
+Same as trim(), except it trims the spaces on the left.
+
+#### 2.2.3 trimRight()
+
+Same as trim(), except it trims the spaces on the right
+
+#### 2.2.4 charAt()
+
+Return the character at the specified indicies.
+
+#### 2.2.5 concat()
+
+Concat the current string with specified one or more strings, and return the combined string.
+
+    let constr: string = "abc";
+    console.log(constr.concat("def", "ghl"));
+
+#### 2.2.6 endsWith()
+
+check suffix, and return true and false.
+
+#### 2.2.7 includes()
+
+Check whether contain a sequence of char.
+
+#### 2.2.8 indexOf()
+
+Check index of a sequence of char, return -1 if not found.
+
+#### 2.2.9 lastIndexOf()
+
+Check the index of the last apperence of the specified sequence of char, return -1 if not found.
+
+#### 2.2.10 match()
+
+Use Regex to match the string to the given pattern. The **regex doesn't need quotation, in TS it uses / to escape the expression, e.g., /someRegexHere/**. A **g flag** can be added to **find all matches**, without it, only first matched will be returned, e.g., **/someRegexHere/g**. A **i flag** will be used for matching results in a **case-insensitive manner**. Regardless, it returns an **Array** that contains the result, the Array is **Null** if not found.
+
+    // restul = "abc";
+    let result = constr.match(/./g);
+    / *
+      * ['a', 'b', 'c']
+      *
+    /
+
+#### 2.2.11 replace()
+
+Replace the specified string/substring with a given new string, it doesn't change the value of the original string, it only returns a new one.
+
+    constr.replace("c", "ccc")
+
+#### 2.2.12 search()
+
+Search using Regex, and returns the index of the first found result, it returns -1 if not found.
+
+#### 2.2.13 slice()
+
+Substring.
+
+#### 2.2.14 split()
+
+Split string into a number of substring in an Array.
+
+#### 2.2.15 substring()
+
+In normal usage, where start > end, end > 0, start > 0, substring() is the exact same as the slice().
+
+#### 2.2.16 toLowerCase()
+
+#### 2.2.17 toUpperCase()
+
 ### 2.3 Boolean
 
 Boolean has two values, either <b>"true"</b> or <b>"false"</b>.
