@@ -600,3 +600,21 @@ It is mutable, its elements can be changed after instantiation:
 We can also read its value with indicies:
 
     console.log(row[0], row[1]);
+
+# 12. TypeScript Union
+
+**Union** is a way to define a variable with multiple types of values (e.g., both string and number). It is declared using **|**. We can use **_typeof_** keyword to identify the type of the variable.
+
+    let varName: number | string;
+
+It can also be applied to collection like Array:
+
+    let arr: number[] | string[];
+
+Instead of using it for declaration, we can use union in function parameters:
+
+    function display(arr: number[] | string[]) {
+        for (let i in arr) {
+            console.log(arr[i]);
+        }
+    }
