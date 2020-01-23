@@ -320,3 +320,13 @@ We can use **SessionContext** to check the security role of the client and to ac
     }
 
 In this example, **SessionContext** is injected, and is used to check security role and to get the Principle object for identification.
+
+---
+
+### Additional Reading On Authentication and Authorisation for RESTful API
+
+- https://javapapers.com/web-service/restful-services-http-basic-authentication/
+- https://eclipsesource.com/blogs/2016/04/15/api-key-authentication-in-a-rest-api-with-jax-rs/
+- https://www.java2novice.com/java_interview_questions/http-basic-authentication/
+- https://security.stackexchange.com/questions/110948/password-hashing-on-frontend-or-backend
+- https://stackoverflow.com/questions/16314924/how-to-secure-a-rest-api-between-a-single-page-app-and-a-server
