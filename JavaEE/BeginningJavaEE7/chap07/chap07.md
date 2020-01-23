@@ -430,6 +430,8 @@ We can also cancle the task as follows:
 
 Because of Configuration by Exception, deployement descriptor can be used for configuring the EJB. However, it can end up very verbose. The XML file is **ejb-jar.xml**. If it's deployed in **jar**, it should be at **META-INF/ejb-jar.xml**, else if it's deployed in **war**, it should be at **WEB-INF/ejb-jar.xml**.
 
+## Environment Naming Context
+
 However, one thing good about deployment descriptor is that it allows **stroing the value in the deployment descriptor so that the value is not actually hard-coded**. It is especially good for internationalisation.
 
     @Stateless
