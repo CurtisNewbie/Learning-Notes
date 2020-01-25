@@ -808,3 +808,69 @@ _i_ here is an variable within this for...of loop, and i is each element in this
     }
 
 ---
+
+**_ [Demo 3] _**
+
+# 14. forEach
+
+forEach is for array only. It iterate the elements within a collection and pass these elements one by one into a callback function. **_callback function is essentially a function object that is passed to and runs in another function._**
+
+In forEach, the **CallBack** is a function that accepts three arguments
+
+- _Element Value_: current value of the item
+- _Element Index(optional)_: index of the current element
+- _array(optional)_: the array being iterated
+
+**_Quite similar to Lambda Expression, that these parameters are passed to the callback function automatically, we only need to declare the proper name for them and use them in the function._**
+
+    // callback function passed into forEach
+    function displayArrayElements(val, i, arr) {
+        console.log("Value:", val, "Index:", i, "arr[i]", arr[i]);
+    }
+
+    arr: number[] = [1,3,5,7,9];
+    arr.forEach(displayArrayElements);
+
+# 15 Map
+
+Map is added in ES6 version of JS, it's key-value pair, but the actualy implmentation doesn't seem to be specified or differentiated.
+
+    let map = new Map<string, string>();
+    map.set("Curtis", "learning TS");
+    map.set("Sharon", "learning Maya");
+
+Methods of Map are very similar to that in Java.
+
+- clear()
+- delete(key)
+- forEach(callback(value,key,map){...})
+- get(key)
+- has(key)
+- keys()
+- values()
+- set(key,value)
+- entires()
+
+# 16. Set
+
+Set is added in ES6 version of JS. Duplicates are simply not added.
+
+    let set = new Set<string>();
+    set.add("sharon");
+
+Set is also an **Iterable**, so for...of will work. However, TS tranpiler somehow messes it up. Code below works in JS, but after tanpilation, it's fucked.
+
+    for (const v of set) {
+        console.log("set: ", v);
+    }
+
+methods are quite similar as Map and in other languages:
+
+- add(value)
+- clear()
+- delete(value)
+- entries()
+- forEach(callback(currValue, currValue, set){...})
+- has(value)
+- keys()
+- values()
