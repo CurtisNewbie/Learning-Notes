@@ -1,6 +1,6 @@
 # 1. Index
 
-1. Terminology
+1. Index
 2. Login
 3. Load Scripts
 4. List Items
