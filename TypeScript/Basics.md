@@ -874,3 +874,93 @@ methods are quite similar as Map and in other languages:
 - has(value)
 - keys()
 - values()
+
+# 17. Access Modifiers
+
+There are three acess modifiers:
+
+- private
+- protected
+- public
+
+**private** - attributes cannot be accessed outside the object/class, i.e., they are only used within the object/class.
+**protected** - attributes can be accessed by the objects of subclasses.
+**public** - attributes can be accessed publicly, e.g., "console.log(obj.name)".
+
+However, we may have methods to get ro set the private or protected attributes.
+
+# 18. Readonly Modifier
+
+Properties of an type can be made `readonly`, which automatically have **public** access modifier, while their values cannot be changed.
+
+# 19. Getter and Setter Methods
+
+Getter and Setter in JS is very different from that in Java. In Java, these are simply conventional ways to get and set properties. In JS, they are methods with **keywords** and are called implicitly when properties are accessed directly.
+
+For example:
+
+    // we have a private property called "name"
+    private name: string = "curtis";
+
+    // get is only a keyword, there is a space between it and the method name
+    get nameVal(): string{
+        return this.nameVal;
+    }
+
+    // set is only a keyword, there is a space between it and the method name
+    set nameVal(n: string){
+        if(n.length > 0)
+            this.nameVal = n;
+    }
+
+# 20. Function
+
+In JS and TS, functions can be **named** or **anonymous**. Its properties can also be **default** or **optional**. **Rest Parameter (...)** can be used to refer to an array of argument without spcifying length, this is basically **Varargs** with no difference.
+
+Named Function:
+
+    function display(str: string) {
+        console.log(str);
+    }
+
+    display("Display Something");
+
+Anonymoust function:
+
+    let disp = function(str: string) {
+        console.log(str);
+    };
+
+    disp("Disp something");
+
+Optional param:
+
+    function say(str: string, greeting?: string) {
+        if (greeting === undefined) {
+            greeting = "Hi";
+        }
+        console.log(greeting, str);
+    }
+
+    say("Curtis");
+
+Default param:
+
+    function saySomething(str: string, greeting: string = "Yo") {
+        console.log(greeting, str);
+    }
+
+    saySomething("Curtis");
+    saySomething("Curtis", "Mer");
+
+Rest parameter / Varargs:
+
+    function sayALot(greeting: string = "Say", ...things: string[]) {
+        let temp: string = greeting;
+        for (let s of things) {
+            temp += " " + s;
+        }
+        console.log(temp);
+    }
+
+    sayALot("Whast'up", "Curtis", "Sharon", "And", "Everybody");
