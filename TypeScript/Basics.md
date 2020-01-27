@@ -964,3 +964,125 @@ Rest parameter / Varargs:
     }
 
     sayALot("Whast'up", "Curtis", "Sharon", "And", "Everybody");
+
+# 21. Arrow Function
+
+It's similar to Lambda in java, it allows using much similar syntax for declaring and passing functions, however, it uses the symbal: `=>`.
+
+**Arrow** is for functions:
+
+- that may or may not have param
+- that may or may not return value
+- that do not have **function** keyword
+
+Syntax:
+
+`(param1: string, param2: number) => {//...}`
+
+e.g.,
+
+    // normal anonymous function
+    let disp1 = function(str: string) {
+        console.log(str);
+    };
+
+    // arrow function
+    let disp2 = (str: string) => {
+        console.log(str);
+    }
+
+    // arrow function without param
+    let disp3 = () => {
+        console.log("there is nothing to display");
+    }
+
+    // arrow function with return type declared
+    let disp4 = (): string => {
+        return "there is nothing to display";
+    }
+
+# 22. No Function Overloading
+
+Better way to mimic this: https://stackoverflow.com/questions/456177/function-overloading-in-javascript-best-practices
+Problem with overloading in JS: https://medium.com/@kevinkreuzer/typescript-method-overloading-c256dd63245a
+
+Eventhough the tutorial claims that we can do method overloading in TS(and JS), after reading more and experimenting with the transpiler, it is not true. `Ẁe cannot do method overloading in JS`.
+
+# 23. Inheritance
+
+additional src: https://javascript.info/class-inheritance
+
+Same as in Java. We need to use keyword `"extends"`. Note that, `there can only be one constructor`, since overloading is not supported; and in subclasses' constructors, we `must call super() in the first line of the code`.
+
+    class Vehicle {
+        protected type: string = "Vehicle";
+
+        say() {
+            return "I am " + this.type;
+        }
+    }
+
+    class Flight extends Vehicle {
+        constructor() {
+            // same as in java
+            super();
+            this.type = "Flight";
+        }
+    }
+
+# 24. Interface
+
+`Interface doesn't exist in JS at all`. In TS, interface is introduced for development stage, which acts similar to that in Java. It doesn't contain actual implementation, it is used to specify **a structure of an object**, it may or may not contain methods as well (i.e., an interface can be used to object that only has properties).
+
+For example, the code below is transpiled to JS, where interfaces are removed, **_interfaces are only used by the transpiler_**.
+
+In TS:
+
+    interface Contract{
+        name: string;
+        age: number;
+    }
+
+    class ContractImpl implements Contract{
+        name: string;
+        age: number;
+
+        constructor(n: string, a: number) {
+            this.name = n;
+            this.age = a;
+        }
+    }
+
+    // using interface directly or constructor of the class
+    let a: Contract = {
+        name: "curtis", age: 24
+    };
+    let b: Contract = new ContractImpl("Curtis", 24);
+
+Transpiled to JS:
+
+    class ContractImpl {
+        constructor(n, a) {
+            this.name = n;
+            this.age = a;
+        }
+    }
+
+    // using interface directly or constructor of the class
+    let a = {
+        name: "curtis", age: 24
+    };
+    let b = new ContractImpl("Curtis", 24);
+
+**Interfaces can inherit from another interface using keyword `extends`.**
+
+    interface Contract{
+        name: string;
+        age: number;
+    }
+
+    interface EmployeeContract extends Contract{
+        employeeId: string;
+    }
+
+    let employee: EmployeeContract = { name : "curtis", age : 24, employeeId : "123-4556-6" };
