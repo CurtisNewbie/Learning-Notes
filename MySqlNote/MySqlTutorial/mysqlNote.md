@@ -155,7 +155,7 @@ Using ORDER BY with an expression. The following example calculates the quantity
     FROM
         orderdetails
     ORDER BY
-    quantityOrdered * priceEach DESC
+        quantityOrdered * priceEach DESC
     LIMIT
         5;
 
@@ -183,8 +183,10 @@ For example, in the following example, the results are sorted by values of the c
 
 Another example for FIELD()
 
-    SELECT DISTINCT status, FIELD(status, 'In Process', 'On Hold', 'Cancelled', 'Resolved', 'Disputed', 'Shipped')
-    As 'FIELD Function'
+    SELECT DISTINCT status,
+        FIELD(status, 'In Process', 'On Hold', 'Cancelled', 'Resolved',
+            'Disputed', 'Shipped')
+        As 'FIELD Function'
     FROM orders LIMIT 5;
 
     /*
@@ -247,8 +249,8 @@ WHERE with AND operator
     FROM
         tab
     WHERE
-        UPPER(job) = 'SALES REP' AND
-        money = 15;
+        UPPER(job) = 'SALES REP'
+        AND money = 15;
     ORDER BY
         col ASC;
 
@@ -327,8 +329,8 @@ e.g.,
 
 Basic syntax of DISTINCT clause
 
-    SELECT DISTINCT
-        *
+    SELECT
+        DISTINCT *
     FROM
         employees;
 
@@ -367,8 +369,8 @@ Using GROUP BY without Aggregate Funtions (e.g., SUM(), COUNT()), it acts like D
 
     -- is the same as (before mysql 8.0, it has additional sorting with GROUP BY) follows:
 
-    SELECT DISTINCT
-        col1
+    SELECT
+        DISTINCT col1
     FROM
         table1;
 
@@ -681,7 +683,8 @@ In case where the = equal operator is used to compare the column from two tables
         col1
     FROM
         table1
-    INNER JOIN table2 ON table1.pri_col = table2.pri_col;
+    INNER JOIN table2
+        ON table1.pri_col = table2.pri_col;
 
     -- is same as
 
@@ -697,13 +700,15 @@ Another example of INNER JOIN
         m.name
     FROM
         members m
-    INNER JOIN committees USING (name);
+    INNER JOIN
+        committees USING (name);
 
     SELECT
         m.name
     FROM
         members m
-    INNER JOIN committees c ON m.name = c.name;
+    INNER JOIN
+        committees c ON m.name = c.name;
 
 Example of joining multiple tables with INNER JOIN.
 
@@ -716,9 +721,12 @@ Example of joining multiple tables with INNER JOIN.
         products.productName
     FROM
         orders
-    INNER JOIN orderdetails USING (orderNumber)
-    INNER JOIN products USING (productCode)
-    WHERE orders.orderNumber = 10100;
+    INNER JOIN
+        orderdetails USING (orderNumber)
+    INNER JOIN
+        products USING (productCode)
+    WHERE
+        orders.orderNumber = 10100;
 
 Complex conditions for INNER JOIN.
 
@@ -733,8 +741,10 @@ Display order number, product name (of products in each order), and price of eac
     INNER JOIN orderDetails
         ON orders.orderNumber = orderdetails.orderNumber
         AND orderdetails.priceEach > 80
-    INNER JOIN products USING (productCode)
-    WHERE productCode = 'S10_1678';
+    INNER JOIN
+        products USING (productCode)
+    WHERE
+        productCode = 'S10_1678';
 
 WHERE clause and ON clause in INNER JOIN, they have equivalent effect
 
@@ -831,7 +841,8 @@ WHERE clause and ON clause in LEFT JOIN, they have different meanings. WHERE cla
         col
     FROM
         table1
-    RIGHT JOIN table2 USING (someColumn);
+    RIGHT JOIN
+        table2 USING (someColumn);
 
 Example of RIGHT JOIN. Think of it as a oppisite version of LEFT JOIN. This query trying to find people who are in committees but not members. I.e., finding the rows that are only in committees table.
 
@@ -839,8 +850,10 @@ Example of RIGHT JOIN. Think of it as a oppisite version of LEFT JOIN. This quer
         *
     FROM
         members
-    RIGHT JOIN committees USING (name)
-    WHERE member_id IS NULL;
+    RIGHT JOIN
+        committees USING (name)
+    WHERE
+        member_id IS NULL;
 
     /* Result Set:
         +------+--------------+-----------+
@@ -894,19 +907,30 @@ First, We select all associated products, stores and sales using inner join, if 
     SELECT
         *
     FROM products p
-    INNER JOIN sales sa ON p.id = sa.product_id
-    INNER JOIN stores st ON sa.store_id = st.id;
+    INNER JOIN
+        sales sa ON p.id = sa.product_id
+    INNER JOIN
+        stores st ON sa.store_id = st.id;
 
     /* Result Set:
-        +----+--------------+---------+------------+----------+----------+------------+----+------------+
-        | id | product_name | price   | product_id | store_id | quantity | sales_date | id | store_name |
-        +----+--------------+---------+------------+----------+----------+------------+----+------------+
-        |  1 | iPhone       |  699.00 |          1 |        1 |    20.00 | 2017-01-02 |  1 | North      |
-        |  2 | iPad         |  599.00 |          2 |        1 |    15.00 | 2017-01-05 |  1 | North      |
-        |  3 | Macbook Pro  | 1299.00 |          3 |        1 |    25.00 | 2017-01-05 |  1 | North      |
-        |  1 | iPhone       |  699.00 |          1 |        2 |    30.00 | 2017-01-02 |  2 | South      |
-        |  2 | iPad         |  599.00 |          2 |        2 |    35.00 | 2017-01-05 |  2 | South      |
-        +----+--------------+---------+------------+----------+----------+------------+----+------------+
+        +----+--------------+---------+------------+
+        | id | product_name | price   | product_id |
+        +----+--------------+---------+------------+
+        |  1 | iPhone       |  699.00 |          1 |
+        |  2 | iPad         |  599.00 |          2 |
+        |  3 | Macbook Pro  | 1299.00 |          3 |
+        |  1 | iPhone       |  699.00 |          1 |
+        |  2 | iPad         |  599.00 |          2 |
+        +----+--------------+---------+------------+
+        ----------+----------+------------+----+------------+
+         store_id | quantity | sales_date | id | store_name |
+        ----------+----------+------------+----+------------+
+                1 |    20.00 | 2017-01-02 |  1 | North      |
+                1 |    15.00 | 2017-01-05 |  1 | North      |
+                1 |    25.00 | 2017-01-05 |  1 | North      |
+                2 |    30.00 | 2017-01-02 |  2 | South      |
+                2 |    35.00 | 2017-01-05 |  2 | South      |
+        ----------+----------+------------+----+------------+
     */
 
 Second, As the products in each store that have not sales are removed, we can take advantaged of this to find these products. CROSS JOIN tables products and stores, and then LEFT JOIN the above table, so that when one product has not sale in specific store, the column on the table that is just left joined are null.
@@ -920,9 +944,12 @@ Second, As the products in each store that have not sales are removed, we can ta
     LEFT JOIN
             (SELECT
                 p.id p_id, st.id st_id
-            FROM products p
-            INNER JOIN sales sa ON p.id = sa.product_id
-            INNER JOIN stores st ON sa.store_id = st.id) comb
+            FROM
+                products p
+            INNER JOIN
+                sales sa ON p.id = sa.product_id
+            INNER JOIN
+                stores st ON sa.store_id = st.id) comb
         ON comb.p_id = p.id
         AND comb.st_id = st.id;
 
@@ -950,12 +977,16 @@ Third, If the results on the right table (the one that is left-joined) are NULL 
     LEFT JOIN
             (SELECT
                 p.id p_id, st.id st_id
-            FROM products p
-            INNER JOIN sales sa ON p.id = sa.product_id
-            INNER JOIN stores st ON sa.store_id = st.id) comb
+            FROM
+                products p
+            INNER JOIN
+                sales sa ON p.id = sa.product_id
+            INNER JOIN
+                stores st ON sa.store_id = st.id) comb
         ON comb.p_id = p.id
         AND comb.st_id = st.id
-    WHERE comb.p_id IS NULL OR comb.st_id IS NULL;
+    WHERE comb.p_id IS NULL
+        OR comb.st_id IS NULL;
 
 However, we can also solve this problem with simple query without the use of sub-query.
 
@@ -969,7 +1000,8 @@ However, we can also solve this problem with simple query without the use of sub
         ON sa.product_id = p.id
         AND sa.store_id = st.id
     WHERE
-        sa.product_id IS NULL OR sa.store_id IS NULL;
+        sa.product_id IS NULL
+        OR sa.store_id IS NULL;
 
 ---
 
@@ -1032,7 +1064,8 @@ FROM -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY -> LIMIT
 Example of using GROUP BY clause and HAVING clause. Grouped rows in result set can also be ordered by adding DESC or ASC in GROUP BY clause.
 
     SELECT
-        YEAR(orderDate) `Year`, SUM(quantityOrdered * priceEach) AS 'Revenue of shiped orders'
+        YEAR(orderDate) `Year`, SUM(quantityOrdered * priceEach)
+        AS 'Revenue of shiped orders'
     FROM
         orders INNER JOIN orderdetails USING (orderNumber)
     WHERE
@@ -1260,24 +1293,25 @@ GROUPING function, To check whether NULL in the result set represents the subtot
         productLine WITH ROLLUP;
 
     /* Result Set:
-        +------------------+-----------------+-----------------------+
-        | productLine      | SUM(orderValue) | GROUPING(productLine) |
-        +------------------+-----------------+-----------------------+
-        | Classic Cars     |        19668.13 |                     0 |
-        | Motorcycles      |         9044.15 |                     0 |
-        | Planes           |        11700.79 |                     0 |
-        | Ships            |        13147.86 |                     0 |
-        | Trains           |         9021.03 |                     0 |
-        | Trucks and Buses |        14194.95 |                     0 |
-        | Vintage Cars     |        12245.78 |                     0 |
-        | NULL             |        89022.69 |                     1 |
-        +------------------+-----------------+-----------------------+
+    +------------------+-----------------+-----------------------+
+    | productLine      | SUM(orderValue) | GROUPING(productLine) |
+    +------------------+-----------------+-----------------------+
+    | Classic Cars     |        19668.13 |                     0 |
+    | Motorcycles      |         9044.15 |                     0 |
+    | Planes           |        11700.79 |                     0 |
+    | Ships            |        13147.86 |                     0 |
+    | Trains           |         9021.03 |                     0 |
+    | Trucks and Buses |        14194.95 |                     0 |
+    | Vintage Cars     |        12245.78 |                     0 |
+    | NULL             |        89022.69 |                     1 |
+    +------------------+-----------------+-----------------------+
     */
 
 We can take advantage of the GROUPING function, and identifies which are the Grand total, or super-aggregate row
 
     SELECT
-        IF(GROUPING(productLine), "Grand Total Order Value", productLine) 'Product Line',  -- if is grouping, substitute NULL in productLine with the string.
+        -- if is grouping, substitute NULL in productLine with the string.
+        IF(GROUPING(productLine), "Grand Total Order Value", productLine) 'Product Line',
         SUM(orderValue) 'Order Value'
     FROM
         sales
@@ -1285,18 +1319,18 @@ We can take advantage of the GROUPING function, and identifies which are the Gra
         productLine WITH ROLLUP;
 
     /* Result Set:
-        +-------------------------+-------------+
-        | Product Line            | Order Value |
-        +-------------------------+-------------+
-        | Classic Cars            |    19668.13 |
-        | Motorcycles             |     9044.15 |
-        | Planes                  |    11700.79 |
-        | Ships                   |    13147.86 |
-        | Trains                  |     9021.03 |
-        | Trucks and Buses        |    14194.95 |
-        | Vintage Cars            |    12245.78 |
-        | Grand Total Order Value |    89022.69 |
-        +-------------------------+-------------+
+    +-------------------------+-------------+
+    | Product Line            | Order Value |
+    +-------------------------+-------------+
+    | Classic Cars            |    19668.13 |
+    | Motorcycles             |     9044.15 |
+    | Planes                  |    11700.79 |
+    | Ships                   |    13147.86 |
+    | Trains                  |     9021.03 |
+    | Trucks and Buses        |    14194.95 |
+    | Vintage Cars            |    12245.78 |
+    | Grand Total Order Value |    89022.69 |
+    +-------------------------+-------------+
     */
 
 # 23. Subquery
@@ -1324,10 +1358,10 @@ Syntax example of using subquery in WHERE
         payments
     WHERE
         amount = (
-                    SELECT
-                        MAX(amount)
-                    FROM
-                        payments);
+                SELECT
+                    MAX(amount)
+                FROM
+                    payments);
 
 Syntax example of using subquery in WHERE with comparison operators
 
@@ -1337,10 +1371,10 @@ Syntax example of using subquery in WHERE with comparison operators
         payments
     WHERE
         amount > (
-                    SELECT
-                        AVG(amount)
-                    FROM
-                        payments);
+                SELECT
+                    AVG(amount)
+                FROM
+                    payments);
 
 Syntax example of using subquery in FROM
 
@@ -1420,17 +1454,17 @@ Example of EXISTS() function. Select cusotmer who has at least one order.
                 orders USING(customerNumber));
 
 Select customers who don't have order, JOIN in subquery shouldn't be used, or else no rows are found.
-SELECT
-_
-FROM
-customers
-WHERE
-NOT EXISTS
-(SELECT
-_
-FROM
-orders
-WHERE orders.customerNumber = customers.customerNumber);
+
+    SELECT *
+    FROM
+        customers
+    WHERE NOT EXISTS
+            (SELECT
+                *
+            FROM
+                orders
+            WHERE
+                orders.customerNumber = customers.customerNumber);
 
 ### UPDATE EXISTS
 
@@ -1480,7 +1514,8 @@ We then find customers who don't have any sales orders.
                 *
             FROM
                 orders
-            WHERE customers.customerNumber = orders.customerNumber);
+            WHERE
+                customers.customerNumber = orders.customerNumber);
 
 We insert these data to the archive table
 
@@ -1494,7 +1529,8 @@ We insert these data to the archive table
                 *
             FROM
                 orders
-            WHERE customers.customerNumber = orders.customerNumber);
+            WHERE
+                customers.customerNumber = orders.customerNumber);
 
 ### DELETE EXISTS
 
@@ -1551,7 +1587,8 @@ While using EXISTS operator
                 customerNumber -- this doesn't matter, as it is ignored
             FROM
                 orders
-            WHERE customers.customerNumber = orders.customerNumber);
+            WHERE
+                customers.customerNumber = orders.customerNumber);
 
 From the performance perspective, the EXISTS way out-performs the IN way of finding the results if the table returned by the subquery is large. As with IN operator, the whole subquery is processed first. However, with EXISTS operator, it return the each matched results immediately as long as it exists, it will not keep going finding the next match for this same row. Nonetheless, if the subquery is a very small table, IN may be faster. Generally, use EXISTS if the subquery table is big.
 
@@ -1803,7 +1840,7 @@ JOIN clause must appear right after the UPDATE statement.
         table2.col3 = expr
     WHERE condition;
 
-        -- You can also use traditional join method (WHERE statement) to perform cross-table update
+-- You can also use traditional join method (WHERE statement) to perform cross-table update
 
     UPDATE table1, table2,
     WHERE table1.col1 = table2.col1
@@ -1872,10 +1909,13 @@ LEFT JOIN can be used with DELETE as well, it's basically the same as in UPDATE 
 We want to have some dedicated operation on left joined tables, where the rows can be NULL
 or NOT NULL.
 
-    DELETE customers
-    FROM customers
-            LEFT JOIN
-        orders ON customers.customerNumber = orders.customerNumber
+    DELETE
+        customers
+    FROM
+        customers
+    LEFT JOIN
+        orders ON
+        customers.customerNumber = orders.customerNumber
     WHERE
         orderNumber IS NULL;
 
@@ -2028,24 +2068,28 @@ A sequence or AUTO_INCREMENT column has following attributes:
         BIGINT (....)
 
     Floating Point Number:
-        FLOAT (32-bit base-2 format (binary32), or single-precision, or 24 bits precision)
-        DOUBLE (64-bit base-2 format (binary64), or double-precision, or 52 bits precision)
+        FLOAT (32-bit base-2 format (binary32),
+            or single-precision, or 24 bits precision)
+        DOUBLE (64-bit base-2 format (binary64),
+            or double-precision, or 52 bits precision)
         DECIMAL (DOUBLE stored as string)
 
     Binary:
         BIT (one single bit)
 
     Boolean:
-        MySQL doesn't have built-in Boolean type, it uses TINYINT(1) to simulate Boolean.
-        When we specify a datatype BOOLEAN, we are implicitly using TINYINT(1), where 1
-        refers to true and 0 refers to false;
+        MySQL doesn't have built-in Boolean type, it uses TINYINT(1)
+        to simulate Boolean. When we specify a datatype BOOLEAN, we
+        are implicitly using TINYINT(1), where 1 refers to true and 0
+        refers to false;
 
         BOOLEAN
 
     String: [BLOB stands for Binary Large Object]
         CHAR (0-255)
         VARCHAR (0-255)
-        VARBINARY (0-255, variable length, i.e., its length stored as part of the data)
+        VARBINARY (0-255, variable length, i.e., its length stored as
+            part of the data)
         BINARY (0-255, fixed length, padded with pad values, e.g., "\0")
         TINYTEXT (0-255)
         TINYBLOB (0-255)
@@ -2068,14 +2112,15 @@ A sequence or AUTO_INCREMENT column has following attributes:
     Other Type:
         JSON
 
-41. ALTER TABLE
+# 41. ALTER TABLE
 
 ALTER TABLE to add column
 
     ALTER TABLE tableName
     ADD columnName datatype constraintType [FIRST | AFTER columnName];
 
-    -- "[FIRST | AFTER columnName]" is used to specify the position of this column
+    -- "[FIRST | AFTER columnName]" is used to specify the position of
+        this column
 
 ALTER TABLE to add multiple columns
 
@@ -2091,7 +2136,8 @@ ALTER TABLE to modify a column. Previous column definition is overwritten
 ALTER TABLE to rename a column including its definition. Previous column definition is overwritten
 
     ALTER TABLE tableName
-    CHANGE COLUMN oldColName newColName datatype constraintType [FIRST | AFTER columnName];
+    CHANGE COLUMN oldColName newColName datatype constraintType
+        [FIRST | AFTER columnName];
 
 ALTER TABLE to drop a column
 
@@ -2169,7 +2215,9 @@ We can ADD PRIMARY KEY constraint to the existing column
 
 To add a FOREIGN KEY, it is quite similar to ORACLE DBMS
 
-        CONSTRAINT constraintName FOREIGN KEY foreignKeyName (col1, col2, ...) REFERENCES parentTable (col1, col2, ...) [referentialActions];
+    CONSTRAINT constraintName
+        FOREIGN KEY foreignKeyName (col1, col2, ...)
+        REFERENCES parentTable (col1, col2, ...) [referentialActions];
 
 To drop the FOREIGN KEY
 
