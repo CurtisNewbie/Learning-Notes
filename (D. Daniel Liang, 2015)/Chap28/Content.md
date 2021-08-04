@@ -24,13 +24,16 @@ Chapter 28 Graphs and Applications:
 
 "A graph is a mathematical structure that represents relationships among entities in the real world." (p.1016)
 
-    E.g., a graph is defined as G = (V, E), where V represents a set of vertices/nodes, and E represents a set of edges.
+    E.g., a graph is defined as G = (V, E), where V represents a set of
+    vertices/nodes, and E represents a set of edges.
 
     Examples of Verticies/nodes:
-        V = {"Seattle", "San Francisco", "Los Angeles", "Denver", "Kansas City", "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston"};
+        V = {"Seattle", "San Francisco", "Los Angeles", "Denver", "Kansas City",
+        "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston"};
 
     Examples of Edges:
-        E = {{"Seattle", "San Francisco"},{"Seattle", "Chicago"}, {"Seattle", "Denver"}, {"San Francisco", "Denver"}, ... };
+        E = {{"Seattle", "San Francisco"},{"Seattle", "Chicago"}, {"Seattle",
+        "Denver"}, {"San Francisco", "Denver"}, ... };
 
 ## 2.2 Directed or Undirected Graph:
 
@@ -49,15 +52,18 @@ Edges may be weighted or unweighted. Weight can be assigned to easch edge to ind
 
 **Adjacent Vertices**
 
-    "Two vertices in a graph are said to be adjacent if they are connected by the same edge." (p.1018)
+    "Two vertices in a graph are said to be adjacent if they are connected by the
+    same edge." (p.1018)
 
 **Adjacent Edges**
 
-    "Two edges are said to be adjacent if they are connected to the same vertex." (p.1018)
+    "Two edges are said to be adjacent if they are connected to the same vertex."
+    (p.1018)
 
 **Incident Edges**
 
-    "An edge in a graph that joins two vertices is said to be incident to both vertices."(p.1018)
+    "An edge in a graph that joins two vertices is said to be incident to both
+    vertices."(p.1018)
 
 **Degree of A Vertex**
 
@@ -81,19 +87,24 @@ Edges may be weighted or unweighted. Weight can be assigned to easch edge to ind
 
 **Complete Graph**
 
-    A complete graph is the one wherein "...every two pairs of vertices are connected." (p.1018)
+    A complete graph is the one wherein "...every two pairs of vertices are
+    connected." (p.1018)
 
 **Connected/ Disconnected Graph**
 
-    "A graph is connected if there exists a path between any two vertices in the graph." (p.1018) I.e., there is a path (consists of a number of edges) from one vertex to any vertex.
+    "A graph is connected if there exists a path between any two vertices in
+    the graph." (p.1018) I.e., there is a path (consists of a number of edges)
+    from one vertex to any vertex.
 
 **Subgraph**
 
-    A subgraph of a graph(G), is a graph whose vertex set or edge set is a subset of that of the graph G.
+    A subgraph of a graph(G), is a graph whose vertex set or edge set is a
+    subset of that of the graph G.
 
 **Cycle**
 
-    "Assume that the graph is connected and undirected. A cycle is a closed path that starts from a vertex and ends at the same vertex."(p.1018)
+    "Assume that the graph is connected and undirected. A cycle is a closed
+    path that starts from a vertex and ends at the same vertex."(p.1018)
 
 **Tree**
 
@@ -101,7 +112,8 @@ Edges may be weighted or unweighted. Weight can be assigned to easch edge to ind
 
 **Spanning Tree**
 
-    A spanning tree is a connected subgraph of a graph(G) that contains all the vertices, and is a tree with minimum edges that connect every vertices.
+    A spanning tree is a connected subgraph of a graph(G) that contains
+    all the vertices, and is a tree with minimum edges that connect every vertices.
 
 # 3. Representing Graphs
 
@@ -127,7 +139,8 @@ Edges of a graph can be represented using a two-dimentional array. E.g.,
         {10, 2}, {10, 4}, {10, 8}, {10, 11},
         {11, 8}, {11, 9}, {11, 10} };
 
-    where the number in the two-dimentional array refers to the index of the vertices. E.g., Vertex[] vertices = ...
+    where the number in the two-dimentional array refers to the index of the
+    vertices. E.g., Vertex[] vertices = ...
 
     More specifically, the edge array of a list of vertices is as follows:
 
@@ -142,9 +155,13 @@ One way to represent edges without using edge array is to create a class for the
 
 Assuming that the graph has n vertices, the edges can be represented using a two-dimentioanl n \* n matrix (Adjacency Matrix). Adjacency Matrices and Adjacency Lists are efficient for processing graphs.
 
-    In the Adjacency Matrices, the value of each element is either 0 or 1, where 0 indicates that the vertex i has no incident edge to vertex j, and 1 indicates that there is an edge between the vertex i and j.
+    In the Adjacency Matrices, the value of each element is either 0 or 1, where
+    0 indicates that the vertex i has no incident edge to vertex j, and 1 indicates
+    that there is an edge between the vertex i and j.
 
-    E.g., adjacencyMatrix[i][j], i and j are the indices representing the vertex, and the value of them (0 or 1) indicating that whether the correspondent vertices i and j has connected edge between them.
+    E.g., adjacencyMatrix[i][j], i and j are the indices of two veritices,
+    and the value of them (0 or 1) indicating that whether the correspondent
+    vertices i and j has connected edge between them.
 
     int[][] adjacencyMatrix = {
         {0,1,0,1,0,1,0,0,0,0,0,},
@@ -156,7 +173,8 @@ Assuming that the graph has n vertices, the edges can be represented using a two
 
 Edges can also be represented using Adjacency Vertex Lists or Adjacency Edge Lists. "An adjacency vertex list for a vertex i contains the vertices that are adjacent to i and an adjacency edge list for a vertex i contains the edges that are adjacent to i." (p.1022)
 
-    This is very similar to the Adjacency Matrices, except that it doesn't use the value of 0 and 1 to indicate which vertices are adjacent to them.
+    This is very similar to the Adjacency Matrices, except that it doesn't use
+    the value of 0 and 1 to indicate which vertices are adjacent to them.
 
     E.g.,
         // for vertex i = 0, the vertices that are adjacent include: 1, 3, 5 (indices)
@@ -173,7 +191,7 @@ Edges can also be represented using Adjacency Vertex Lists or Adjacency Edge Lis
 
 ### 3.5.1 Adjacency Vertex List or Adjacency Edge List?
 
-    Adjacency Vertex list is easier to implement in comparison to Adjacency Edge List, nonetheless, the Adjacency Edge List is more flexible, and it's easier to add additional constraints on edges.
+Adjacency Vertex list is easier to implement in comparison to Adjacency Edge List, nonetheless, the Adjacency Edge List is more flexible, and it's easier to add additional constraints on edges.
 
 ## 3.6 Using Adjacency Matricies or Adjacency Lists?
 
@@ -208,7 +226,8 @@ The general idea is as follows:
 
 So, the DFS in Graph is very similar to that in Tree. However, in Graph, there can be circles that leading to the infinite recursion. So, the vertices that are visited should be tracked.
 
-    The Breadth-First Search is similar to this logic, however, the DFS prioritises visiting the unvisited neighbors.
+    The Breadth-First Search is similar to this logic, however, the DFS prioritises
+    visiting the unvisited neighbors.
 
     "
         Input: Graph G = (V, E) and a starting vertex v
@@ -300,29 +319,33 @@ To display a graph, the coordinates of each vertex should be known. One way to d
 
 "Nine coins are placed in a three-by-three matrix with some face up and some face down. A legal move is to take a coin that is face up and reverse it, together with the coins adjacent to it (this does not include coins that are diagonally adjacent). Your task is to find the minimum number of moves that lead to all coins being face down." (p.1048)
 
-    I.e., select one facing up, flip it, and the adjacent (up, bottm, left and right) coins will reverse their facing. When all coins are facing down, it wins.
+    I.e., select one facing up, flip it, and the adjacent (up, bottm, left and
+    right) coins will reverse their facing. When all coins are facing down, it wins.
 
     e.g.,
     a)
-    U U U
-    D D D
-    U U U
+        U U U
+        D D D
+        U U U
 
     After fliping the second coin in the last row:
     b)
-    U U U
-    D U D
-    D D D
+        U U U
+        D U D
+        D D D
 
     After fliping the second coin in the first row:
     c) Win!
-    D D D
-    D D D
-    D D D
+        D D D
+        D D D
+        D D D
 
-    There are nine coins in this game board, which has a 2^9 possible combinations. Considering each combination is a node, and en edge between two nodes (two combinations) is assinged if it is a legal move between them.
+    There are nine coins in this game board, which has a 2^9 possible combinations.
+    Considering each combination is a node, and en edge between two nodes
+    (two combinations) is assinged if it is a legal move between them.
 
-    Say, the node [index of 511] (note that the index starts from 0 to 511, with a total of 512 (2^9)), is one has all the coins facing down.
+    Say, the node [index of 511] (note that the index starts from 0 to 511, with a
+    total of 512 (2^9)), is one has all the coins facing down.
 
     I.e., Node[511] (last node)
 
@@ -350,4 +373,7 @@ The process of solving the game will be to find the shortest path from the curre
 
     ...
 
-    There are 512 unique vertices in the graph. And this path can be found by constructing a graph consists of the 512 vertices, then use this graph to produce a BFS tree for getting the shortest path between the current vertex and the target vertex.
+    There are 512 unique vertices in the graph. And this path can be found by
+    constructing a graph consists of the 512 vertices, then use this graph to
+    produce a BFS tree for getting the shortest path between the current vertex
+    and the target vertex.
